@@ -1,0 +1,89 @@
+:root {
+    --rad: 20px;
+    --dur: .3s;
+    --color-dark: #000000;
+    --color-brand: rgb(116, 35, 255);
+    --border-color: white;
+    --btn-width: 20%;
+    --bez: cubic-bezier(0, 0, 0.43, 1.49);
+}
+
+.search {
+    width: 100%;
+}
+
+.headerForm {
+    position: relative;
+    width: 100%;
+    background: var(--color-brand);
+    border-radius: var(--rad);
+
+    input,
+    button {
+        border: 2px solid var(--border-color);
+        font-family: 'Montserrat-Light';
+        color: var(--color-dark);
+    }
+
+    input[type="search"] {
+        width: 100%;
+        background: white;
+        padding-left: 40px;
+        border-radius: var(--rad);
+        appearance: none;
+        transition: all var(--dur) var(--bez);
+        transition-property: width, border-radius;
+        z-index: 1;
+        position: relative;
+        outline: none;
+    }
+
+    input[type="search"]::-webkit-search-cancel-button {
+        display: none;
+    }
+
+    button {
+        cursor: pointer;
+        border: 2px solid var(--border-color);
+        border-left: none;
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: var(--btn-width);
+        font-weight: bold;
+        background: var(--color-brand);
+        border-radius: 0 var(--rad) var(--rad) 0;
+    }
+
+    input:not(:placeholder-shown) {
+
+        border: 2px solid var(--border-color);
+        border-right: none;
+        border-radius: var(--rad) 0 0 var(--rad);
+
+        width: calc(100% - var(--btn-width));
+
+        +button {
+            display: block;
+            color: white;
+            border: 2px solid white;
+        }
+    }
+
+}
+
+@media screen and (min-width: 768px) {
+    .headerForm {
+        input,
+        button {
+            height: 50px;
+            font-size: 18px;
+        }
+    }
+}
+
+@font-face {
+    font-family: 'Montserrat-Light';
+    src: url("../../fonts/Montserrat-SemiBold.ttf");
+}

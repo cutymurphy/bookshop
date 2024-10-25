@@ -11,6 +11,7 @@
     "clsx": "^2.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
     "sass": "^1.80.4",
     "scss": "^0.2.4",
@@ -39,5 +40,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "raw-loader": "^4.0.2",
+    "react-app-rewired": "^2.2.1"
   }
 }

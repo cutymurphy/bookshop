@@ -1,0 +1,11 @@
+:root {
+    --boarder-hover-color: rgb(116, 35, 255);
+    --icon-hover-color: rgb(116, 35, 255);
+    --default-head-menu-color: rgb(116, 35, 255);
+    --default-font: 'Montserrat-Regular';
+    --main-color: rgb(168, 118, 255);
+    --boarder-hover-color: rgb(116, 35, 255);
+    --boarder-system-color: rgb(219, 219, 219);
+    --sales-color: rgb(174, 20, 20);
+    --default-font: Inter, sans-serif;
+}
