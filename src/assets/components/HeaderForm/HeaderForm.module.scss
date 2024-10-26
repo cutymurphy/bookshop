@@ -21,7 +21,6 @@
     input,
     button {
         border: 2px solid var(--border-color);
-        font-family: 'Montserrat-Light';
         color: var(--color-dark);
     }
 
@@ -51,7 +50,7 @@
         top: 0;
         right: 0;
         width: var(--btn-width);
-        font-weight: bold;
+        font-weight: 600;
         background: var(--color-brand);
         border-radius: 0 var(--rad) var(--rad) 0;
     }
@@ -116,9 +115,4 @@
             font-size: 12px;
         }
     }
-}
-
-@font-face {
-    font-family: 'Montserrat-Light';
-    src: url("../../fonts/Montserrat-SemiBold.ttf");
 }

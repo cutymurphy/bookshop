@@ -65,8 +65,7 @@
     color: white;
     background-color: #cc3e49;
     border-radius: 100%;
-    font-family: var(--default-font);
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .userIconWrapper {
@@ -336,14 +335,4 @@
         top: -10%;
         padding: 0 3px;
     }
-}
-
-@font-face {
-    font-family: 'Montserrat-SemiBold';
-    src: url("../assets/fonts/Montserrat-SemiBold.ttf");
-}
-
-@font-face {
-    font-family: 'Montserrat-Regular';
-    src: url("../assets/fonts/Montserrat-Regular.ttf");
 }
