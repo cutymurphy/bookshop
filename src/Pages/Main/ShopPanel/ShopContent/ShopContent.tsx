@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { EPath } from "../../../../AppPathes.ts";
 import clsx from "clsx";
 import { EFiltersNames, IFilter } from "../ShopFilters/types.ts";
+import { ICartBook } from "../../../Cart/types.ts";
 
 const ShopContent: FC<IShopContent> = ({
     productsInCart,
@@ -43,7 +44,11 @@ const ShopContent: FC<IShopContent> = ({
     const authors = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.authors)?.filterItems || [];
 
     const addBookToCart = (book: IBook) => {
-        setProductsInCart([...productsInCart, book]);
+        const newBook: ICartBook = {
+            book,
+            count: 1,
+        }
+        setProductsInCart([...productsInCart, newBook]);
     }
 
     useEffect(() => {
@@ -56,7 +61,7 @@ const ShopContent: FC<IShopContent> = ({
         const currAuthors = new Set<string>();
         filteredBooks.forEach((book: IBook) => {
             currCategories.add(book.category);
-            if (!!book.author) { 
+            if (!!book.author) {
                 currAuthors.add(book.author);
             }
         })
@@ -76,7 +81,7 @@ const ShopContent: FC<IShopContent> = ({
     return (
         <>
             {currentBooks.map((book: IBook, index: number) => {
-                const isBookInCart = productsInCart.some((product: IBook) => JSON.stringify(product) === JSON.stringify(book));
+                const isBookInCart = productsInCart.some(({ book: product }: ICartBook) => JSON.stringify(product) === JSON.stringify(book));
 
                 return (
                     <div

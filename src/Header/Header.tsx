@@ -11,11 +11,18 @@ import { Link } from "react-router-dom";
 import { EPath } from "../AppPathes.ts";
 import { IHeader } from "./types.ts";
 import clsx from "clsx";
+import { ICartBook } from "../Pages/Cart/types.ts";
 
 const Header: FC<IHeader> = ({
     productsInCart,
 }) => {
     const tgLink = "https://t.me/Ssushkova";
+
+    const getCartCount = (): number => {
+        let count = 0;
+        productsInCart.forEach((product: ICartBook) => count += product.count);
+        return count;
+    }
 
     return (
         <header className={styles.header} id="header">
@@ -39,7 +46,7 @@ const Header: FC<IHeader> = ({
                                 styles.cartCount,
                                 productsInCart.length === 0 && styles.cartCountDisabled,
                             )}>
-                                {productsInCart.length}
+                                {getCartCount()}
                             </div>
                             <img className={styles.iconImage} src={cartIcon} />
                         </Link>

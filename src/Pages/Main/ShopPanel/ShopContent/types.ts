@@ -1,3 +1,4 @@
+import { ICartBook } from "../../../Cart/types";
 import { IFilter } from "../ShopFilters/types";
 
 export interface IBook {
@@ -14,8 +15,8 @@ export interface IBook {
 }
 
 export interface IShopContent {
-    productsInCart: IBook[],
-    setProductsInCart: (books: IBook[]) => void,
+    productsInCart: ICartBook[],
+    setProductsInCart: (books: ICartBook[]) => void,
     pickedFilters: IFilter[],
     setFilters: (filters: IFilter[]) => void,
 }

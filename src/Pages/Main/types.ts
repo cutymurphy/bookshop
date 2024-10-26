@@ -1,9 +1,9 @@
-import { IBook } from "./ShopPanel/ShopContent/types.ts";
+import { ICartBook } from "../Cart/types.ts";
 import { EFiltersNames, IFilter } from "./ShopPanel/ShopFilters/types.ts";
 
 export interface IMain {
-    productsInCart: IBook[],
-    setProductsInCart: (books: IBook[]) => void,
+    productsInCart: ICartBook[],
+    setProductsInCart: (books: ICartBook[]) => void,
 }
 
 export const initialFilters: IFilter[] = [

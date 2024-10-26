@@ -3,10 +3,10 @@ import styles from './App.module.scss'
 import Header from './Header/Header.tsx'
 import { Cart, Main } from './Pages/index.ts';
 import { Route, Routes } from 'react-router-dom';
-import { IBook } from './Pages/Main/ShopPanel/ShopContent/types.ts';
+import { ICartBook } from './Pages/Cart/types.ts';
 
 const App = () => {
-    const [productsInCart, setProductsInCart] = useState<IBook[]>([]);
+    const [productsInCart, setProductsInCart] = useState<ICartBook[]>([]);
 
     return (
         <div className={styles.wrapper}>
@@ -20,7 +20,12 @@ const App = () => {
                         setProductsInCart={setProductsInCart}
                     />
                 } />
-                <Route path="/cart" element={<Cart />} />
+                <Route path="/cart" element={
+                    <Cart
+                        productsInCart={productsInCart}
+                        setProductsInCart={setProductsInCart}
+                    />
+                } />
             </Routes>
         </div>
     )

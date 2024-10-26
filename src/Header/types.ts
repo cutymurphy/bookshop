@@ -1,5 +1,5 @@
-import { IBook } from "../Pages/Main/ShopPanel/ShopContent/types";
+import { ICartBook } from "../Pages/Cart/types";
 
 export interface IHeader {
-    productsInCart: IBook[],
+    productsInCart: ICartBook[],
 }
