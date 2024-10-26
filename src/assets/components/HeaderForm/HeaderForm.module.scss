@@ -28,7 +28,7 @@
     input[type="search"] {
         width: 100%;
         background: white;
-        padding-left: 40px;
+        padding: 0 40px;
         border-radius: var(--rad);
         appearance: none;
         transition: all var(--dur) var(--bez);
@@ -73,12 +73,47 @@
 
 }
 
+@media screen and (max-width: 1023.98px) {
+    .search {
+        grid-area: search;
+    }
+}
+
+@media screen and (max-width: 767.98px) {
+    .search .headerForm {
+        width: 90%;
+    }
+}
+
 @media screen and (min-width: 768px) {
     .headerForm {
+
         input,
         button {
             height: 50px;
             font-size: 18px;
+        }
+    }
+}
+
+@media screen and (min-width: 375px) and (max-width: 767.98px) {
+    .headerForm {
+
+        input,
+        button {
+            height: 35px;
+            font-size: 14px;
+        }
+    }
+}
+
+@media screen and (max-width: 374.98px) {
+    .headerForm {
+
+        input,
+        button {
+            height: 30px;
+            font-size: 12px;
         }
     }
 }

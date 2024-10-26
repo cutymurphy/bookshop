@@ -9,7 +9,6 @@
     box-shadow: 0px 4px 21px -1px rgb(185, 186, 186)
 }
 
-.menuBurger,
 .menuFilter {
     display: none;
     border: none;
@@ -88,7 +87,9 @@
 }
 
 @media screen and (min-width: 1440px) {
+
     header {
+
         .headInfo {
             display: flex;
             flex-direction: row;
@@ -99,9 +100,10 @@
             margin-right: auto;
             padding: 20px 0;
 
-            .logo {
-                margin-right: 40px;
-            }
+        }
+
+        .headInfo .logo {
+            margin-right: 40px;
         }
 
         .bottomLayedLogo,
@@ -119,7 +121,9 @@
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1439.98px) {
+
     header {
+
         .headInfo {
             padding: 20px;
             display: flex;
@@ -146,11 +150,191 @@
     }
 }
 
+@media screen and (max-width: 1023.98px) {
+    header {
+        .headInfo {
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 10% 80% 10%;
+            grid-template-areas:
+                "logo . icons"
+                "search search filter";
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            justify-items: center;
+
+            .logo {
+                grid-area: logo;
+                justify-self: start;
+            }
+
+            .search {
+                grid-area: search;
+            }
+
+            .icons {
+                grid-area: icons;
+                justify-self: end;
+                width: auto;
+            }
+
+            .menuFilter {
+                display: block;
+                grid-area: filter;
+                justify-self: end;
+            }
+        }
+    }
+}
+
+
+@media screen and (min-width: 768px) and (max-width: 1023.98px) {
+
+    header {
+
+        .headInfo {
+
+            padding: 20px;
+            grid-template-rows: repeat(2, 70px);
+
+            .logo {
+                .bottomLayedLogo,
+                .upperLayedLogo {
+                    width: 25vw;
+                    height: auto;
+                }
+            }
+
+            .icons {
+                .iconImage {
+                    height: 40px;
+                    margin-left: 30px;
+                }
+            }
+
+            .iconImageMenu {
+                height: 43px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 425px) and (max-width: 767.98px) {
+    header {
+
+        .headInfo {
+
+            padding: 10px 20px;
+            grid-template-rows: repeat(2, 60px);
+
+            .logo {
+                .upperLayedLogo,
+                .bottomLayedLogo {
+                    width: 170px;
+                }
+            }
+
+            .icons {
+                .iconImage {
+                    height: 30px;
+                    margin-left: 15px;
+                }
+            }
+
+            .iconImageMenu {
+                height: 30px;
+            }
+
+            .search .headerForm {
+                width: 90%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 375px) and (max-width: 424.98px) {
+    header {
+
+        .headInfo {
+
+            padding: 10px;
+            grid-template-rows: repeat(2, 50px);
+
+            .logo {
+                .upperLayedLogo,
+                .bottomLayedLogo {
+                    width: 130px;
+                }
+                margin-left: 10px;
+            }
+
+            .icons {
+                .iconImage {
+                    height: 25px;
+                    margin-left: 15px;
+                }
+            }
+
+            .iconImageMenu {
+                height: 30px;
+            }
+
+            .search .headerForm {
+                width: 90%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 374.98px) {
+    header {
+
+        .headInfo {
+
+            padding: 10px;
+            grid-template-rows: repeat(2, 40px);
+
+            .logo {
+                .upperLayedLogo,
+                .bottomLayedLogo {
+                    width: 110px;
+                }
+                margin-left: 10px;
+            }
+
+            .icons {
+                .iconImage {
+                    height: 20px;
+                    margin-left: 15px;
+                }
+            }
+
+            .iconImageMenu {
+                height: 25px;
+            }
+
+            .search .headerForm {
+                width: 90%;
+            }
+        }
+    }
+}
+
 @media screen and (min-width: 768px) {
     .cart .cartCount {
         font-size: 16px;
         left: 90%;
         padding: 0 5px;
+    }
+}
+
+@media screen and (max-width: 767.98px) {
+    .cart .cartCount {
+        font-size: 10px;
+        left: 90%;
+        top: -10%;
+        padding: 0 3px;
     }
 }
 

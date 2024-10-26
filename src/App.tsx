@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './App.module.scss'
 import Header from './Header/Header.tsx'
 import { Cart, Main } from './Pages/index.ts';
-import { Route, Router, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 const App = () => {
     return (
