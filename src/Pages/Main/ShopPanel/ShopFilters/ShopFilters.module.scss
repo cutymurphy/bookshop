@@ -5,7 +5,7 @@
         display: none;
     }
 
-    .filtersHeader-text {
+    .filtersHeaderText {
         color: white;
     }
 
@@ -146,25 +146,23 @@
             flex-direction: row;
             align-items: center;
         }
+
+        &-open {
+            display: block;
+            background-color: white;
+            overflow-y: auto;
+            top: 0;
+
+            .filterItem {
+                padding: 30px 70px 0 30px;
+    
+                .filterWrapper {
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid var(--boarder-system-color);
+                }
+            }
+        }
     }
-
-    // .shopWrapper.open-filters {
-    //     .shopFilters {
-    //         display: block;
-    //         background-color: white;
-    //         overflow-y: auto;
-    //         top: 0;
-    //     }
-
-    //     .filterItem {
-    //         padding: 30px 70px 0 30px;
-
-    //         .filterWrapper {
-    //             padding-bottom: 10px;
-    //             border-bottom: 1px solid var(--boarder-system-color);
-    //         }
-    //     }
-    // }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1023.98px) {
@@ -183,7 +181,7 @@
             background: none;
             padding: 10px;
 
-            .filtersHeader-text {
+            .filtersHeaderText {
                 font-size: 18px;
                 font-weight: 600;
             }
@@ -203,7 +201,7 @@
             background: none;
             padding: 10px;
 
-            .filtersHeader-text {
+            .filtersHeaderText {
                 font-size: 16px;
                 font-weight: 600;
             }
@@ -232,7 +230,7 @@
             background: none;
             padding: 10px;
 
-            .filtersHeader-text {
+            .filtersHeaderText {
                 font-size: 13px;
                 font-weight: 600;
             }
@@ -261,7 +259,7 @@
             background: none;
             padding: 10px;
 
-            .filtersHeader-text {
+            .filtersHeaderText {
                 font-size: 13px;
                 font-weight: 600;
             }

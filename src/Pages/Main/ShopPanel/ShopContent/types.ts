@@ -19,4 +19,5 @@ export interface IShopContent {
     setProductsInCart: (books: ICartBook[]) => void,
     pickedFilters: IFilter[],
     setFilters: (filters: IFilter[]) => void,
+    searchInput: string,
 }

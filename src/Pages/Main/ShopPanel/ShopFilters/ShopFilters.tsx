@@ -1,12 +1,16 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import styles from './ShopFilters.module.scss';
 import arrowIcon from '../../../../assets/pictures/arrow_12645576 (1).png';
 import { EFiltersNames, IFilter, IShopFilters } from './types';
+import clsx from 'clsx';
+import { initialPickedFilters } from '../../types.ts';
 
 const ShopFilters: FC<IShopFilters> = ({
     filters,
     pickedFilters,
     setPickedFilters,
+    isMobileFiltersOpen,
+    setIsMobileFiltersOpen,
 }) => {
     const checkFilter = (isFilterChecked: boolean, name: EFiltersNames, item: string) => {
         setPickedFilters(pickedFilters.map((filter: IFilter) => {
@@ -24,14 +28,29 @@ const ShopFilters: FC<IShopFilters> = ({
         }));
     };
 
+    const resetFilters = () => {
+        setPickedFilters([...initialPickedFilters]);
+        setIsMobileFiltersOpen(false);
+    }
+
     return (
-        <div className={styles.shopFilters}>
+        <div className={clsx(
+            styles.shopFilters,
+            isMobileFiltersOpen && styles["shopFilters-open"]
+        )}>
             <div className={styles.filtersHeader}>
-                <button className={styles.backBtn} id="back">
+                <button
+                    className={styles.backBtn}
+                    id="back"
+                    onClick={() => setIsMobileFiltersOpen(false)}
+                >
                     <img className={styles.iconImageFilters} src={arrowIcon} />
                     <div className={styles.filtersHeaderText}>Назад</div>
                 </button>
-                <button className={styles.removeFiltersBtn}>
+                <button
+                    className={styles.removeFiltersBtn}
+                    onClick={resetFilters}
+                >
                     <div className={styles.filtersHeaderText}>Сбросить все фильтры</div>
                 </button>
             </div>

@@ -15,6 +15,8 @@ import { ICartBook } from "../Pages/Cart/types.ts";
 
 const Header: FC<IHeader> = ({
     productsInCart,
+    setIsMobileFiltersOpen,
+    setSearchInput,
 }) => {
     const tgLink = "https://t.me/Ssushkova";
 
@@ -33,7 +35,9 @@ const Header: FC<IHeader> = ({
                         <img className={styles.bottomLayedLogo} src={logoWithBookmark} />
                     </Link>
                 </div>
-                <HeaderForm />
+                <HeaderForm
+                    setSearchInput={setSearchInput}
+                />
                 <div className={styles.icons}>
                     <div className={styles.userIconWrapper}><a href="authorization-page.html">
                         <div className={styles.userName}></div>
@@ -52,7 +56,11 @@ const Header: FC<IHeader> = ({
                         </Link>
                     </div>
                 </div>
-                <button className={styles.menuFilter} id="filter">
+                <button
+                    className={styles.menuFilter}
+                    id="filter"
+                    onClick={() => setIsMobileFiltersOpen(true)}
+                >
                     <img className={styles.iconImageMenu} src={slidersIcon} />
                 </button>
             </div>

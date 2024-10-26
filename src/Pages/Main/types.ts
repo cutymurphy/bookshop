@@ -4,6 +4,9 @@ import { EFiltersNames, IFilter } from "./ShopPanel/ShopFilters/types.ts";
 export interface IMain {
     productsInCart: ICartBook[],
     setProductsInCart: (books: ICartBook[]) => void,
+    isMobileFiltersOpen: boolean,
+    setIsMobileFiltersOpen: (isOpen: boolean) => void,
+    searchInput: string,
 }
 
 export const initialFilters: IFilter[] = [

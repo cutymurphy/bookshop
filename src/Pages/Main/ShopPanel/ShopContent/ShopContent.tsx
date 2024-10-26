@@ -12,6 +12,7 @@ const ShopContent: FC<IShopContent> = ({
     setProductsInCart,
     pickedFilters,
     setFilters,
+    searchInput,
 }) => {
     const navigate = useNavigate();
 
@@ -52,19 +53,23 @@ const ShopContent: FC<IShopContent> = ({
     }
 
     useEffect(() => {
+        const inputValue = searchInput.trim().toLocaleLowerCase();
         const filteredBooks = listOfBooks
+            .filter((book: IBook) => inputValue === "" || book.name.toLocaleLowerCase().includes(inputValue))
             .filter((book: IBook) => categories.length === 0 || categories.includes(book.category))
             .filter((book: IBook) => authors.length === 0 || (!!book.author && authors.includes(book.author)));
         setCurrentBooks(filteredBooks);
+    }, [pickedFilters, searchInput])
 
+    useEffect(() => {
         const currCategories = new Set<string>();
         const currAuthors = new Set<string>();
-        filteredBooks.forEach((book: IBook) => {
+        currentBooks.forEach((book: IBook) => {
             currCategories.add(book.category);
             if (!!book.author) {
                 currAuthors.add(book.author);
             }
-        })
+        });
 
         setFilters([
             {
@@ -73,10 +78,10 @@ const ShopContent: FC<IShopContent> = ({
             },
             {
                 name: EFiltersNames.categories,
-                filterItems: [...currCategories]
+                filterItems: [...currCategories],
             },
         ]);
-    }, [pickedFilters])
+    }, [currentBooks])
 
     return (
         <>
