@@ -1,0 +1,279 @@
+@import '../../../../assets/themes/palette.css';
+
+.shopFilters {
+    .filtersHeader {
+        display: none;
+    }
+
+    .filtersHeader-text {
+        color: white;
+    }
+
+    .filterItem {
+        font-family: var(--ptsans-font);
+
+        .filterItemName {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .checkboxItem {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .checkboxItem.hidden {
+            display: none;
+        }
+
+        .checkbox {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+        }
+
+        .checkboxInput {
+            appearance: none;
+            position: absolute;
+        }
+
+        .checkboxLabel:before {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 20px;
+
+            border: 1px solid var(--boarder-system-color);
+            background-color: rgb(255, 255, 255);
+            border-radius: 10%;
+
+            position: absolute;
+            z-index: 1;
+        }
+
+        .checkboxItem:hover .checkboxLabel:before {
+            border-color: var(--main-color);
+            transition: 0.3s;
+        }
+
+        .checkboxLabel:after {
+            cursor: pointer;
+            content: "";
+            display: block;
+            width: 20px;
+            height: 20px;
+
+            background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRzyiSikxjLhftW55OLmMD8OjFVeLo5LAkL774QC4p4g&s");
+            background-size: 20px 20px;
+            opacity: 0;
+
+            position: absolute;
+            z-index: 2;
+        }
+
+        .checkboxInput:checked+.checkboxLabel:before {
+            background-color: var(--main-color);
+        }
+
+        .checkboxInput:checked+.checkboxLabel:after {
+            opacity: 1;
+            border: 1px solid black;
+            border-radius: 10%;
+        }
+    }
+
+}
+
+@media screen and (min-width: 1440px) {
+    .shopFilters {
+        .filterItem {
+            margin: 0 30px 50px 0;
+        }
+
+        .filterItemName {
+            font-size: 20px;
+        }
+
+        .checkboxText {
+            font-size: 15px;
+        }
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1439.98px) {
+    .shopFilters {
+        .filterItem {
+            margin: 0 0 10% 10%;
+        }
+
+        .filterItemName {
+            font-size: 18px;
+        }
+
+        .checkboxText {
+            font-size: 17px;
+        }
+    }
+}
+
+@media screen and (max-width: 1023.98px) {
+    .shopFilters {
+        display: none;
+        z-index: 9999;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: -999px;
+        left: 0;
+
+        .filtersHeader {
+            display: block;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            background-color: var(--main-color);
+        }
+
+        .backBtn {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+
+    // .shopWrapper.open-filters {
+    //     .shopFilters {
+    //         display: block;
+    //         background-color: white;
+    //         overflow-y: auto;
+    //         top: 0;
+    //     }
+
+    //     .filterItem {
+    //         padding: 30px 70px 0 30px;
+
+    //         .filterWrapper {
+    //             padding-bottom: 10px;
+    //             border-bottom: 1px solid var(--boarder-system-color);
+    //         }
+    //     }
+    // }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023.98px) {
+    .shopFilters {
+
+        .checkboxText {
+            font-size: 15px;
+        }
+
+        .filterItemName {
+            font-size: 18px;
+        }
+
+        .filtersHeader button {
+            border: none;
+            background: none;
+            padding: 10px;
+
+            .filtersHeader-text {
+                font-size: 18px;
+                font-weight: 600;
+            }
+        }
+
+        .backBtn img {
+            height: 50px;
+            margin-right: 10px;
+        }
+    }
+}
+
+@media screen and (min-width: 425px) and (max-width: 767.98px) {
+    .shopFilters {
+        .filtersHeader button {
+            border: none;
+            background: none;
+            padding: 10px;
+
+            .filtersHeader-text {
+                font-size: 16px;
+                font-weight: 600;
+            }
+        }
+
+        .backBtn img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .filterItemName {
+            font-size: 16px;
+        }
+
+        .checkboxText {
+            font-size: 14px;
+        }
+    }
+}
+
+@media screen and (min-width: 375px) and (max-width: 424.98px) {
+    .shopFilters {
+
+        .filtersHeader button {
+            border: none;
+            background: none;
+            padding: 10px;
+
+            .filtersHeader-text {
+                font-size: 13px;
+                font-weight: 600;
+            }
+        }
+
+        .backBtn img {
+            height: 25px;
+            margin-right: 10px;
+        }
+
+        .filterItemName {
+            font-size: 14px;
+        }
+
+        .checkboxText {
+            font-size: 12px;
+        }
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 374.98px) {
+    .shopFilters {
+
+        .filtersHeader button {
+            border: none;
+            background: none;
+            padding: 10px;
+
+            .filtersHeader-text {
+                font-size: 13px;
+                font-weight: 600;
+            }
+        }
+
+        .backBtn img {
+            height: 25px;
+            margin-right: 10px;
+        }
+
+        .filterItemName {
+            font-size: 14px;
+        }
+
+        .checkboxText {
+            font-size: 12px;
+        }
+    }
+}
