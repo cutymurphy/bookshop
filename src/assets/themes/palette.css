@@ -3,6 +3,7 @@
   --icon-hover-color: rgb(116, 35, 255);
   --default-head-menu-color: rgb(116, 35, 255);
   --main-color: rgb(168, 118, 255);
+  --main-color-transparent: rgba(168, 118, 255, 0.5);
   --boarder-hover-color: rgb(116, 35, 255);
   --boarder-system-color: rgb(219, 219, 219);
   --sales-color: rgb(174, 20, 20);

@@ -20,4 +20,9 @@ export interface IShopContent {
     pickedFilters: IFilter[],
     setFilters: (filters: IFilter[]) => void,
     searchInput: string,
+    currentPage: number,
+    setCurrentPage: (page: number) => void,
+    booksPerPage: number,
+    currentBooks: IBook[],
+    setCurrentBooks: (books: IBook[]) => void,
 }
