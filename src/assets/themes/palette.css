@@ -1,84 +1,94 @@
 :root {
-    --boarder-hover-color: rgb(116, 35, 255);
-    --icon-hover-color: rgb(116, 35, 255);
-    --default-head-menu-color: rgb(116, 35, 255);
-    --main-color: rgb(168, 118, 255);
-    --boarder-hover-color: rgb(116, 35, 255);
-    --boarder-system-color: rgb(219, 219, 219);
-    --sales-color: rgb(174, 20, 20);
-    --default-font: 'Montserrat';
-    --ptsans-font: 'PTSans';
-    --dancing-font: 'DancingScript';
+  --boarder-hover-color: rgb(116, 35, 255);
+  --icon-hover-color: rgb(116, 35, 255);
+  --default-head-menu-color: rgb(116, 35, 255);
+  --main-color: rgb(168, 118, 255);
+  --boarder-hover-color: rgb(116, 35, 255);
+  --boarder-system-color: rgb(219, 219, 219);
+  --sales-color: rgb(174, 20, 20);
+  --color-brand: rgb(116, 35, 255);
+  --color-brand-hover: rgb(96, 31, 208);
+  --black: #000000;
+  --white: #ffffff;
+  --rad: 20px;
+  --dur: 0.3s;
+  --btn-width: 20%;
+  --bez: cubic-bezier(0, 0, 0.43, 1.49);
+  --default-font: "Montserrat";
+  --ptsans-font: "PTSans";
+  --dancing-font: "DancingScript";
 }
 
 @font-face {
-    font-family: 'Montserrat';
-    src: url('../fonts/Montserrat-Regular.eot');
-    src: url('../fonts/Montserrat-Regular.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/Montserrat-Regular.woff2') format('woff2'),
-        url('../fonts/Montserrat-Regular.woff') format('woff'),
-        url('../fonts/Montserrat-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-Regular.eot");
+  src: url("../fonts/Montserrat-Regular.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/Montserrat-Regular.woff2") format("woff2"),
+    url("../fonts/Montserrat-Regular.woff") format("woff"),
+    url("../fonts/Montserrat-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Montserrat';
-    src: url('../fonts/Montserrat-SemiBold.eot');
-    src: url('../fonts/Montserrat-SemiBold.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/Montserrat-SemiBold.woff2') format('woff2'),
-        url('../fonts/Montserrat-SemiBold.woff') format('woff'),
-        url('../fonts/Montserrat-SemiBold.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-SemiBold.eot");
+  src: url("../fonts/Montserrat-SemiBold.eot?#iefix")
+      format("embedded-opentype"),
+    url("../fonts/Montserrat-SemiBold.woff2") format("woff2"),
+    url("../fonts/Montserrat-SemiBold.woff") format("woff"),
+    url("../fonts/Montserrat-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Montserrat';
-    src: url('../fonts/Montserrat-Medium.eot');
-    src: url('../fonts/Montserrat-Medium.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/Montserrat-Medium.woff2') format('woff2'),
-        url('../fonts/Montserrat-Medium.woff') format('woff'),
-        url('../fonts/Montserrat-Medium.ttf') format('truetype');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-Medium.eot");
+  src: url("../fonts/Montserrat-Medium.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/Montserrat-Medium.woff2") format("woff2"),
+    url("../fonts/Montserrat-Medium.woff") format("woff"),
+    url("../fonts/Montserrat-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Montserrat';
-    src: url('../fonts/Montserrat-Light.eot');
-    src: url('../fonts/Montserrat-Light.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/Montserrat-Light.woff2') format('woff2'),
-        url('../fonts/Montserrat-Light.woff') format('woff'),
-        url('../fonts/Montserrat-Light.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-Light.eot");
+  src: url("../fonts/Montserrat-Light.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/Montserrat-Light.woff2") format("woff2"),
+    url("../fonts/Montserrat-Light.woff") format("woff"),
+    url("../fonts/Montserrat-Light.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'PTSans';
-    src: url('../fonts/PTSans-Regular.eot');
-    src: url('../fonts/PTSans-Regular.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/PTSans-Regular.woff2') format('woff2'),
-        url('../fonts/PTSans-Regular.woff') format('woff'),
-        url('../fonts/PTSans-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: "PTSans";
+  src: url("../fonts/PTSans-Regular.eot");
+  src: url("../fonts/PTSans-Regular.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/PTSans-Regular.woff2") format("woff2"),
+    url("../fonts/PTSans-Regular.woff") format("woff"),
+    url("../fonts/PTSans-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'DancingScript';
-    src: url('../fonts/DancingScript-Regular.eot');
-    src: url('../fonts/DancingScript-Regular.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/DancingScript-Regular.woff2') format('woff2'),
-        url('../fonts/DancingScript-Regular.woff') format('woff'),
-        url('../fonts/DancingScript-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: "DancingScript";
+  src: url("../fonts/DancingScript-Regular.eot");
+  src: url("../fonts/DancingScript-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    url("../fonts/DancingScript-Regular.woff2") format("woff2"),
+    url("../fonts/DancingScript-Regular.woff") format("woff"),
+    url("../fonts/DancingScript-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }

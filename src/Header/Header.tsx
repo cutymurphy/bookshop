@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from './Header.module.scss'
 import logoWithBookmark from '../assets/pictures/logo-with-bookmark.png';
 import logoWithoutBookmark from '../assets/pictures/logo-without-bookmark.png';
@@ -9,8 +9,12 @@ import slidersIcon from '../assets/pictures/sliders-v_10435878.png';
 import HeaderForm from "../assets/components/HeaderForm/HeaderForm.tsx";
 import { Link } from "react-router-dom";
 import { EPath } from "../AppPathes.ts";
+import { IHeader } from "./types.ts";
+import clsx from "clsx";
 
-const Header = () => {
+const Header: FC<IHeader> = ({
+    productsInCart,
+}) => {
     const tgLink = "https://t.me/Ssushkova";
 
     return (
@@ -31,7 +35,12 @@ const Header = () => {
                     <div><a href={tgLink}><img className={styles.iconImage} src={tgIcon} /></a></div>
                     <div className={styles.cart}>
                         <Link to={EPath.cart}>
-                            <div className={styles.cartCount}></div>
+                            <div className={clsx(
+                                styles.cartCount,
+                                productsInCart.length === 0 && styles.cartCountDisabled,
+                            )}>
+                                {productsInCart.length}
+                            </div>
                             <img className={styles.iconImage} src={cartIcon} />
                         </Link>
                     </div>

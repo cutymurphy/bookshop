@@ -62,10 +62,21 @@
 
 .cart .cartCount {
     position: absolute;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
     background-color: #cc3e49;
     border-radius: 100%;
+    line-height: 18px;
     font-weight: 600;
+    font-family: Inter, sans-serif;
+
+    &Disabled {
+        display: none;
+    }
 }
 
 .userIconWrapper {
@@ -87,7 +98,7 @@
 
 @media screen and (min-width: 1440px) {
 
-    header {
+    .header {
 
         .headInfo {
             display: flex;
@@ -121,7 +132,7 @@
 
 @media screen and (min-width: 1024px) and (max-width: 1439.98px) {
 
-    header {
+    .header {
 
         .headInfo {
             padding: 20px;
@@ -150,7 +161,7 @@
 }
 
 @media screen and (max-width: 1023.98px) {
-    header {
+    .header {
         .headInfo {
             z-index: 1;
             display: grid;
@@ -190,7 +201,7 @@
 
 @media screen and (min-width: 768px) and (max-width: 1023.98px) {
 
-    header {
+    .header {
 
         .headInfo {
 
@@ -198,6 +209,7 @@
             grid-template-rows: repeat(2, 70px);
 
             .logo {
+
                 .bottomLayedLogo,
                 .upperLayedLogo {
                     width: 25vw;
@@ -220,7 +232,7 @@
 }
 
 @media screen and (min-width: 425px) and (max-width: 767.98px) {
-    header {
+    .header {
 
         .headInfo {
 
@@ -228,6 +240,7 @@
             grid-template-rows: repeat(2, 60px);
 
             .logo {
+
                 .upperLayedLogo,
                 .bottomLayedLogo {
                     width: 170px;
@@ -253,7 +266,7 @@
 }
 
 @media screen and (min-width: 375px) and (max-width: 424.98px) {
-    header {
+    .header {
 
         .headInfo {
 
@@ -261,10 +274,12 @@
             grid-template-rows: repeat(2, 50px);
 
             .logo {
+
                 .upperLayedLogo,
                 .bottomLayedLogo {
                     width: 130px;
                 }
+
                 margin-left: 10px;
             }
 
@@ -287,7 +302,7 @@
 }
 
 @media screen and (min-width: 320px) and (max-width: 374.98px) {
-    header {
+    .header {
 
         .headInfo {
 
@@ -295,10 +310,12 @@
             grid-template-rows: repeat(2, 40px);
 
             .logo {
+
                 .upperLayedLogo,
                 .bottomLayedLogo {
                     width: 110px;
                 }
+
                 margin-left: 10px;
             }
 
@@ -324,7 +341,6 @@
     .cart .cartCount {
         font-size: 16px;
         left: 90%;
-        padding: 0 5px;
     }
 }
 
@@ -333,6 +349,13 @@
         font-size: 10px;
         left: 90%;
         top: -10%;
-        padding: 0 3px;
+        width: 12px;
+        height: 12px;
+    }
+}
+
+@media screen and (max-width: 424.98px) {
+    .headInfo .icons {
+        margin-right: 4px;
     }
 }

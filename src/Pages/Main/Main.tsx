@@ -1,25 +1,25 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from './Main.module.scss'
 import DiscountPanel from "./DiscountPanel/DiscountPanel.tsx";
+import ShopFilters from "./ShopPanel/ShopFilters/ShopFilters.tsx";
+import ShopContent from "./ShopPanel/ShopContent/ShopContent.tsx";
+import { IMain } from "./types.ts";
 
-const Main = () => {
+const Main: FC<IMain> = ({
+    productsInCart,
+    setProductsInCart,
+}) => {
     return (
         <div className={styles.shopWrapper}>
             <DiscountPanel />
             <div className={styles.shopPanel}>
-                <div className={styles.shopFilters}>
-                    <div className={styles.filtersHeader}>
-                        <button className={styles.backBtn} id="back">
-                            <img className={styles.iconImageFilters} src="../pictures/arrow_12645576 (1).png" />
-                                <div className={styles.filtersHeaderText}>Назад</div>
-                        </button>
-                        <button className={styles.removeFiltersBtn}>
-                            <div className={styles.filtersHeaderText}>Сбросить все фильтры</div>
-                        </button>
-                    </div>
+                <ShopFilters />
+                <div className={styles.shopContent}>
+                    <ShopContent
+                        productsInCart={productsInCart}
+                        setProductsInCart={setProductsInCart}
+                    />
                 </div>
-
-                <div className={styles.shopContent}></div>
             </div>
         </div>
     )
