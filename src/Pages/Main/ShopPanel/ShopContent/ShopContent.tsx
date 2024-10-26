@@ -1,13 +1,16 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { IBook, IShopContent } from "./types";
 import styles from './ShopContent.module.scss'
 import { Link, useNavigate } from "react-router-dom";
 import { EPath } from "../../../../AppPathes.ts";
 import clsx from "clsx";
+import { EFiltersNames, IFilter } from "../ShopFilters/types.ts";
 
 const ShopContent: FC<IShopContent> = ({
     productsInCart,
     setProductsInCart,
+    pickedFilters,
+    setFilters,
 }) => {
     const navigate = useNavigate();
 
@@ -34,13 +37,45 @@ const ShopContent: FC<IShopContent> = ({
         createBook(10, "Slayer. Титаны американского трэш-метала", "Книги для подростков", "https://content.img-gorod.ru/nomenclature/30/266/3026638-4.jpg?width=304&height=438&fit=bounds", 949.99),
     ];
 
+    const [currentBooks, setCurrentBooks] = useState<IBook[]>([...listOfBooks]);
+
+    const categories = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.categories)?.filterItems || [];
+    const authors = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.authors)?.filterItems || [];
+
     const addBookToCart = (book: IBook) => {
         setProductsInCart([...productsInCart, book]);
     }
 
+    useEffect(() => {
+        const filteredBooks = listOfBooks
+            .filter((book: IBook) => categories.length === 0 || categories.includes(book.category))
+            .filter((book: IBook) => authors.length === 0 || (!!book.author && authors.includes(book.author)));
+        setCurrentBooks(filteredBooks);
+
+        const currCategories = new Set<string>();
+        const currAuthors = new Set<string>();
+        filteredBooks.forEach((book: IBook) => {
+            currCategories.add(book.category);
+            if (!!book.author) { 
+                currAuthors.add(book.author);
+            }
+        })
+
+        setFilters([
+            {
+                name: EFiltersNames.authors,
+                filterItems: [...currAuthors],
+            },
+            {
+                name: EFiltersNames.categories,
+                filterItems: [...currCategories]
+            },
+        ]);
+    }, [pickedFilters])
+
     return (
         <>
-            {listOfBooks.map((book: IBook, index: number) => {
+            {currentBooks.map((book: IBook, index: number) => {
                 const isBookInCart = productsInCart.some((product: IBook) => JSON.stringify(product) === JSON.stringify(book));
 
                 return (
