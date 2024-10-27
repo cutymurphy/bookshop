@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styles from './App.module.scss'
 import Header from './Header/Header.tsx'
 import { Cart, Main } from './Pages/index.ts';

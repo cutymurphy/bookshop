@@ -9,6 +9,8 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "clsx": "^2.1.1",
+    "cors": "^2.8.5",
+    "mysql2": "^3.11.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
@@ -21,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "node src/server/index.js"
   },
   "eslintConfig": {
     "extends": [
