@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "boxicons": "^2.1.4",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "mysql2": "^3.11.3",
@@ -17,6 +18,7 @@
     "react-scripts": "5.0.1",
     "sass": "^1.80.4",
     "scss": "^0.2.4",
+    "uuid": "^11.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

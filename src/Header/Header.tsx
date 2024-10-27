@@ -39,10 +39,12 @@ const Header: FC<IHeader> = ({
                     setSearchInput={setSearchInput}
                 />
                 <div className={styles.icons}>
-                    <div className={styles.userIconWrapper}><a href="authorization-page.html">
-                        <div className={styles.userName}></div>
-                        <img className={styles.iconImage} src={userIcon} />
-                    </a></div>
+                    <div className={styles.userIconWrapper}>
+                        <Link to={EPath.auth}>
+                            <div className={styles.userName}></div>
+                            <img className={styles.iconImage} src={userIcon} />
+                        </Link>
+                    </div>
                     <div><a href={tgLink}><img className={styles.iconImage} src={tgIcon} /></a></div>
                     <div className={styles.cart}>
                         <Link to={EPath.cart}>

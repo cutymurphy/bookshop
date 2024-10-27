@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from './App.module.scss'
 import Header from './Header/Header.tsx'
-import { Cart, Main } from './Pages/index.ts';
+import { Auth, Cart, Main } from './Pages/index.ts';
 import { Route, Routes } from 'react-router-dom';
 import { ICartBook } from './Pages/Cart/types.ts';
 
@@ -31,6 +31,11 @@ const App = () => {
                     <Cart
                         productsInCart={productsInCart}
                         setProductsInCart={setProductsInCart}
+                    />
+                } />
+                <Route path="/auth" element={
+                    <Auth
+                        
                     />
                 } />
             </Routes>

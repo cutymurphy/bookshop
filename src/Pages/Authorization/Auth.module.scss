@@ -1,0 +1,99 @@
+@import '../../assets/themes/palette.css';
+
+.loadContainer {
+    z-index: 9999;
+    position: absolute;
+    margin-top: 100px;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+}
+
+.authWrapper {
+    margin-top: 100px;
+    width: 300px;
+    background: white;
+    color: var(--main-color);
+    background-color: rgb(249, 248, 248);
+    border-radius: 5px;
+    border: 0.5px solid rgb(222, 221, 221);
+    padding: 20px 40px;
+    font-family: var(--ptsans-font);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    &.hidden {
+        display: none;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .inputBox {
+        height: 40px;
+        border: 1px solid var(--main-color);
+        border-radius: 30px;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+
+        input {
+            background: transparent;
+            border: none;
+            outline: none;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0 40px 0 20px;
+            font-size: 16px;
+        }
+
+        .error {
+            position: absolute;
+            bottom: -16px;
+            left: 10px;
+            font-size: 13px;
+            color: var(--errors-color);
+        }
+    }
+
+    i {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .rememberForgot {
+        margin-top: 8px;
+    }
+
+    .btn {
+        width: 100%;
+        height: 40px;
+        background: none;
+        border: none;
+        background: var(--main-color);
+        border-radius: 40px;
+        font-size: 20px;
+        font-weight: bold;
+        font-family: var(--ptsans-font);
+        color: white;
+
+        &:hover {
+            background-color: var(--boarder-hover-color);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+    }
+}

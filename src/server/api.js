@@ -25,3 +25,25 @@ export const fetchAuthors = async () => {
         throw error;
     }
 };
+
+export const addUser = async (userData) => {
+    console.log(userData)
+    try {
+        const response = await fetch(`${API_BASE_URL}/post/user`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при добавлении пользователя', error);
+        throw error;
+    }
+};
