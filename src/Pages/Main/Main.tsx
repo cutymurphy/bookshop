@@ -3,7 +3,7 @@ import styles from './Main.module.scss'
 import DiscountPanel from "./DiscountPanel/DiscountPanel.tsx";
 import ShopFilters from "./ShopPanel/ShopFilters/ShopFilters.tsx";
 import ShopContent from "./ShopPanel/ShopContent/ShopContent.tsx";
-import { IMain, initialFilters, initialPickedFilters } from "./types.ts";
+import { IMain, initialPickedFilters } from "./types.ts";
 import { IFilter } from "./ShopPanel/ShopFilters/types.ts";
 import clsx from "clsx";
 import Pagination from "./Pagination/Pagination.tsx";
@@ -17,25 +17,33 @@ const Main: FC<IMain> = ({
     setIsMobileFiltersOpen,
     searchInput,
 }) => {
-    const [filters, setFilters] = useState<IFilter[]>([...initialFilters]);
+    const [filters, setFilters] = useState<IFilter[]>([]);
     const [pickedFilters, setPickedFilters] = useState<IFilter[]>([...initialPickedFilters]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(12);
+    const [initialBooks, setInitialBooks] = useState<IBook[]>([]);
     const [currentBooks, setCurrentBooks] = useState<IBook[]>([]);
 
     const getBooks = async () => {
         try {
             const booksData = await fetchBooks();
-            setCurrentBooks(booksData.map(book => {
+            const currBooks = booksData.map(({ id, name, price, category, genre, pagesCount, weight, imgLink, coverType, }: IBook) => {
                 const newBook: IBook = {
-                    id: book.id,
-                    name: book.name,
-                    category: book.category,
-                    imgLink: book.img_link,
-                    price: book.price,
+                    id,
+                    name,
+                    category,
+                    imgLink,
+                    price,
+                    author: null,
+                    genre,
+                    pagesCount,
+                    weight,
+                    coverType,
                 }
                 return newBook;
-            }));
+            });
+            setInitialBooks(currBooks);
+            setCurrentBooks(currBooks);
         } catch (error) {
             console.error('Ошибка загрузки книг:', error);
         }
@@ -61,6 +69,7 @@ const Main: FC<IMain> = ({
                 />
                 <div className={styles.shopContent}>
                     <ShopContent
+                        initialBooks={initialBooks}
                         currentBooks={currentBooks}
                         setCurrentBooks={setCurrentBooks}
                         productsInCart={productsInCart}

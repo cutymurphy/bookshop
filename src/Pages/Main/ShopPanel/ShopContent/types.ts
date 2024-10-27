@@ -3,13 +3,15 @@ import { IFilter } from "../ShopFilters/types";
 
 export interface IBook {
     id: number,
+    author: string | null,
     name: string,
-    category: string,
-    imgLink: string,
     price: number,
-    author?: string,
-    // origin: string,
-    // coverType: string,
+    category: string,
+    genre: string,
+    pagesCount: number | null,
+    weight: number | null,
+    imgLink: string,
+    coverType: "Мягкая" | "Твердая" | null,
     // newPrice: string,
     // availability: string,
 }
@@ -23,6 +25,7 @@ export interface IShopContent {
     currentPage: number,
     setCurrentPage: (page: number) => void,
     booksPerPage: number,
+    initialBooks: IBook[],
     currentBooks: IBook[],
     setCurrentBooks: (books: IBook[]) => void,
 }

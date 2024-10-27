@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import { IBook, IShopContent } from "./types";
 import styles from './ShopContent.module.scss'
 import { Link, useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { ICartBook } from "../../../Cart/types.ts";
 
 const ShopContent: FC<IShopContent> = ({
     currentBooks,
+    initialBooks,
     setCurrentBooks,
     productsInCart,
     setProductsInCart,
@@ -22,7 +23,8 @@ const ShopContent: FC<IShopContent> = ({
     const navigate = useNavigate();
 
     const categories = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.categories)?.filterItems || [];
-    const authors = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.authors)?.filterItems || [];
+    const genres = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.genres)?.filterItems || [];
+    const coverTypes = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.coverTypes)?.filterItems || [];
 
     const addBookToCart = (book: IBook) => {
         const newBook: ICartBook = {
@@ -34,32 +36,40 @@ const ShopContent: FC<IShopContent> = ({
 
     useEffect(() => {
         const inputValue = searchInput.trim().toLocaleLowerCase();
-        const filteredBooks = currentBooks
+        const filteredBooks = initialBooks
             .filter((book: IBook) => inputValue === "" || book.name.toLocaleLowerCase().includes(inputValue))
             .filter((book: IBook) => categories.length === 0 || categories.includes(book.category))
-            .filter((book: IBook) => authors.length === 0 || (!!book.author && authors.includes(book.author)));
+            .filter((book: IBook) => genres.length === 0 || genres.includes(book.genre))
+            .filter((book: IBook) => coverTypes.length === 0 || (!!book.coverType && coverTypes.includes(book.coverType)));
         setCurrentBooks(filteredBooks);
         setCurrentPage(1);
     }, [pickedFilters, searchInput])
 
     useEffect(() => {
         const currCategories = new Set<string>();
-        const currAuthors = new Set<string>();
+        const currGenres = new Set<string>();
+        const currCoverTypes = new Set<string>();
+
         currentBooks.forEach((book: IBook) => {
             currCategories.add(book.category);
-            if (!!book.author) {
-                currAuthors.add(book.author);
+            currGenres.add(book.genre);
+            if (!!book.coverType) {
+                currCoverTypes.add(book.coverType);
             }
         });
 
         setFilters([
             {
-                name: EFiltersNames.authors,
-                filterItems: [...currAuthors],
-            },
-            {
                 name: EFiltersNames.categories,
                 filterItems: [...currCategories],
+            },
+            {
+                name: EFiltersNames.genres,
+                filterItems: [...currGenres],
+            },
+            {
+                name: EFiltersNames.coverTypes,
+                filterItems: [...currCoverTypes],
             },
         ]);
     }, [currentBooks])

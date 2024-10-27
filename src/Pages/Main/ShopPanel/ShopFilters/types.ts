@@ -13,5 +13,6 @@ export interface IShopFilters {
 
 export enum EFiltersNames {
     categories = "Выберите категорию:",
-    authors = "Выберите автора:",
+    genres = "Выберите жанр:",
+    coverTypes = "Выберите тип обложки:",
 }

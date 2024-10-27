@@ -4,13 +4,17 @@
   --default-head-menu-color: rgb(116, 35, 255);
   --main-color: rgb(168, 118, 255);
   --main-color-transparent: rgba(168, 118, 255, 0.5);
-  --boarder-hover-color: rgb(116, 35, 255);
+  --main-color-transparent-2: rgba(168, 118, 255, 0.2);
   --boarder-system-color: rgb(219, 219, 219);
   --sales-color: rgb(174, 20, 20);
   --color-brand: rgb(116, 35, 255);
   --color-brand-hover: rgb(96, 31, 208);
+
+  --disabled-gray: rgb(219, 219, 219);
   --black: #000000;
+  --light-black: #575757;
   --white: #ffffff;
+
   --rad: 20px;
   --dur: 0.3s;
   --btn-width: 20%;
