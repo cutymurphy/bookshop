@@ -107,6 +107,9 @@ const ShopContent: FC<IShopContent> = ({
                                     <div className={styles.productName}>
                                         <Link to={EPath.main}>{book.name}</Link>
                                     </div>
+                                    <div className={styles.productAuthor}>
+                                        {book.author}
+                                    </div>
                                     <div className={styles.productPrice}>
                                         {`${book.price} ₽`}
                                     </div>

@@ -12,3 +12,16 @@ export const fetchBooks = async () => {
         throw error;
     }
 };
+
+export const fetchAuthors = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/authors`);
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении авторов', error);
+        throw error;
+    }
+};

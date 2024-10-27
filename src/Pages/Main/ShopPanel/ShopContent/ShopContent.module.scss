@@ -59,6 +59,11 @@
         transition: 0.3s;
     }
 
+    .productAuthor {
+        font-family: var(--ptsans-font);
+        color: rgb(136, 0, 255);
+    }
+
     .productPrice {
         color: black;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -104,7 +109,8 @@
             height: 300px;
         }
 
-        .productName {
+        .productName,
+        .productAuthor {
             font-size: 18px;
         }
 
@@ -133,7 +139,8 @@
             height: 270px;
         }
 
-        .productName {
+        .productName,
+        .productAuthor {
             font-size: 20px;
         }
 
@@ -164,7 +171,8 @@
             max-width: 170px;
         }
 
-        .productName {
+        .productName,
+        .productAuthor {
             font-size: 16px;
         }
 
@@ -195,7 +203,8 @@
             max-width: 120px;
         }
 
-        .productName {
+        .productName,
+        .productAuthor {
             font-size: 13px;
         }
 
@@ -225,7 +234,8 @@
             height: 200px;
         }
 
-        .productName {
+        .productName,
+        .productAuthor {
             font-size: 13px;
         }
 
@@ -255,7 +265,8 @@
             height: 180px;
         }
 
-        .productName {
+        .productName,
+        .productAuthor {
             font-size: 12px;
         }
 
