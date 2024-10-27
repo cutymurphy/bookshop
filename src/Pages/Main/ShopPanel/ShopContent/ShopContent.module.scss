@@ -1,5 +1,15 @@
 @import '../../../../assets/themes/palette.css';
 
+.loadContainer {
+    z-index: 9999;
+    position: absolute;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
 .productСard {
     display: flex;
     flex-direction: column;

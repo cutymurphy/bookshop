@@ -1,5 +1,14 @@
 @import '../../assets/themes/palette.css';
 
+.loadContainer {
+    z-index: 9999;
+    height: 40vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
 .shopWrapper {
     display: flex;
     flex-direction: column;
@@ -15,6 +24,7 @@
 .shopContent {
     display: grid;
     justify-content: space-evenly;
+    position: relative;
 }
 
 @media screen and (min-width: 1440px) {

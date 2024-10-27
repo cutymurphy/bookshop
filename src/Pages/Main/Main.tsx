@@ -9,6 +9,7 @@ import clsx from "clsx";
 import Pagination from "./Pagination/Pagination.tsx";
 import { IBook } from "./ShopPanel/ShopContent/types.ts";
 import { fetchBooks } from "../../server/api.js";
+import Loader from "../../assets/components/Loader/Loader.tsx";
 
 const Main: FC<IMain> = ({
     productsInCart,
@@ -23,6 +24,7 @@ const Main: FC<IMain> = ({
     const [booksPerPage, setBooksPerPage] = useState<number>(12);
     const [initialBooks, setInitialBooks] = useState<IBook[]>([]);
     const [currentBooks, setCurrentBooks] = useState<IBook[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const getBooks = async () => {
         try {
@@ -44,6 +46,9 @@ const Main: FC<IMain> = ({
             });
             setInitialBooks(currBooks);
             setCurrentBooks(currBooks);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 1000);
         } catch (error) {
             console.error('Ошибка загрузки книг:', error);
         }
@@ -54,43 +59,47 @@ const Main: FC<IMain> = ({
     }, []);
 
     return (
-        <div className={clsx(
-            styles.shopWrapper,
-            isMobileFiltersOpen && styles.shopWrapperOpenFilters,
-        )}>
-            <DiscountPanel />
-            <div className={styles.shopPanel}>
-                <ShopFilters
-                    filters={filters}
-                    pickedFilters={pickedFilters}
-                    setPickedFilters={setPickedFilters}
-                    isMobileFiltersOpen={isMobileFiltersOpen}
-                    setIsMobileFiltersOpen={setIsMobileFiltersOpen}
-                />
-                <div className={styles.shopContent}>
-                    <ShopContent
-                        initialBooks={initialBooks}
-                        currentBooks={currentBooks}
-                        setCurrentBooks={setCurrentBooks}
-                        productsInCart={productsInCart}
-                        setProductsInCart={setProductsInCart}
+        isLoading ? (
+            <div className={styles.loadContainer}><Loader /></div>
+        ) : (
+            <div className={clsx(
+                styles.shopWrapper,
+                isMobileFiltersOpen && styles.shopWrapperOpenFilters,
+            )}>
+                <DiscountPanel />
+                <div className={styles.shopPanel}>
+                    <ShopFilters
+                        filters={filters}
                         pickedFilters={pickedFilters}
-                        setFilters={setFilters}
-                        searchInput={searchInput}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                        booksPerPage={booksPerPage}
+                        setPickedFilters={setPickedFilters}
+                        isMobileFiltersOpen={isMobileFiltersOpen}
+                        setIsMobileFiltersOpen={setIsMobileFiltersOpen}
                     />
+                    <div className={styles.shopContent}>
+                        <ShopContent
+                            initialBooks={initialBooks}
+                            currentBooks={currentBooks}
+                            setCurrentBooks={setCurrentBooks}
+                            productsInCart={productsInCart}
+                            setProductsInCart={setProductsInCart}
+                            pickedFilters={pickedFilters}
+                            setFilters={setFilters}
+                            searchInput={searchInput}
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                            booksPerPage={booksPerPage}
+                        />
+                    </div>
                 </div>
+                <Pagination
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    booksPerPage={booksPerPage}
+                    setBooksPerPage={setBooksPerPage}
+                    currentBooks={currentBooks}
+                />
             </div>
-            <Pagination
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                booksPerPage={booksPerPage}
-                setBooksPerPage={setBooksPerPage}
-                currentBooks={currentBooks}
-            />
-        </div>
+        )
     )
 }
 
