@@ -2,7 +2,7 @@ import { ICartBook } from "../../../Cart/types";
 import { IFilter } from "../ShopFilters/types";
 
 export interface IBook {
-    id: number,
+    id: string,
     author: string | null,
     name: string,
     price: number,

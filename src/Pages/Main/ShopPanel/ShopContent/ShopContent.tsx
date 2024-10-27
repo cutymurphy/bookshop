@@ -88,13 +88,13 @@ const ShopContent: FC<IShopContent> = ({
                 {
                     currentBooks
                         .slice(currentPage * booksPerPage - booksPerPage, currentPage * booksPerPage)
-                        .map((book: IBook, index: number) => {
+                        .map((book: IBook) => {
                             const isBookInCart = productsInCart.some(({ book: product }: ICartBook) => JSON.stringify(product) === JSON.stringify(book));
 
                             return (
                                 <div
                                     className={styles.productСard}
-                                    key={index}
+                                    key={book.id}
                                     id={String(book.id)}
                                 >
                                     <Link to={EPath.main}>
