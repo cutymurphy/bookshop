@@ -1,12 +1,15 @@
 import { ICartBook } from "../Cart/types.ts";
+import { IBook } from "./ShopPanel/ShopContent/types.ts";
 import { EFiltersNames, IFilter } from "./ShopPanel/ShopFilters/types.ts";
 
 export interface IMain {
+    initialBooks: IBook[],
     productsInCart: ICartBook[],
     setProductsInCart: (books: ICartBook[]) => void,
     isMobileFiltersOpen: boolean,
     setIsMobileFiltersOpen: (isOpen: boolean) => void,
     searchInput: string,
+    isLoading: boolean,
 }
 
 export const initialPickedFilters: IFilter[] = [

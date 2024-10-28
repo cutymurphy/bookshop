@@ -8,78 +8,26 @@ import { IFilter } from "./ShopPanel/ShopFilters/types.ts";
 import clsx from "clsx";
 import Pagination from "./Pagination/Pagination.tsx";
 import { IBook } from "./ShopPanel/ShopContent/types.ts";
-import { fetchAuthors, fetchBooks } from "../../server/api.js";
 import Loader from "../../assets/components/Loader/Loader.tsx";
-import { IAuthor } from "../../types.ts";
 
 const Main: FC<IMain> = ({
+    initialBooks,
     productsInCart,
     setProductsInCart,
     isMobileFiltersOpen,
     setIsMobileFiltersOpen,
     searchInput,
+    isLoading,
 }) => {
     const [filters, setFilters] = useState<IFilter[]>([]);
     const [pickedFilters, setPickedFilters] = useState<IFilter[]>([...initialPickedFilters]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(12);
-    const [initialBooks, setInitialBooks] = useState<IBook[]>([]);
     const [currentBooks, setCurrentBooks] = useState<IBook[]>([]);
-    const [currentAuthors, setCurrentAuthors] = useState<IAuthor[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    const getBooks = async (authors) => {
-        try {
-            const booksData = await fetchBooks();
-            const currBooks = await Promise.all(booksData.map(async ({ id, name, price, category, genre, pagesCount, weight, imgLink, coverType, id_author }) => {
-                const author = !id_author ? null : authors.find(({ id }: IAuthor) => id === id_author)?.name;
-                const authorName = !!author ? String(author) : null;
-
-                const newBook: IBook = {
-                    id,
-                    name,
-                    category,
-                    imgLink,
-                    price,
-                    author: authorName,
-                    genre,
-                    pagesCount,
-                    weight,
-                    coverType,
-                }
-                return newBook;
-            }));
-
-            setInitialBooks(currBooks);
-            setCurrentBooks(currBooks);
-        } catch (error) {
-            console.error('Ошибка загрузки книг:', error);
-        }
-    }
-
-    const getAuthors = async () => {
-        try {
-            const authorsData = await fetchAuthors();
-            setCurrentAuthors(authorsData);
-            return authorsData;
-        } catch (error) {
-            console.error('Ошибка загрузки книг:', error);
-        }
-    }
-
-    const fetchData = async () => {
-        const authors = await getAuthors();
-        if (authors.length > 0) {
-            await getBooks(authors);
-        }
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
-    }
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        setCurrentBooks(initialBooks);
+    }, [initialBooks])
 
     return (
         isLoading ? (
