@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import styles from './Auth.module.scss';
 import { IProfile } from "../../types";
-import { addUser, getUserByEmail } from "../../server/api";
+import { addUser, getUserByEmail, getUserByEmailAndPassword } from "../../server/api";
 import Loader from "../../assets/components/Loader/Loader.tsx";
 import { initialState } from "./types.ts";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import { EPath } from "../../AppPathes.ts";
 
 const Auth = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isSignUp, setIsSignUp] = useState<boolean>(true);
+    const [isSignUp, setIsSignUp] = useState<boolean>(false);
     const [user, setUser] = useState<IProfile>({ ...initialState });
     const [errors, setErrors] = useState<IProfile>({ ...initialState });
     const [errorExist, setErrorExist] = useState<string>("");
@@ -21,7 +21,7 @@ const Auth = () => {
         setUser({ ...user, [field]: String(e.target.value) });
     };
 
-    const validate = (): boolean => {
+    const validateSignUp = (): boolean => {
         const newErrors = { ...initialState };
         let isValid = true;
 
@@ -63,10 +63,28 @@ const Auth = () => {
         return isValid;
     }
 
+    const validateSignIn = (): boolean => {
+        const newErrors = { ...initialState };
+        let isValid = true;
+
+        if (user.email.trim() === "") {
+            newErrors.email = "Почта не может быть пустой";
+            isValid = false;
+        }
+
+        if (user.password.trim() === "") {
+            newErrors.password = "Пароль не может быть пустым";
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
+    }
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         try {
-            if (validate()) {
+            if (isSignUp && validateSignUp()) {
                 setIsLoading(true);
                 const userByEmail = await getUserByEmail(user.email);
                 if (!userByEmail) {
@@ -75,20 +93,33 @@ const Auth = () => {
                 } else {
                     setErrorExist("Такой пользователь уже существует");
                 }
-                setUser({ ...initialState });
-                setErrors({ ...initialState });
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 1000);
+                clearData();
+            } else if (!isSignUp && validateSignIn()) {
+                setIsLoading(true);
+                const userByEmailAndPassword = await getUserByEmailAndPassword(user.email, user.password);
+                if (!!userByEmailAndPassword) {
+                    navigate(EPath.main);
+                } else {
+                    setErrorExist("Такого пользователя не существует");
+                }
+                clearData();
             }
         } catch (error) {
-            console.error('Ошибка при добавлении пользователя:', error);
+            console.error(`Ошибка при ${isSignUp ? "регистрации" : "входе"} пользователя:`, error);
+        } finally {
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 1000);
         }
     }
 
-    useEffect(() => {
+    const clearData = () => {
         setUser({ ...initialState });
         setErrors({ ...initialState });
+    }
+
+    useEffect(() => {
+        clearData();
         setErrorExist("");
     }, [isSignUp])
 

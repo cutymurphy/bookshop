@@ -68,10 +68,6 @@ const App = () => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        console.log(initialBooks)
-    }, [initialBooks])
-
     return (
         <div className={styles.wrapper}>
             <Header

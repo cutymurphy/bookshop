@@ -66,3 +66,23 @@ export const getUserByEmail = async (email) => {
         throw error;
     }
 };
+
+export const getUserByEmailAndPassword = async (email, password) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/user/login?email=${email}&password=${password}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении пользователя по email и паролю', error);
+        throw error;
+    }
+};

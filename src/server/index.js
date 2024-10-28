@@ -66,6 +66,24 @@ app.get('/api/user/email', (req, res) => {
     });
 });
 
+app.get('/api/user/login', (req, res) => {
+    const { email, password } = req.query;
+
+    const query = `SELECT * FROM bookshop.user_with_cart WHERE email = ? AND password = ?`;
+
+    db.query(query, [email, password], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при получении данных');
+        }
+        if (results.length === 0 || !results) {
+            return res.json("");
+        }
+        res.json(results[0]);
+    });
+});
+
+
 app.listen(PORT, () => {
     console.log(`Сервер запущен на порту ${PORT}`);
     console.log('Подключено к MySQL');
