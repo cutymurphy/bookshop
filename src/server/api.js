@@ -27,9 +27,8 @@ export const fetchAuthors = async () => {
 };
 
 export const addUser = async (userData) => {
-    console.log(userData)
     try {
-        const response = await fetch(`${API_BASE_URL}/post/user`, {
+        const response = await fetch(`${API_BASE_URL}/user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,6 +43,26 @@ export const addUser = async (userData) => {
         return await response.json();
     } catch (error) {
         console.error('Ошибка при добавлении пользователя', error);
+        throw error;
+    }
+};
+
+export const getUserByEmail = async (email) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/user/email?email=${email}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении пользователя по email', error);
         throw error;
     }
 };

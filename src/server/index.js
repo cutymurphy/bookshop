@@ -28,8 +28,7 @@ app.get('/api/authors', (req, res) => {
     });
 });
 
-app.post('/api/post/user', (req, res) => {
-    console.log('Полученные данные:', req.body);
+app.post('/api/user', (req, res) => {
     const { name, surname, password, email, phone } = req.body;
 
     const id_user = uuidv4();
@@ -47,6 +46,23 @@ app.post('/api/post/user', (req, res) => {
         }
 
         res.status(201).json({ id_user, id_cart });
+    });
+});
+
+app.get('/api/user/email', (req, res) => {
+    const { email } = req.query;
+
+    const query = `SELECT * FROM bookshop.user_with_cart WHERE email = ?`;
+
+    db.query(query, [email], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при получении данных');
+        }
+        if (results.length === 0 || !results) {
+            return res.json("");
+        }
+        res.json(results[0].id_user);
     });
 });
 

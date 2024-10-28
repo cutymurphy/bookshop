@@ -13,14 +13,18 @@
 
 .wrapper {
     display: flex;
-    height: 100%;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
     justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 .authWrapper {
     margin-top: 100px;
-    width: 300px;
-    background: white;
+    width: 400px;
+    box-sizing: border-box;
     color: var(--main-color);
     background-color: rgb(249, 248, 248);
     border-radius: 5px;
@@ -74,8 +78,10 @@
         transform: translateY(-50%);
     }
 
-    .rememberForgot {
-        margin-top: 8px;
+    .errorExist {
+        font-size: 13px;
+        color: var(--errors-color);
+        padding-left: 10px;
     }
 
     .btn {
@@ -89,11 +95,36 @@
         font-weight: bold;
         font-family: var(--ptsans-font);
         color: white;
+        margin-top: 8px;
 
         &:hover {
             background-color: var(--boarder-hover-color);
             cursor: pointer;
             transition: 0.3s;
+        }
+    }
+}
+
+.changeAuthMethodWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    align-items: center;
+    width: 400px;
+    box-sizing: border-box;
+    border: 0.5px solid rgb(222, 221, 221);
+    border-radius: 5px;
+    padding: 20px;
+
+    .textChangeAuth {
+        width: fit-content;
+        font-weight: 500;
+        color: var(--color-brand);
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
         }
     }
 }
