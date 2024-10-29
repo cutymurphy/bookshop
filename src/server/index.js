@@ -83,6 +83,23 @@ app.get('/api/user/login', (req, res) => {
     });
 });
 
+app.get('/api/user/idUser', (req, res) => {
+    const { idUser } = req.query;
+
+    const query = `SELECT * FROM bookshop.user_with_cart WHERE idUser = ?`;
+
+    db.query(query, [idUser], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при получении данных');
+        }
+        if (results.length === 0 || !results) {
+            return res.json("");
+        }
+        res.json(results[0]);
+    });
+});
+
 
 app.listen(PORT, () => {
     console.log(`Сервер запущен на порту ${PORT}`);

@@ -1,13 +1,17 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import styles from './Auth.module.scss';
-import { IProfile } from "../../types";
+import { IFullProfile, IProfile } from "../../types";
 import { addUser, getUserByEmail, getUserByEmailAndPassword } from "../../server/api";
 import Loader from "../../assets/components/Loader/Loader.tsx";
-import { initialState } from "./types.ts";
-import { useNavigate } from "react-router-dom";
+import { IAuth, initialState } from "./types.ts";
+import { Link, useNavigate } from "react-router-dom";
 import { EPath } from "../../AppPathes.ts";
+import clsx from "clsx";
 
-const Auth = () => {
+const Auth: FC<IAuth> = ({
+    currentUser,
+    setCurrentUser,
+}) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
     const [user, setUser] = useState<IProfile>({ ...initialState });
@@ -89,6 +93,9 @@ const Auth = () => {
                 const userByEmail = await getUserByEmail(user.email);
                 if (!userByEmail) {
                     await addUser(user);
+                    const newUser: IFullProfile = await getUserByEmailAndPassword(user.email, user.password);
+                    setCurrentUser(newUser);
+                    sessionStorage.setItem("currentUser", newUser.idUser);
                     navigate(EPath.main);
                 } else {
                     setErrorExist("Такой пользователь уже существует");
@@ -96,8 +103,10 @@ const Auth = () => {
                 clearData();
             } else if (!isSignUp && validateSignIn()) {
                 setIsLoading(true);
-                const userByEmailAndPassword = await getUserByEmailAndPassword(user.email, user.password);
+                const userByEmailAndPassword: IFullProfile = await getUserByEmailAndPassword(user.email, user.password);
                 if (!!userByEmailAndPassword) {
+                    setCurrentUser(userByEmailAndPassword);
+                    sessionStorage.setItem("currentUser", userByEmailAndPassword.idUser);
                     navigate(EPath.main);
                 } else {
                     setErrorExist("Такого пользователя не существует");
@@ -127,7 +136,7 @@ const Auth = () => {
         isLoading ? (
             <div className={styles.loadContainer}><Loader /></div>
         ) : (
-            <div className={styles.wrapper}>
+            !currentUser ? (<div className={styles.wrapper}>
                 <div className={styles.authWrapper} key={isSignUp ? "signUp" : "signIn"}>
                     <h1>{isSignUp ? "Регистрация" : "Войти"}</h1>
                     {isSignUp && <div className={styles.inputBox}>
@@ -202,7 +211,23 @@ const Auth = () => {
                         {isSignUp ? "Sign in" : "Create an account"}
                     </span>
                 </div>
-            </div>
+            </div>) : (
+                <div className={clsx(styles.wrapper, styles.wrapperText)}>
+                    <span className={styles.text}>Здравствуйте, <span className={styles.name}>{currentUser.name} {currentUser.surname}</span>!</span>
+                    <span className={styles.text}>В нашем <Link className={clsx(styles.name, styles.link)} to={EPath.main}>каталоге</Link> Вы точно найдете книгу по душе!</span>
+                    <button
+                        className={styles.btnLogOut}
+                        onClick={() => {
+                            setCurrentUser(undefined);
+                            sessionStorage.removeItem("currentUser");
+                        }}
+                    >
+                        <div className={styles.btnContent}>
+                            Хотите выйти? <i className='bx bx-log-out'></i>
+                        </div>
+                    </button>
+                </div>
+            )
         )
     )
 }

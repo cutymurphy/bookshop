@@ -128,3 +128,57 @@
         }
     }
 }
+
+.wrapperText {
+    gap: 30px;
+    margin-top: 150px;
+    height: 100%;
+}
+
+.text {
+    font-size: 24px;
+
+    .name {
+        color: var(--main-color);
+        font-weight: 600;
+    }
+
+    .link {
+        font-weight: 500;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.btnLogOut {
+    background-color: transparent;
+    outline: none;
+    padding: 12px;
+    font-size: 20px;
+    box-sizing: border-box;
+    transition: .3s;
+    margin-top: 300px;
+
+    .btnContent {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+
+        i {
+            transition: .3s;  
+            color: var(--main-color); 
+        }
+    }
+
+    &:hover {
+        background-color: var(--main-color);
+        color: var(--white);
+
+        i {
+            color: var(--white);
+        }
+    }
+}

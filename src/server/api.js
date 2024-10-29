@@ -67,6 +67,26 @@ export const getUserByEmail = async (email) => {
     }
 };
 
+export const getUserById = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/user/idUser?idUser=${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении пользователя по id', error);
+        throw error;
+    }
+};
+
 export const getUserByEmailAndPassword = async (email, password) => {
     try {
         const response = await fetch(`${API_BASE_URL}/user/login?email=${email}&password=${password}`, {

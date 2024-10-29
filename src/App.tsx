@@ -5,11 +5,11 @@ import { Auth, Cart, Main } from './Pages/index.ts';
 import { Route, Routes } from 'react-router-dom';
 import { ICartBook } from './Pages/Cart/types.ts';
 import { IBook } from './Pages/Main/ShopPanel/ShopContent/types.ts';
-import { fetchBooks, fetchAuthors } from './server/api.js';
+import { fetchBooks, fetchAuthors, getUserById } from './server/api.js';
 import { IAuthor, IFullProfile } from './types.ts';
 
 const App = () => {
-    const [currentUser, setCurrentUser] = useState<IFullProfile>();
+    const [currentUser, setCurrentUser] = useState<IFullProfile | undefined>(undefined);
     const [initialBooks, setInitialBooks] = useState<IBook[]>([]);
     const [currentAuthors, setCurrentAuthors] = useState<IAuthor[]>([]);
     const [searchInput, setSearchInput] = useState<string>("");
@@ -65,8 +65,22 @@ const App = () => {
         }, 1000);
     }
 
+    const getUser = async (id: string): Promise<IFullProfile> => {
+        const user: IFullProfile = await getUserById(id);
+        return user;
+    }
+
     useEffect(() => {
-        fetchData();
+        const fetchUserData = async () => {
+            const savedUserId = sessionStorage.getItem("currentUser");
+            if (!!savedUserId) {
+                const user = await getUser(savedUserId);
+                setCurrentUser(user);
+            }
+            await fetchData();
+        };
+
+        fetchUserData();
     }, []);
 
     return (
@@ -96,7 +110,8 @@ const App = () => {
                 } />
                 <Route path="/auth" element={
                     <Auth
-
+                        currentUser={currentUser}
+                        setCurrentUser={setCurrentUser}
                     />
                 } />
             </Routes>
