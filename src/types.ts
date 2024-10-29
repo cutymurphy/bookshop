@@ -12,3 +12,17 @@ export interface IProfile {
     email: string,
     phone: string,
 }
+
+export interface IFullProfile {
+    idUser: string,
+    isAdmin: boolean,
+    idCart: string,
+    name: string,
+    surname: string,
+    password: string,
+    email: string,
+    phone: string,
+    itemsCount: number,
+    totalCost: number,
+    weight: number,
+}

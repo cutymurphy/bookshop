@@ -35,8 +35,8 @@ app.post('/api/user', (req, res) => {
     const id_cart = id_user;
 
     const query = `
-        INSERT INTO bookshop.user_with_cart (id_user, id_cart, name, surname, password, email, phone, items_count, total_cost, weight) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL);
+        INSERT INTO bookshop.user_with_cart (idUser, isAdmin, idCart, name, surname, password, email, phone, itemsCount, totalCost, weight) 
+        VALUES (?, FALSE, ?, ?, ?, ?, ?, ?, 0, 0, 0);
     `;
 
     db.query(query, [id_user, id_cart, name, surname, password, email, phone], (err, results) => {

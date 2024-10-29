@@ -11,7 +11,7 @@ const Auth = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
     const [user, setUser] = useState<IProfile>({ ...initialState });
-    const [errors, setErrors] = useState<IProfile>({ ...initialState });
+    const [errors, setErrors] = useState({ ...initialState });
     const [errorExist, setErrorExist] = useState<string>("");
     const navigate = useNavigate();
 

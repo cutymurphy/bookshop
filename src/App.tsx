@@ -6,9 +6,10 @@ import { Route, Routes } from 'react-router-dom';
 import { ICartBook } from './Pages/Cart/types.ts';
 import { IBook } from './Pages/Main/ShopPanel/ShopContent/types.ts';
 import { fetchBooks, fetchAuthors } from './server/api.js';
-import { IAuthor } from './types.ts';
+import { IAuthor, IFullProfile } from './types.ts';
 
 const App = () => {
+    const [currentUser, setCurrentUser] = useState<IFullProfile>();
     const [initialBooks, setInitialBooks] = useState<IBook[]>([]);
     const [currentAuthors, setCurrentAuthors] = useState<IAuthor[]>([]);
     const [searchInput, setSearchInput] = useState<string>("");
