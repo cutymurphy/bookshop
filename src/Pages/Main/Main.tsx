@@ -11,6 +11,8 @@ import { IBook } from "./ShopPanel/ShopContent/types.ts";
 import Loader from "../../assets/components/Loader/Loader.tsx";
 
 const Main: FC<IMain> = ({
+    currentUser,
+    setCurrentUser,
     initialBooks,
     productsInCart,
     setProductsInCart,
@@ -59,6 +61,8 @@ const Main: FC<IMain> = ({
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
                             booksPerPage={booksPerPage}
+                            currentUser={currentUser}
+                            setCurrentUser={setCurrentUser}
                         />
                     </div>
                 </div>

@@ -1,9 +1,9 @@
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import styles from './Auth.module.scss';
-import { IFullProfile, IProfile } from "../../types";
+import { IFullProfile, initialUser, IProfile } from "../../types.ts";
 import { addUser, getUserByEmail, getUserByEmailAndPassword } from "../../server/api";
 import Loader from "../../assets/components/Loader/Loader.tsx";
-import { IAuth, initialState } from "./types.ts";
+import { IAuth, initialErrors } from "./types.ts";
 import { Link, useNavigate } from "react-router-dom";
 import { EPath } from "../../AppPathes.ts";
 import clsx from "clsx";
@@ -14,51 +14,50 @@ const Auth: FC<IAuth> = ({
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
-    const [user, setUser] = useState<IProfile>({ ...initialState });
-    const [errors, setErrors] = useState({ ...initialState });
+    const [errors, setErrors] = useState({ ...initialErrors });
     const [errorExist, setErrorExist] = useState<string>("");
     const navigate = useNavigate();
 
     const handleChangeField = (field: keyof IProfile, e: ChangeEvent<HTMLInputElement>) => {
         setErrors({ ...errors, [field]: "" });
         setErrorExist("");
-        setUser({ ...user, [field]: String(e.target.value) });
+        setCurrentUser({ ...currentUser, [field]: String(e.target.value) });
     };
 
     const validateSignUp = (): boolean => {
-        const newErrors = { ...initialState };
+        const newErrors = { ...initialErrors };
         let isValid = true;
 
-        if (user.name.trim() === "") {
+        if (currentUser.name.trim() === "") {
             newErrors.name = "Имя не может быть пустым";
             isValid = false;
         }
 
-        if (user.surname.trim() === "") {
+        if (currentUser.surname.trim() === "") {
             newErrors.surname = "Фамилия не может быть пустой";
             isValid = false;
         }
 
-        if (user.email.trim() === "") {
+        if (currentUser.email.trim() === "") {
             newErrors.email = "Почта не может быть пустой";
             isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(user.email)) {
+        } else if (!/\S+@\S+\.\S+/.test(currentUser.email)) {
             newErrors.email = "Неверный формат email";
             isValid = false;
         }
 
-        if (user.phone.trim() === "") {
+        if (currentUser.phone.trim() === "") {
             newErrors.phone = "Телефон не может быть пустым";
             isValid = false;
-        } else if (!/^\+?\d{10,15}$/.test(user.phone)) {
+        } else if (!/^\+?\d{10,15}$/.test(currentUser.phone)) {
             newErrors.phone = "Неверный формат телефона";
             isValid = false;
         }
 
-        if (user.password.trim() === "") {
+        if (currentUser.password.trim() === "") {
             newErrors.password = "Пароль не может быть пустым";
             isValid = false;
-        } else if (user.password.length < 6) {
+        } else if (currentUser.password.length < 6) {
             newErrors.password = "Пароль должен содержать не менее 6 символов";
             isValid = false;
         }
@@ -68,15 +67,15 @@ const Auth: FC<IAuth> = ({
     }
 
     const validateSignIn = (): boolean => {
-        const newErrors = { ...initialState };
+        const newErrors = { ...initialErrors };
         let isValid = true;
 
-        if (user.email.trim() === "") {
+        if (currentUser.email.trim() === "") {
             newErrors.email = "Почта не может быть пустой";
             isValid = false;
         }
 
-        if (user.password.trim() === "") {
+        if (currentUser.password.trim() === "") {
             newErrors.password = "Пароль не может быть пустым";
             isValid = false;
         }
@@ -90,28 +89,28 @@ const Auth: FC<IAuth> = ({
         try {
             if (isSignUp && validateSignUp()) {
                 setIsLoading(true);
-                const userByEmail = await getUserByEmail(user.email);
+                const userByEmail = await getUserByEmail(currentUser.email);
                 if (!userByEmail) {
-                    await addUser(user);
-                    const newUser: IFullProfile = await getUserByEmailAndPassword(user.email, user.password);
-                    setCurrentUser(newUser);
+                    await addUser(currentUser);
+                    const newUser: IFullProfile = await getUserByEmailAndPassword(currentUser.email, currentUser.password);
                     sessionStorage.setItem("currentUser", newUser.idUser);
+                    setCurrentUser({ ...newUser, isAdmin: !!newUser.isAdmin });
                     navigate(EPath.main);
                 } else {
+                    clearData();
                     setErrorExist("Такой пользователь уже существует");
                 }
-                clearData();
             } else if (!isSignUp && validateSignIn()) {
                 setIsLoading(true);
-                const userByEmailAndPassword: IFullProfile = await getUserByEmailAndPassword(user.email, user.password);
+                const userByEmailAndPassword: IFullProfile = await getUserByEmailAndPassword(currentUser.email, currentUser.password);
                 if (!!userByEmailAndPassword) {
-                    setCurrentUser(userByEmailAndPassword);
+                    setCurrentUser({ ...userByEmailAndPassword, isAdmin: !!userByEmailAndPassword.isAdmin });
                     sessionStorage.setItem("currentUser", userByEmailAndPassword.idUser);
                     navigate(EPath.main);
                 } else {
+                    clearData();
                     setErrorExist("Такого пользователя не существует");
                 }
-                clearData();
             }
         } catch (error) {
             console.error(`Ошибка при ${isSignUp ? "регистрации" : "входе"} пользователя:`, error);
@@ -123,8 +122,8 @@ const Auth: FC<IAuth> = ({
     }
 
     const clearData = () => {
-        setUser({ ...initialState });
-        setErrors({ ...initialState });
+        setCurrentUser({ ...currentUser, name: "", surname: "", email: "", phone: "", password: "" });
+        setErrors({ ...initialErrors });
     }
 
     useEffect(() => {
@@ -136,7 +135,7 @@ const Auth: FC<IAuth> = ({
         isLoading ? (
             <div className={styles.loadContainer}><Loader /></div>
         ) : (
-            !currentUser ? (<div className={styles.wrapper}>
+            !currentUser.idUser ? (<div className={styles.wrapper}>
                 <div className={styles.authWrapper} key={isSignUp ? "signUp" : "signIn"}>
                     <h1>{isSignUp ? "Регистрация" : "Войти"}</h1>
                     {isSignUp && <div className={styles.inputBox}>
@@ -218,7 +217,7 @@ const Auth: FC<IAuth> = ({
                     <button
                         className={styles.btnLogOut}
                         onClick={() => {
-                            setCurrentUser(undefined);
+                            setCurrentUser({ ...initialUser });
                             sessionStorage.removeItem("currentUser");
                         }}
                     >

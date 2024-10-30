@@ -1,8 +1,11 @@
+import { IFullProfile } from "../../types.ts";
 import { ICartBook } from "../Cart/types.ts";
 import { IBook } from "./ShopPanel/ShopContent/types.ts";
 import { EFiltersNames, IFilter } from "./ShopPanel/ShopFilters/types.ts";
 
 export interface IMain {
+    currentUser: IFullProfile,
+    setCurrentUser: (user: IFullProfile) => void,
     initialBooks: IBook[],
     productsInCart: ICartBook[],
     setProductsInCart: (books: ICartBook[]) => void,

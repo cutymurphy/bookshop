@@ -26,3 +26,17 @@ export interface IFullProfile {
     totalCost: number,
     weight: number,
 }
+
+export const initialUser: IFullProfile = {
+    idUser: "",
+    isAdmin: false,
+    idCart: "",
+    name: "",
+    surname: "",
+    password: "",
+    email: "",
+    phone: "",
+    itemsCount: 0,
+    totalCost: 0,
+    weight: 0
+}

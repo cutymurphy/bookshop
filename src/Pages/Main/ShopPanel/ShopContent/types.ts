@@ -1,3 +1,4 @@
+import { IFullProfile } from "../../../../types";
 import { ICartBook } from "../../../Cart/types";
 import { IFilter } from "../ShopFilters/types";
 
@@ -28,4 +29,6 @@ export interface IShopContent {
     initialBooks: IBook[],
     currentBooks: IBook[],
     setCurrentBooks: (books: IBook[]) => void,
+    currentUser: IFullProfile,
+    setCurrentUser: (user: IFullProfile) => void,
 }

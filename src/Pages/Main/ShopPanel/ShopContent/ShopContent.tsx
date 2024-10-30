@@ -20,6 +20,8 @@ const ShopContent: FC<IShopContent> = ({
     currentPage,
     setCurrentPage,
     booksPerPage,
+    currentUser,
+    setCurrentUser,
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -29,6 +31,7 @@ const ShopContent: FC<IShopContent> = ({
     const coverTypes = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.coverTypes)?.filterItems || [];
 
     const addBookToCart = (book: IBook) => {
+        // setCurrentUser({...currentUser, })
         const newBook: ICartBook = {
             book,
             count: 1,

@@ -47,6 +47,27 @@ export const addUser = async (userData) => {
     }
 };
 
+export const updateUser = async (userId, userData) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/user/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при обновлении пользователя', error);
+        throw error;
+    }
+};
+
 export const getUserByEmail = async (email) => {
     try {
         const response = await fetch(`${API_BASE_URL}/user/email?email=${email}`, {

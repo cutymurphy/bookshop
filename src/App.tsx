@@ -6,10 +6,10 @@ import { Route, Routes } from 'react-router-dom';
 import { ICartBook } from './Pages/Cart/types.ts';
 import { IBook } from './Pages/Main/ShopPanel/ShopContent/types.ts';
 import { fetchBooks, fetchAuthors, getUserById } from './server/api.js';
-import { IAuthor, IFullProfile } from './types.ts';
+import { IAuthor, IFullProfile, initialUser } from './types.ts';
 
 const App = () => {
-    const [currentUser, setCurrentUser] = useState<IFullProfile | undefined>(undefined);
+    const [currentUser, setCurrentUser] = useState<IFullProfile>({ ...initialUser });
     const [initialBooks, setInitialBooks] = useState<IBook[]>([]);
     const [currentAuthors, setCurrentAuthors] = useState<IAuthor[]>([]);
     const [searchInput, setSearchInput] = useState<string>("");
@@ -75,7 +75,9 @@ const App = () => {
             const savedUserId = sessionStorage.getItem("currentUser");
             if (!!savedUserId) {
                 const user = await getUser(savedUserId);
-                setCurrentUser(user);
+                setCurrentUser({ ...user, isAdmin: !!user.isAdmin });
+            } else {
+                setCurrentUser({ ...initialUser })
             }
             await fetchData();
         };
@@ -93,6 +95,8 @@ const App = () => {
             <Routes>
                 <Route path="/" element={
                     <Main
+                        currentUser={currentUser}
+                        setCurrentUser={setCurrentUser}
                         initialBooks={initialBooks}
                         productsInCart={productsInCart}
                         setProductsInCart={setProductsInCart}
