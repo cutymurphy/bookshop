@@ -127,3 +127,88 @@ export const getUserByEmailAndPassword = async (email, password) => {
         throw error;
     }
 };
+
+
+/* --------- CRUD for cart functions --------- */
+
+export const getCartBooksById = async (idCart) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/cartBook/${idCart}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении книг из корзины', error);
+        throw error;
+    }
+};
+
+export const addBookToCart = async (idCart, idBook) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/cartBook`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ idCart, idBook }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при добавлении книги в корзину', error);
+        throw error;
+    }
+};
+
+export const updateCartBookCount = async (idCart, idBook, bookCount) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/cartBook/${idCart}/${idBook}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ bookCount }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при обновлении количества книги в корзине', error);
+        throw error;
+    }
+};
+
+export const deleteBookFromCart = async (idCart, idBook) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/cartBook/${idCart}/${idBook}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при удалении книги из корзины', error);
+        throw error;
+    }
+}

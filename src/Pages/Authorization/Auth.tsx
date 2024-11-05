@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useState } from "react";
 import styles from './Auth.module.scss';
 import { IFullProfile, initialUser, IProfile } from "../../types.ts";
 import { addUser, getUserByEmail, getUserByEmailAndPassword } from "../../server/api";
@@ -11,6 +11,7 @@ import clsx from "clsx";
 const Auth: FC<IAuth> = ({
     currentUser,
     setCurrentUser,
+    setCurrentCart,
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
@@ -217,6 +218,7 @@ const Auth: FC<IAuth> = ({
                         className={styles.btnLogOut}
                         onClick={() => {
                             setCurrentUser({ ...initialUser });
+                            setCurrentCart([]);
                             sessionStorage.removeItem("currentUser");
                         }}
                     >

@@ -133,6 +133,90 @@ app.get('/api/user/idUser', (req, res) => {
 });
 
 
+/* --------- CRUD for cart --------- */
+
+app.get('/api/cartBook/:idCart', (req, res) => {
+    const { idCart } = req.params;
+
+    const query = `SELECT * FROM bookshop.cart_book WHERE idCart = ?`;
+
+    db.query(query, [idCart], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при получении книг из корзины');
+        }
+        if (results.length === 0 || !results) {
+            return res.json("");
+        }
+        res.json(results.map(({ bookCount, idBook }) => ({
+            count: bookCount,
+            idBook,
+        })));
+    });
+});
+
+app.post('/api/cartBook', (req, res) => {
+    const { idCart, idBook } = req.body;
+
+    const query = `
+        INSERT INTO bookshop.cart_book (idCart, idBook) 
+        VALUES (?, ?);
+    `;
+
+    db.query(query, [idCart, idBook], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send(`Ошибка при добавлении книги ${idBook} в корзину`);
+        }
+
+        res.status(201).json({ idCart, idBook });
+    });
+});
+
+app.put('/api/cartBook/:idCart/:idBook', (req, res) => {
+    const { idCart, idBook } = req.params;
+    const { bookCount } = req.body;
+
+    const query = `
+        UPDATE bookshop.cart_book 
+        SET bookCount = COALESCE(?, bookCount) 
+        WHERE idCart = ? AND idBook = ?;
+    `;
+
+    db.query(query, [bookCount, idCart, idBook], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при обновлении количества книг в корзине');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Книга не найдена');
+        }
+
+        res.status(200).json({ message: `Количество книги ${idBook} успешно обновлено` });
+    });
+});
+
+app.delete('/api/cartBook/:idCart/:idBook', (req, res) => {
+    const { idCart, idBook } = req.params;
+
+    const query = `DELETE FROM bookshop.cart_book WHERE idCart = ? AND idBook = ?`;
+
+    db.query(query, [idCart, idBook], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса на удаление:', err);
+            return res.status(500).send('Ошибка при удалении книги из корзины');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Запись для удаления не найдена');
+        }
+
+        res.status(200).json({ message: `Книга ${idBook} успешно удалена из корзины` });
+    });
+});
+
+
 app.listen(PORT, () => {
     console.log(`Сервер запущен на порту ${PORT}`);
     console.log('Подключено к MySQL');

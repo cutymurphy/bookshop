@@ -5,84 +5,74 @@ import { Auth, Cart, Main } from './Pages/index.ts';
 import { Route, Routes } from 'react-router-dom';
 import { ICartBook } from './Pages/Cart/types.ts';
 import { IBook } from './Pages/Main/ShopPanel/ShopContent/types.ts';
-import { fetchBooks, fetchAuthors, getUserById } from './server/api.js';
+import { fetchBooks, fetchAuthors, getUserById, getCartBooksById } from './server/api.js';
 import { IAuthor, IFullProfile, initialUser } from './types.ts';
 
 const App = () => {
     const [currentUser, setCurrentUser] = useState<IFullProfile>({ ...initialUser });
     const [initialBooks, setInitialBooks] = useState<IBook[]>([]);
     const [currentAuthors, setCurrentAuthors] = useState<IAuthor[]>([]);
-    const [searchInput, setSearchInput] = useState<string>("");
+    const [searchInput, setSearchInput] = useState<string>('');
     const [productsInCart, setProductsInCart] = useState<ICartBook[]>([]);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const getBooks = async (authors) => {
+    const loadBooksAndAuthors = async () => {
         try {
-            const booksData = await fetchBooks();
-            const currBooks = await Promise.all(booksData.map(async ({ id, name, price, category, genre, pagesCount, weight, imgLink, coverType, id_author }) => {
-                const author = !id_author ? null : authors.find(({ id }: IAuthor) => id === id_author)?.name;
-                const authorName = !!author ? String(author) : null;
+            const authorsData = await fetchAuthors();
+            setCurrentAuthors(authorsData);
 
+            const booksData = await fetchBooks();
+            const currBooks = booksData.map(({ id, name, price, category, genre, pagesCount, weight, imgLink, coverType, id_author }) => {
+                const author = authorsData.find(({ id }: IAuthor) => id === id_author)?.name || null;
                 const newBook: IBook = {
                     id,
                     name,
                     category,
                     imgLink,
                     price,
-                    author: authorName,
+                    author,
                     genre,
                     pagesCount,
                     weight,
                     coverType,
                 }
                 return newBook;
-            }));
-
+            });
             setInitialBooks(currBooks);
         } catch (error) {
-            console.error('Ошибка загрузки книг:', error);
+            console.error('Ошибка загрузки книг или авторов:', error);
         }
-    }
+    };
 
-    const getAuthors = async () => {
-        try {
-            const authorsData = await fetchAuthors();
-            setCurrentAuthors(authorsData);
-            return authorsData;
-        } catch (error) {
-            console.error('Ошибка загрузки книг:', error);
+    const loadUserAndCart = async () => {
+        const savedUserId = sessionStorage.getItem('currentUser');
+        if (!!savedUserId) {
+            const user = await getUserById(savedUserId);
+            const userCart = await getCartBooksById(user.idCart);
+            
+            setCurrentUser({ ...user, isAdmin: !!user.isAdmin });
+            setProductsInCart(userCart.map(({ idBook, count }) => ({
+                count: Number(count),
+                book: initialBooks.find((b: IBook) => b.id === idBook) || null,
+            })));
+        } else {
+            setCurrentUser({ ...initialUser });
         }
-    }
-
-    const fetchData = async () => {
-        const authors = await getAuthors();
-        if (authors.length > 0) {
-            await getBooks(authors);
-        }
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
-    }
-
-    const getUser = async (id: string): Promise<IFullProfile> => {
-        const user: IFullProfile = await getUserById(id);
-        return user;
-    }
+    };
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            const savedUserId = sessionStorage.getItem("currentUser");
-            if (!!savedUserId) {
-                const user = await getUser(savedUserId);
-                setCurrentUser({ ...user, isAdmin: !!user.isAdmin });
-            } else {
-                setCurrentUser({ ...initialUser })
-            }
-            await fetchData();
-        };
+        if (initialBooks.length > 0) {
+            loadUserAndCart();
+        }
+    }, [initialBooks, currentUser.idUser]);
 
-        fetchUserData();
+    useEffect(() => {
+        const loadData = async () => {
+            await loadBooksAndAuthors();
+            setIsLoading(false);
+        };
+        loadData();
     }, []);
 
     return (
@@ -110,12 +100,15 @@ const App = () => {
                     <Cart
                         productsInCart={productsInCart}
                         setProductsInCart={setProductsInCart}
+                        currentUser={currentUser}
+                        setCurrentUser={setCurrentUser}
                     />
                 } />
                 <Route path="/auth" element={
                     <Auth
                         currentUser={currentUser}
                         setCurrentUser={setCurrentUser}
+                        setCurrentCart={setProductsInCart}
                     />
                 } />
             </Routes>
