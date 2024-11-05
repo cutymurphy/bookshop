@@ -89,6 +89,24 @@
         }
     }
 
+    .removeFiltersBtnDesktop {
+        width: 70%;
+        outline: none;
+        border: none;
+        background: var(--main-color);
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 18px;
+        color: var(--white);
+        font-family: var(--ptsans-font);
+        font-weight: 500;
+        height: fit-content;
+        transition: .3s;
+
+        &:hover {
+            background: var(--main-color-transparent);
+        }
+    }
 }
 
 @media screen and (min-width: 1440px) {
@@ -155,12 +173,16 @@
 
             .filterItem {
                 padding: 30px 70px 0 30px;
-    
+
                 .filterWrapper {
                     padding-bottom: 10px;
                     border-bottom: 1px solid var(--boarder-system-color);
                 }
             }
+        }
+
+        .removeFiltersBtnDesktop {
+            display: none;
         }
     }
 }

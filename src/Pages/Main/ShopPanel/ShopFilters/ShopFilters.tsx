@@ -12,6 +12,8 @@ const ShopFilters: FC<IShopFilters> = ({
     isMobileFiltersOpen,
     setIsMobileFiltersOpen,
 }) => {
+    const isAnyFilteresPicked = pickedFilters.some((filter: IFilter) => filter.filterItems.length > 0);
+
     const checkFilter = (isFilterChecked: boolean, name: EFiltersNames, item: string) => {
         setPickedFilters(pickedFilters.map((filter: IFilter) => {
             if (filter.name === name) {
@@ -51,7 +53,7 @@ const ShopFilters: FC<IShopFilters> = ({
                     className={styles.removeFiltersBtn}
                     onClick={resetFilters}
                 >
-                    <div className={styles.filtersHeaderText}>Сбросить все фильтры</div>
+                    <div className={styles.filtersHeaderText}>Сбросить фильтры</div>
                 </button>
             </div>
             {filters.map(({ name, filterItems }: IFilter, index: number) => (
@@ -89,6 +91,14 @@ const ShopFilters: FC<IShopFilters> = ({
                     </div>
                 </div>
             ))}
+            {isAnyFilteresPicked &&
+                <button
+                    className={styles.removeFiltersBtnDesktop}
+                    onClick={resetFilters}
+                >
+                    <div className={styles.filtersHeaderText}>Сбросить фильтры</div>
+                </button>
+            }
         </div>
     )
 }
