@@ -29,6 +29,5 @@ export interface IShopContent {
     initialBooks: IBook[],
     currentBooks: IBook[],
     setCurrentBooks: (books: IBook[]) => void,
-    currentUser: IFullProfile,
-    setCurrentUser: (user: IFullProfile) => void,
+    cartId: string,
 }

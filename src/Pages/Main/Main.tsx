@@ -61,8 +61,7 @@ const Main: FC<IMain> = ({
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
                             booksPerPage={booksPerPage}
-                            currentUser={currentUser}
-                            setCurrentUser={setCurrentUser}
+                            cartId={currentUser.idCart}
                         />
                     </div>
                 </div>

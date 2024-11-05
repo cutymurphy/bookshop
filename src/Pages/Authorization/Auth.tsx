@@ -190,6 +190,7 @@ const Auth: FC<IAuth> = ({
                         {!!errors.password && <span className={styles.error}>{errors.password}</span>}
                     </div>
                     {!!errorExist && <span className={styles.errorExist}>{errorExist}</span>}
+                    {/* TO-DO: по нажатию Enter должен происходить переход по форме */}
                     <button
                         className={styles.btn}
                         onClick={(e) => handleSubmit(e)}

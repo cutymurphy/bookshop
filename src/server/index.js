@@ -29,17 +29,17 @@ app.get('/api/authors', (req, res) => {
 });
 
 app.post('/api/user', (req, res) => {
-    const { name, surname, password, email, phone, itemsCount, totalCost, weight } = req.body;
+    const { name, surname, password, email, phone } = req.body;
 
     const id_user = uuidv4();
     const id_cart = id_user;
 
     const query = `
-        INSERT INTO bookshop.user_with_cart (idUser, isAdmin, idCart, name, surname, password, email, phone, itemsCount, totalCost, weight) 
-        VALUES (?, FALSE, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        INSERT INTO bookshop.user_with_cart (idUser, isAdmin, idCart, name, surname, password, email, phone) 
+        VALUES (?, FALSE, ?, ?, ?, ?, ?, ?);
     `;
 
-    db.query(query, [id_user, id_cart, name, surname, password, email, phone, itemsCount, totalCost, weight], (err, results) => {
+    db.query(query, [id_user, id_cart, name, surname, password, email, phone], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send('Ошибка при добавлении пользователя');
@@ -51,7 +51,7 @@ app.post('/api/user', (req, res) => {
 
 app.put('/api/user/:id', (req, res) => {
     const { id } = req.params;
-    const { name, surname, password, email, phone, itemsCount, totalCost, weight } = req.body;
+    const { name, surname, password, email, phone } = req.body;
 
     const query = `
         UPDATE bookshop.user_with_cart 
@@ -60,14 +60,11 @@ app.put('/api/user/:id', (req, res) => {
             surname = COALESCE(?, surname), 
             password = COALESCE(?, password), 
             email = COALESCE(?, email), 
-            phone = COALESCE(?, phone),
-            itemsCount = COALESCE(?, itemsCount),
-            totalCost = COALESCE(?, totalCost),
-            weight = COALESCE(?, weight)
+            phone = COALESCE(?, phone)
         WHERE idUser = ?;
     `;
 
-    db.query(query, [name, surname, password, email, phone, itemsCount, totalCost, weight, id], (err, results) => {
+    db.query(query, [name, surname, password, email, phone, id], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send('Ошибка при обновлении пользователя');

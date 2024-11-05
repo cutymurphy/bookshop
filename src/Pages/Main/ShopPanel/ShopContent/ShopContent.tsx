@@ -7,6 +7,7 @@ import clsx from "clsx";
 import { EFiltersNames, IFilter } from "../ShopFilters/types.ts";
 import { ICartBook } from "../../../Cart/types.ts";
 import Loader from "../../../../assets/components/Loader/Loader.tsx";
+import { addBookToCart } from "../../../../server/api.js";
 
 const ShopContent: FC<IShopContent> = ({
     currentBooks,
@@ -20,8 +21,7 @@ const ShopContent: FC<IShopContent> = ({
     currentPage,
     setCurrentPage,
     booksPerPage,
-    currentUser,
-    setCurrentUser,
+    cartId,
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -30,13 +30,19 @@ const ShopContent: FC<IShopContent> = ({
     const genres = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.genres)?.filterItems || [];
     const coverTypes = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.coverTypes)?.filterItems || [];
 
-    const addBookToCart = (book: IBook) => {
-        // setCurrentUser({...currentUser, })
+    const handleAddBookToCart = async (book: IBook) => {
         const newBook: ICartBook = {
             book,
             count: 1,
         }
+        setIsLoading(true);
         setProductsInCart([...productsInCart, newBook]);
+        if (!!cartId) {
+            await addBookToCart(cartId, book.id);
+        }
+        setTimeout(() => {
+            setIsLoading(false);
+        }, !!cartId ? 500 : 200);
     }
 
     useEffect(() => {
@@ -121,7 +127,7 @@ const ShopContent: FC<IShopContent> = ({
                                             styles.addToCartBtn,
                                             isBookInCart && styles["addToCartBtn-pressed"],
                                         )}
-                                        onClick={() => isBookInCart ? navigate(EPath.cart) : addBookToCart(book)}
+                                        onClick={() => isBookInCart ? navigate(EPath.cart) : handleAddBookToCart(book)}
                                     >
                                         {isBookInCart ? "Оформить" : "Купить"}
                                     </button>

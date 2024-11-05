@@ -22,9 +22,6 @@ export interface IFullProfile {
     password: string,
     email: string,
     phone: string,
-    itemsCount: number,
-    totalCost: number,
-    weight: number,
 }
 
 export const initialUser: IFullProfile = {
@@ -36,7 +33,4 @@ export const initialUser: IFullProfile = {
     password: "",
     email: "",
     phone: "",
-    itemsCount: 0,
-    totalCost: 0,
-    weight: 0
 }
