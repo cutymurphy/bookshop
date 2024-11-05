@@ -126,11 +126,6 @@ const Auth: FC<IAuth> = ({
         setErrors({ ...initialErrors });
     }
 
-    useEffect(() => {
-        clearData();
-        setErrorExist("");
-    }, [isSignUp])
-
     return (
         isLoading ? (
             <div className={styles.loadContainer}><Loader /></div>
@@ -205,7 +200,11 @@ const Auth: FC<IAuth> = ({
                     <span className={styles.textNew}>{isSignUp ? "Already have an account?" : "New to TimeForBook?"}</span>
                     <span
                         className={styles.textChangeAuth}
-                        onClick={() => setIsSignUp(!isSignUp)}
+                        onClick={() => {
+                            setIsSignUp(!isSignUp);
+                            clearData();
+                            setErrorExist("");
+                        }}
                     >
                         {isSignUp ? "Sign in" : "Create an account"}
                     </span>
