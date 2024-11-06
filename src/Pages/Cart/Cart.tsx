@@ -58,6 +58,7 @@ const Cart: FC<ICart> = ({
 
         if (!!cartId) {
             if (newCount === 0) {
+                setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookInCart.book.id));
                 await deleteBookFromCart(cartId, bookInCart.book.id);
             } else {
                 await updateCartBookCount(cartId, bookInCart.book.id, newCount);
@@ -85,6 +86,7 @@ const Cart: FC<ICart> = ({
         setProductsInCart(productsInCart.filter((book: ICartBook) =>
             book.book.id !== bookToDelete.book.id));
         if (!!cartId) {
+            setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookToDelete.book.id));
             await deleteBookFromCart(cartId, bookToDelete.book.id);
         }
         setTimeout(() => {
@@ -187,7 +189,10 @@ const Cart: FC<ICart> = ({
                             </div>
                         </div>
                         <button
-                            className={clsx(styles.checkoutBtn, styles.unabled)}
+                            className={clsx(
+                                styles.checkoutBtn,
+                                checkedBookItems.length === 0 ? styles.unabled : styles.enabled,
+                            )}
                             id="checkoutBtn"
                             onClick={() => alert('Сначала зарегистрируйтесь.')}
                         >
