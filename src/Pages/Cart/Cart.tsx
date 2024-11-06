@@ -20,6 +20,7 @@ const Cart: FC<ICart> = ({
     const imagePaths = [pictureCat1, pictureCat2, pictureCat3, pictureCat4];
     const randomIndex = Math.floor(Math.random() * imagePaths.length);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [checkedBookItems, setCheckedBookItems] = useState<string[]>([]);
 
     const getCartCount = (): number => {
         let count = 0;
@@ -40,6 +41,14 @@ const Cart: FC<ICart> = ({
             return 'товара';
         } else {
             return 'товаров';
+        }
+    }
+
+    const setCheckedItem = (bookId: string) => {
+        if (checkedBookItems.includes(bookId)) {
+            setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookId));
+        } else {
+            setCheckedBookItems([...checkedBookItems, bookId]);
         }
     }
 
@@ -99,6 +108,20 @@ const Cart: FC<ICart> = ({
 
                             return (
                                 <div className={styles.productCard} key={index}>
+                                    <div className={styles.productCheckbox}>
+                                        <input
+                                            type="checkbox"
+                                            className={styles.checkboxInput}
+                                            id={String(index)}
+                                            onChange={() => setCheckedItem(book.id)}
+                                            checked={checkedBookItems.includes(book.id)}
+                                        />
+                                        <label
+                                            htmlFor={String(index)}
+                                            className={styles.checkboxLabel}
+                                        >
+                                        </label>
+                                    </div>
                                     <Link
                                         to={EPath.main}
                                         className={styles.imgWrapper}
