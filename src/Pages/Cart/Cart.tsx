@@ -10,7 +10,8 @@ import pictureCat2 from '../../assets/pictures-cats/6c4480a89e9596d59b67a0f91659
 import pictureCat3 from '../../assets/pictures-cats/9981190e67c51e5499059b66b20807e9.jpg';
 import pictureCat4 from '../../assets/pictures-cats/save = follow.jpg';
 import Loader from "../../assets/components/Loader/Loader.tsx";
-import { deleteBookFromCart, updateCartBookCount } from "../../server/api.js";
+import { addCartState, deleteBookFromCart, updateCartBookCount } from "../../server/api.js";
+import { v4 as uuidv4 } from 'uuid';
 
 const Cart: FC<ICart> = ({
     productsInCart,
@@ -56,43 +57,77 @@ const Cart: FC<ICart> = ({
         setIsLoading(true);
         const newCount = operation === "plus" ? bookInCart.count + 1 : bookInCart.count - 1;
 
-        if (!!cartId) {
-            if (newCount === 0) {
-                setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookInCart.book.id));
-                await deleteBookFromCart(cartId, bookInCart.book.id);
-            } else {
-                await updateCartBookCount(cartId, bookInCart.book.id, newCount);
-            }
-        }
-        setProductsInCart(productsInCart
-            .map((item: ICartBook) => {
-                if (item.book.id === bookInCart.book.id) {
-                    return {
-                        book: item.book,
-                        count: newCount,
-                    }
+        try {
+            if (!!cartId) {
+                if (newCount === 0) {
+                    setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookInCart.book.id));
+                    await deleteBookFromCart(cartId, bookInCart.book.id);
+                } else {
+                    await updateCartBookCount(cartId, bookInCart.book.id, newCount);
                 }
-                return item;
-            })
-            .filter((item) => item.count > 0)
-        );
-        setTimeout(() => {
-            setIsLoading(false);
-        }, !!cartId ? 500 : 200);
+            }
+        } catch (error) {
+            console.error("Ошибка при добавлении / удалении книг в корзине:", error);
+        } finally {
+            setProductsInCart(productsInCart
+                .map((item: ICartBook) => {
+                    if (item.book.id === bookInCart.book.id) {
+                        return {
+                            book: item.book,
+                            count: newCount,
+                        }
+                    }
+                    return item;
+                })
+                .filter((item) => item.count > 0)
+            );
+            setTimeout(() => {
+                setIsLoading(false);
+            }, !!cartId ? 500 : 200);
+        }
     };
 
     const handleDeleteBookFromCart = async (bookToDelete: ICartBook) => {
         setIsLoading(true);
         setProductsInCart(productsInCart.filter((book: ICartBook) =>
             book.book.id !== bookToDelete.book.id));
-        if (!!cartId) {
-            setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookToDelete.book.id));
-            await deleteBookFromCart(cartId, bookToDelete.book.id);
+        try {
+            if (!!cartId) {
+                setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookToDelete.book.id));
+                await deleteBookFromCart(cartId, bookToDelete.book.id);
+            }
+        } catch (error) {
+            console.error("Ошибка при удалении книги из корзины:", error);
+        } finally {
+            setTimeout(() => {
+                setIsLoading(false);
+            }, !!cartId ? 500 : 200);
         }
-        setTimeout(() => {
-            setIsLoading(false);
-        }, !!cartId ? 500 : 200);
-    }
+    };
+
+    const handleAddCartState = async () => {
+        if (checkedBookItems.length > 0) {
+            const stateId = uuidv4();
+            setIsLoading(true);
+            try {
+                /* TO-DO: ограниченя на заказ если юзер не зареган */
+                const deleteAndAddPromises = checkedBookItems.map(async (bookId: string) => {
+                    const currentBookCount = productsInCart.find((book: ICartBook) => book.book.id === bookId)?.count || 1;
+                    await deleteBookFromCart(cartId, bookId);
+                    await addCartState(stateId, cartId, bookId, currentBookCount);
+                });
+                await Promise.all(deleteAndAddPromises);
+            } catch (error) {
+                console.error("Ошибка при обработке состояния корзины:", error);
+            } finally {
+                setCheckedBookItems([]);
+                setProductsInCart(productsInCart.filter((book: ICartBook) => !checkedBookItems.includes(book.book.id)));
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 500);
+            }
+        }
+    };
 
     return (
         isLoading ? (
@@ -177,7 +212,9 @@ const Cart: FC<ICart> = ({
                             )
                         })}
                     </div>
+                    {/* TO-DO: сделать висячим блок с итогами */}
                     <div className={styles.cartContentBorder}></div>
+                    {/* TO-DO: посмотреть как реализован подсчет итоговой суммы в др магазинах */}
                     <div className={styles.mainTitle}>Итого</div>
                     <div className={styles.cartSummary}>
                         <div className={styles.textSummary}>
@@ -194,7 +231,8 @@ const Cart: FC<ICart> = ({
                                 checkedBookItems.length === 0 ? styles.unabled : styles.enabled,
                             )}
                             id="checkoutBtn"
-                            onClick={() => alert('Сначала зарегистрируйтесь.')}
+                            // onClick={() => alert('Сначала зарегистрируйтесь.')}
+                            onClick={() => checkedBookItems.length > 0 ? handleAddCartState() : alert('Выберите товары.')}
                         >
                             Оформить заказ
                         </button>

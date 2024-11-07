@@ -18,7 +18,7 @@
     "react-scripts": "5.0.1",
     "sass": "^1.80.4",
     "scss": "^0.2.4",
-    "uuid": "^11.0.0",
+    "uuid": "^11.0.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -211,4 +211,25 @@ export const deleteBookFromCart = async (idCart, idBook) => {
         console.error('Ошибка при удалении книги из корзины', error);
         throw error;
     }
-}
+};
+
+export const addCartState = async (id, idUser, idBook, bookCount) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/cartStates`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id, idUser, idBook, bookCount }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при добавлении нового состояния', error);
+        throw error;
+    }
+};

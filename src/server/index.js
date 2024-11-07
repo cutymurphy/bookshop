@@ -214,6 +214,27 @@ app.delete('/api/cartBook/:idCart/:idBook', (req, res) => {
 });
 
 
+/* --------- CRUD for cart states --------- */
+
+app.post('/api/cartStates', (req, res) => {
+    const { id, idUser, idBook, bookCount } = req.body;
+
+    const query = `
+        INSERT INTO bookshop.cart_states (id, idUser, idBook, bookCount) 
+        VALUES (?, ?, ?, ?);
+    `;
+
+    db.query(query, [id, idUser, idBook, bookCount], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send(`Ошибка при добавлении нового состояния`);
+        }
+
+        res.status(201).json(id);
+    });
+});
+
+
 app.listen(PORT, () => {
     console.log(`Сервер запущен на порту ${PORT}`);
     console.log('Подключено к MySQL');
