@@ -4,6 +4,7 @@ import arrowIcon from '../../../../assets/pictures/arrow_12645576 (1).png';
 import { EFiltersNames, IFilter, IShopFilters } from './types';
 import clsx from 'clsx';
 import { initialPickedFilters } from '../../types.ts';
+import Checkbox from '../../../../assets/components/Checkbox/Checkbox.tsx';
 
 const ShopFilters: FC<IShopFilters> = ({
     filters,
@@ -65,20 +66,13 @@ const ShopFilters: FC<IShopFilters> = ({
 
                             return (
                                 <div className={styles.checkboxItem} key={i}>
-                                    <div className={styles.checkbox}>
-                                        <input
-                                            type="checkbox"
-                                            className={styles.checkboxInput}
-                                            id={`checkbox_${index}_${i}`}
-                                            onChange={() => checkFilter(isFilterChecked, name, item)}
-                                            checked={isFilterChecked}
-                                        />
-                                        <label
-                                            htmlFor={`checkbox_${index}_${i}`}
-                                            className={styles.checkboxLabel}
-                                        >
-                                        </label>
-                                    </div>
+                                    <Checkbox
+                                        id={`checkbox_${index}_${i}`}
+                                        onChange={() => checkFilter(isFilterChecked, name, item)}
+                                        checked={isFilterChecked}
+                                        className={styles.checkbox}
+                                        classNameLabel={styles.checkboxLabel}
+                                    />
                                     <label
                                         className={styles.checkboxText}
                                         htmlFor={`checkbox_${index}_${i}`}

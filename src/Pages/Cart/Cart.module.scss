@@ -40,64 +40,6 @@
         position: relative;
     }
 
-    .productCheckbox {
-        position: relative;
-        width: 20px;
-        height: 20px;
-        margin-right: 15px;
-
-        .checkboxInput {
-            appearance: none;
-            position: absolute;
-        }
-
-        .checkboxLabel:before {
-            content: "";
-            display: block;
-            width: 20px;
-            height: 20px;
-
-            border: 1px solid var(--main-color);
-            background-color: rgb(255, 255, 255);
-            border-radius: 10%;
-
-            position: absolute;
-            z-index: 1;
-            transition: .3s;
-        }
-
-        &:hover {
-            .checkboxLabel:before {
-                border: 1px solid var(--boarder-hover-color);
-            }
-        }
-
-        .checkboxLabel:after {
-            cursor: pointer;
-            content: "";
-            display: block;
-            width: 20px;
-            height: 20px;
-
-            background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRzyiSikxjLhftW55OLmMD8OjFVeLo5LAkL774QC4p4g&s");
-            background-size: 20px 20px;
-            opacity: 0;
-
-            position: absolute;
-            z-index: 2;
-        }
-
-        .checkboxInput:checked+.checkboxLabel:before {
-            background-color: var(--main-color);
-        }
-
-        .checkboxInput:checked+.checkboxLabel:after {
-            opacity: 1;
-            border: 1px solid var(--boarder-hover-color);
-            border-radius: 10%;
-        }
-    }
-
     .productImage {
         border: 3px solid var(--boarder-system-color);
         width: auto;
@@ -222,6 +164,31 @@
 .mainTitle {
     font-family: var(--ptsans-font);
     font-weight: bold;
+}
+
+.selectAllContainerWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    .selectAllContainer {
+        width: 90%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .checkboxText {
+            cursor: pointer;
+            transition: .3s;
+            font-size: 16px;
+            font-weight: 400;
+            color: black;
+
+            &:hover {
+                color: var(--color-brand-hover);
+            }
+        }
+    }
 }
 
 .cartContentBorder {

@@ -12,6 +12,7 @@ import pictureCat4 from '../../assets/pictures-cats/save = follow.jpg';
 import Loader from "../../assets/components/Loader/Loader.tsx";
 import { addCartState, deleteBookFromCart, updateCartBookCount } from "../../server/api.js";
 import { v4 as uuidv4 } from 'uuid';
+import Checkbox from "../../assets/components/Checkbox/Checkbox.tsx";
 
 const Cart: FC<ICart> = ({
     productsInCart,
@@ -50,6 +51,14 @@ const Cart: FC<ICart> = ({
             setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookId));
         } else {
             setCheckedBookItems([...checkedBookItems, bookId]);
+        }
+    }
+
+    const setAllCheckedItem = () => {
+        if (checkedBookItems.length === productsInCart.length) {
+            setCheckedBookItems([]);
+        } else {
+            setCheckedBookItems(productsInCart.map((book: ICartBook) => book.book.id));
         }
     }
 
@@ -139,26 +148,32 @@ const Cart: FC<ICart> = ({
                     productsInCart.length === 0 && styles.hidden,
                 )}>
                     <div className={styles.mainTitle}>КОРЗИНА</div>
+                    <div className={styles.selectAllContainerWrapper}>
+                        <div className={styles.selectAllContainer}>
+                            <Checkbox
+                                id="selectAllCheckbox"
+                                onChange={setAllCheckedItem}
+                                checked={checkedBookItems.length === productsInCart.length}
+                            />
+                            <label
+                                className={styles.checkboxText}
+                                htmlFor="selectAllCheckbox"
+                            >
+                                Выбрать все
+                            </label>
+                        </div>
+                    </div>
                     <div className={styles.cartContent}>
                         {productsInCart.map((cartBook: ICartBook, index: number) => {
                             const book = cartBook.book;
 
                             return (
                                 <div className={styles.productCard} key={index}>
-                                    <div className={styles.productCheckbox}>
-                                        <input
-                                            type="checkbox"
-                                            className={styles.checkboxInput}
-                                            id={String(index)}
-                                            onChange={() => setCheckedItem(book.id)}
-                                            checked={checkedBookItems.includes(book.id)}
-                                        />
-                                        <label
-                                            htmlFor={String(index)}
-                                            className={styles.checkboxLabel}
-                                        >
-                                        </label>
-                                    </div>
+                                    <Checkbox
+                                        id={String(index)}
+                                        onChange={() => setCheckedItem(book.id)}
+                                        checked={checkedBookItems.includes(book.id)}
+                                    />
                                     <Link
                                         to={EPath.main}
                                         className={styles.imgWrapper}
