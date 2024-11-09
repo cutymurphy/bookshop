@@ -1,7 +1,7 @@
-import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useState } from "react";
 import styles from './Auth.module.scss';
 import { IFullProfile, initialUser, IProfile } from "../../types.ts";
-import { addUser, getUserByEmail, getUserByEmailAndPassword } from "../../server/api";
+import { addBookToCart, addUser, getCartBooksById, getUserByEmail, getUserByEmailAndPassword, updateCartBookCount } from "../../server/api";
 import Loader from "../../assets/components/Loader/Loader.tsx";
 import { IAuth, IErrors, initialErrors } from "./types.ts";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,10 +9,12 @@ import { EPath } from "../../AppPathes.ts";
 import clsx from "clsx";
 import Button from "../../assets/components/Button/Button.tsx";
 import Checkbox from "../../assets/components/Checkbox/Checkbox.tsx";
+import { ICartBook } from "../Cart/types.ts";
 
 const Auth: FC<IAuth> = ({
     currentUser,
     setCurrentUser,
+    currentCart,
     setCurrentCart,
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -117,6 +119,12 @@ const Auth: FC<IAuth> = ({
                     }
                     await addUser(user);
                     const newUser: IFullProfile = await getUserByEmailAndPassword(user.email, user.password);
+                    if (currentCart.length > 0) {
+                        const addBookToCartPromises = currentCart.map(async (book: ICartBook) => {
+                            await addBookToCart(newUser.idCart, book.book.id, book.count);
+                        });
+                        await Promise.all(addBookToCartPromises);
+                    }
                     if (rememberMe) {
                         localStorage.setItem("currentUser", newUser.idUser);
                     } else {
@@ -134,12 +142,23 @@ const Auth: FC<IAuth> = ({
                 setIsLoading(true);
                 const userByEmailAndPassword: IFullProfile = await getUserByEmailAndPassword(currentUser.email.trim(), currentUser.password);
                 if (!!userByEmailAndPassword) {
-                    setCurrentUser({ ...userByEmailAndPassword, isAdmin: !!userByEmailAndPassword.isAdmin });
+                    if (currentCart.length > 0) {
+                        const userCart = await getCartBooksById(userByEmailAndPassword.idCart);
+                        const addBookToCartPromises = currentCart.map(async (book: ICartBook) => {
+                            if (!userCart.find(cartBook => cartBook.idBook === book.book.id)) {
+                                await addBookToCart(userByEmailAndPassword.idCart, book.book.id, book.count);
+                            } else {
+                                await updateCartBookCount(userByEmailAndPassword.idCart, book.book.id, book.count)
+                            }
+                        });
+                        await Promise.all(addBookToCartPromises);
+                    }
                     if (rememberMe) {
                         localStorage.setItem("currentUser", userByEmailAndPassword.idUser);
                     } else {
                         sessionStorage.setItem("currentUser", userByEmailAndPassword.idUser);
                     }
+                    setCurrentUser({ ...userByEmailAndPassword, isAdmin: !!userByEmailAndPassword.isAdmin });
                     setAcceptRules(false);
                     setRememberMe(false);
                     navigate(EPath.auth);

@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import styles from './Cart.module.scss'
 import { ICart, ICartBook } from "./types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EPath } from "../../AppPathes.ts";
 import clsx from "clsx";
 import deleteIcon from '../../assets/pictures/delete_1214428.png';
@@ -25,6 +25,7 @@ const Cart: FC<ICart> = ({
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [checkedBookItems, setCheckedBookItems] = useState<string[]>([]);
     const [isOpenedModal, setIsOpenedModal] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const getCartCount = (): number => {
         let count = 0;
@@ -229,7 +230,14 @@ const Cart: FC<ICart> = ({
                                 text="Оформить заказ"
                                 className={styles.checkoutBtn}
                                 disabled={checkedBookItems.length === 0}
-                                onClick={() => checkedBookItems.length > 0 ? setIsOpenedModal(true) : alert('Выберите товары.')}
+                                onClick={() => {
+                                    if (!!cartId) {
+                                        (checkedBookItems.length > 0 ? setIsOpenedModal(true) : alert('Выберите товары.'))
+                                    } else {
+                                        alert('Сначала войдите в профиль или зарегистрируйтесь');
+                                        navigate(EPath.auth);
+                                    }
+                                }}
                             />
                             <CartModal
                                 isOpen={isOpenedModal}

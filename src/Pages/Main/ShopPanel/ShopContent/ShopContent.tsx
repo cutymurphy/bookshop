@@ -38,7 +38,7 @@ const ShopContent: FC<IShopContent> = ({
         setIsLoading(true);
         setProductsInCart([...productsInCart, newBook]);
         if (!!cartId) {
-            await addBookToCart(cartId, book.id);
+            await addBookToCart(cartId, book.id, 1);
         }
         setTimeout(() => {
             setIsLoading(false);

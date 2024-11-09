@@ -151,14 +151,14 @@ export const getCartBooksById = async (idCart) => {
     }
 };
 
-export const addBookToCart = async (idCart, idBook) => {
+export const addBookToCart = async (idCart, idBook, bookCount) => {
     try {
         const response = await fetch(`${API_BASE_URL}/cartBook`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ idCart, idBook }),
+            body: JSON.stringify({ idCart, idBook, bookCount }),
         });
 
         if (!response.ok) {

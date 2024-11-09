@@ -1,9 +1,10 @@
-import { IFullProfile, IProfile } from "../../types";
+import { IFullProfile } from "../../types";
 import { ICartBook } from "../Cart/types";
 
 export interface IAuth {
     currentUser: IFullProfile,
     setCurrentUser: (user: IFullProfile) => void,
+    currentCart: ICartBook[],
     setCurrentCart: (cart: ICartBook[]) => void,
 }
 

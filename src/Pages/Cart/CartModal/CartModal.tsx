@@ -40,7 +40,6 @@ const CartModal: FC<ICartModal> = ({
 
         setIsLoading(true);
         try {
-            /* TO-DO: ограниченя на заказ если юзер не зареган */
             const deleteAndAddPromises = checkedBookItems.map(async (bookId: string) => {
                 const currentBookCount = productsInCart.find((book: ICartBook) => book.book.id === bookId)?.count || 1;
                 await deleteBookFromCart(cartId, bookId);

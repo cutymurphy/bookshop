@@ -153,14 +153,14 @@ app.get('/api/cartBook/:idCart', (req, res) => {
 });
 
 app.post('/api/cartBook', (req, res) => {
-    const { idCart, idBook } = req.body;
+    const { idCart, idBook, bookCount } = req.body;
 
     const query = `
-        INSERT INTO bookshop.cart_book (idCart, idBook) 
-        VALUES (?, ?);
+        INSERT INTO bookshop.cart_book (idCart, idBook, bookCount) 
+        VALUES (?, ?, ?);
     `;
 
-    db.query(query, [idCart, idBook], (err, results) => {
+    db.query(query, [idCart, idBook, bookCount], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send(`Ошибка при добавлении книги ${idBook} в корзину`);

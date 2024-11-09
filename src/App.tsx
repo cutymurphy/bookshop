@@ -51,7 +51,6 @@ const App = () => {
         if (!!savedUserId) {
             const user = await getUserById(savedUserId);
             const userCart = await getCartBooksById(user.idCart);
-            /* TO-DO: объединить корзину юзера с состоянием до входа */
             setCurrentUser({ ...user, isAdmin: !!user.isAdmin });
             if (userCart.length > 0) {
                 setProductsInCart(userCart.map(({ idBook, count }) => ({
@@ -110,6 +109,7 @@ const App = () => {
                     <Auth
                         currentUser={currentUser}
                         setCurrentUser={setCurrentUser}
+                        currentCart={productsInCart}
                         setCurrentCart={setProductsInCart}
                     />
                 } />
