@@ -215,35 +215,6 @@
             font-weight: bold;
         }
     }
-
-    .checkoutBtn {
-        color: #fff;
-        font-family: var(--ptsans-font);
-        font-weight: 500;
-        border-radius: 5px;
-        border: none;
-        transition: .3s;
-
-        &.unabled {
-            background-color: gainsboro;
-            cursor: not-allowed;
-        }
-
-        &.enabled {
-            background-color: var(--main-color);
-        }
-    }
-
-    .checkoutBtn.enabled:hover {
-        background-color: var(--boarder-hover-color);
-        cursor: pointer;
-        transition: 0.5s;
-    }
-
-    .checkoutBtn.enabled:active {
-        transform: scale(1.05);
-        cursor: grabbing;
-    }
 }
 
 .emptyCartPanel {
@@ -306,11 +277,6 @@
             .costText {
                 font-size: 30px;
             }
-        }
-
-        .checkoutBtn {
-            font-size: 20px;
-            padding: 5px 100px;
         }
     }
 
@@ -433,11 +399,6 @@
             .costText {
                 font-size: 26px;
             }
-        }
-
-        .checkoutBtn {
-            font-size: 20px;
-            padding: 5px 100px;
         }
     }
 

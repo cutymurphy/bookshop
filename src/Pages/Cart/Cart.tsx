@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import styles from './Cart.module.scss'
 import { ICart, ICartBook } from "./types";
 import { Link } from "react-router-dom";
@@ -10,9 +10,10 @@ import pictureCat2 from '../../assets/pictures-cats/6c4480a89e9596d59b67a0f91659
 import pictureCat3 from '../../assets/pictures-cats/9981190e67c51e5499059b66b20807e9.jpg';
 import pictureCat4 from '../../assets/pictures-cats/save = follow.jpg';
 import Loader from "../../assets/components/Loader/Loader.tsx";
-import { addCartState, deleteBookFromCart, updateCartBookCount } from "../../server/api.js";
-import { v4 as uuidv4 } from 'uuid';
+import { deleteBookFromCart, updateCartBookCount } from "../../server/api.js";
 import Checkbox from "../../assets/components/Checkbox/Checkbox.tsx";
+import CartModal from "./CartModal/CartModal.tsx";
+import Button from "../../assets/components/Button/Button.tsx";
 
 const Cart: FC<ICart> = ({
     productsInCart,
@@ -23,16 +24,25 @@ const Cart: FC<ICart> = ({
     const randomIndex = Math.floor(Math.random() * imagePaths.length);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [checkedBookItems, setCheckedBookItems] = useState<string[]>([]);
+    const [isOpenedModal, setIsOpenedModal] = useState<boolean>(false);
 
     const getCartCount = (): number => {
         let count = 0;
-        productsInCart.forEach((product: ICartBook) => count += product.count);
+        productsInCart.forEach((product: ICartBook) => {
+            if (checkedBookItems.includes(product.book.id)) {
+                count += product.count
+            }
+        });
         return count;
     }
 
     const getCartCost = (): number => {
         let count = 0;
-        productsInCart.forEach((product: ICartBook) => count += product.book.price * product.count);
+        productsInCart.forEach((product: ICartBook) => {
+            if (checkedBookItems.includes(product.book.id)) {
+                count += product.book.price * product.count
+            }
+        });
         return Math.round(count * 100) / 100;
     }
 
@@ -114,30 +124,6 @@ const Cart: FC<ICart> = ({
         }
     };
 
-    const handleAddCartState = async () => {
-        if (checkedBookItems.length > 0) {
-            const stateId = uuidv4();
-            setIsLoading(true);
-            try {
-                /* TO-DO: ограниченя на заказ если юзер не зареган */
-                const deleteAndAddPromises = checkedBookItems.map(async (bookId: string) => {
-                    const currentBookCount = productsInCart.find((book: ICartBook) => book.book.id === bookId)?.count || 1;
-                    await deleteBookFromCart(cartId, bookId);
-                    await addCartState(stateId, cartId, bookId, currentBookCount);
-                });
-                await Promise.all(deleteAndAddPromises);
-            } catch (error) {
-                console.error("Ошибка при обработке состояния корзины:", error);
-            } finally {
-                setCheckedBookItems([]);
-                setProductsInCart(productsInCart.filter((book: ICartBook) => !checkedBookItems.includes(book.book.id)));
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 500);
-            }
-        }
-    };
-
     return (
         isLoading ? (
             <div className={styles.loadContainer}><Loader /></div>
@@ -164,6 +150,7 @@ const Cart: FC<ICart> = ({
                         </div>
                     </div>
                     <div className={styles.cartContent}>
+                        {/* TO-DO: исправить странную сортировку книг по количеству */}
                         {productsInCart.map((cartBook: ICartBook, index: number) => {
                             const book = cartBook.book;
 
@@ -229,7 +216,6 @@ const Cart: FC<ICart> = ({
                     </div>
                     {/* TO-DO: сделать висячим блок с итогами */}
                     <div className={styles.cartContentBorder}></div>
-                    {/* TO-DO: посмотреть как реализован подсчет итоговой суммы в др магазинах */}
                     <div className={styles.mainTitle}>Итого</div>
                     <div className={styles.cartSummary}>
                         <div className={styles.textSummary}>
@@ -240,17 +226,22 @@ const Cart: FC<ICart> = ({
                                 {String(getCartCost()) + " ₽"}
                             </div>
                         </div>
-                        <button
-                            className={clsx(
-                                styles.checkoutBtn,
-                                checkedBookItems.length === 0 ? styles.unabled : styles.enabled,
-                            )}
-                            id="checkoutBtn"
-                            // onClick={() => alert('Сначала зарегистрируйтесь.')}
-                            onClick={() => checkedBookItems.length > 0 ? handleAddCartState() : alert('Выберите товары.')}
-                        >
-                            Оформить заказ
-                        </button>
+                        <Button
+                            text="Оформить заказ"
+                            className={styles.checkoutBtn}
+                            disabled={checkedBookItems.length === 0}
+                            onClick={() => checkedBookItems.length > 0 ? setIsOpenedModal(true) : alert('Выберите товары.')}
+                        />
+                        <CartModal
+                            isOpen={isOpenedModal}
+                            setIsOpen={setIsOpenedModal}
+                            setIsLoading={setIsLoading}
+                            checkedBookItems={checkedBookItems}
+                            setCheckedBookItems={setCheckedBookItems}
+                            productsInCart={productsInCart}
+                            setProductsInCart={setProductsInCart}
+                            cartId={cartId}
+                        />
                     </div>
                 </div>
                 {productsInCart.length === 0 &&
