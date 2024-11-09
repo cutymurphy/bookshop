@@ -1,0 +1,30 @@
+.button {
+    color: #fff;
+    font-family: var(--ptsans-font);
+    font-weight: 500;
+    font-size: 20px;
+    padding: 5px 100px;
+    border-radius: 5px;
+    border: none;
+    transition: .3s;
+
+    &.unabled {
+        background-color: gainsboro;
+        cursor: not-allowed;
+    }
+
+    &.enabled {
+        background-color: var(--main-color);
+    }
+}
+
+.button.enabled:hover {
+    background-color: var(--boarder-hover-color);
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.button.enabled:active {
+    transform: scale(1.05);
+    cursor: grabbing;
+}
