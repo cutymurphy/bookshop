@@ -26,6 +26,32 @@ export const fetchAuthors = async () => {
     }
 };
 
+export const fetchUsers = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/user`);
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении пользователей', error);
+        throw error;
+    }
+};
+
+export const fetchOrders = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/order`);
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении заказов', error);
+        throw error;
+    }
+};
+
 export const addUser = async (userData) => {
     try {
         const response = await fetch(`${API_BASE_URL}/user`, {

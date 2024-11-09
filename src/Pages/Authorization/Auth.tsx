@@ -161,7 +161,7 @@ const Auth: FC<IAuth> = ({
                     setCurrentUser({ ...userByEmailAndPassword, isAdmin: !!userByEmailAndPassword.isAdmin });
                     setAcceptRules(false);
                     setRememberMe(false);
-                    navigate(EPath.auth);
+                    !!userByEmailAndPassword.isAdmin ? navigate(EPath.admin) : navigate(EPath.auth);
                 } else {
                     clearData();
                     setErrorExist("Такого пользователя не существует");

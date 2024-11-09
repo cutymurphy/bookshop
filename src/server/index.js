@@ -9,25 +9,34 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
+
+/* --------- CRUD for books --------- */
+
 app.get('/api/books', (req, res) => {
     db.query('SELECT * FROM bookshop.book', (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
-            return res.status(500).send('Ошибка при получении данных');
+            return res.status(500).send('Ошибка при получении данных о книгах');
         }
         res.json(results);
     });
 });
 
+
+/* --------- CRUD for authors --------- */
+
 app.get('/api/authors', (req, res) => {
     db.query('SELECT * FROM bookshop.author', (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
-            return res.status(500).send('Ошибка при получении данных');
+            return res.status(500).send('Ошибка при получении данных об авторах');
         }
         res.json(results);
     });
 });
+
+
+/* --------- CRUD for user --------- */
 
 app.post('/api/user', async (req, res) => {
     const { name, surname, password, email, phone } = req.body;
@@ -44,10 +53,10 @@ app.post('/api/user', async (req, res) => {
     db.query(query, [id_user, id_cart, name, surname, hashedPassword, email, phone], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
-            return res.status(500).send('Ошибка при добавлении пользователя');
+            return res.status(500).send('Ошибка при добавлении нового пользователя');
         }
 
-        res.status(201).json({ id_user, id_cart });
+        res.status(201).json(id_user);
     });
 });
 
@@ -76,7 +85,7 @@ app.put('/api/user/:id', (req, res) => {
             return res.status(404).send('Пользователь не найден');
         }
 
-        res.status(200).json({ message: 'Пользователь успешно обновлен' });
+        res.status(200).json(id);
     });
 });
 
@@ -88,7 +97,7 @@ app.get('/api/user/email', (req, res) => {
     db.query(query, [email], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
-            return res.status(500).send('Ошибка при получении данных');
+            return res.status(500).send('Ошибка при получении пользователя по email');
         }
         if (results.length === 0 || !results) {
             return res.json("");
@@ -105,7 +114,7 @@ app.get('/api/user/login', (req, res) => {
     db.query(query, [email, password], async (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
-            return res.status(500).send('Ошибка при получении данных');
+            return res.status(500).send('Ошибка при получении пользователя');
         }
         if (results.length === 0 || !results) {
             return res.json("");
@@ -129,12 +138,22 @@ app.get('/api/user/idUser', (req, res) => {
     db.query(query, [idUser], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
-            return res.status(500).send('Ошибка при получении данных');
+            return res.status(500).send('Ошибка при получении пользователя по id');
         }
         if (results.length === 0 || !results) {
             return res.json("");
         }
         res.json(results[0]);
+    });
+});
+
+app.get('/api/user', (req, res) => {
+    db.query('SELECT * FROM bookshop.user_with_cart', (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при получении данных о пользователях');
+        }
+        res.json(results);
     });
 });
 
@@ -261,6 +280,16 @@ app.post('/api/order', (req, res) => {
         }
 
         res.status(201).json(id);
+    });
+});
+
+app.get('/api/order', (req, res) => {
+    db.query('SELECT * FROM bookshop.order', (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при получении данных о заказах');
+        }
+        res.json(results);
     });
 });
 

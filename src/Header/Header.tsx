@@ -61,7 +61,7 @@ const Header: FC<IHeader> = ({
                     </div>
                     {isAdmin &&
                         <div className={styles.userIconWrapper}>
-                            <Link to={EPath.auth}>
+                            <Link to={EPath.admin}>
                                 <img className={styles.iconImage} src={settingsIcon} />
                             </Link>
                         </div>

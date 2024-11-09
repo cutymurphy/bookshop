@@ -5,13 +5,16 @@ import { Auth, Cart, Main } from './Pages/index.ts';
 import { Route, Routes } from 'react-router-dom';
 import { ICartBook } from './Pages/Cart/types.ts';
 import { IBook } from './Pages/Main/ShopPanel/ShopContent/types.ts';
-import { fetchBooks, fetchAuthors, getUserById, getCartBooksById } from './server/api.js';
-import { IAuthor, IFullProfile, initialUser } from './types.ts';
+import { fetchBooks, fetchAuthors, getUserById, getCartBooksById, fetchUsers, fetchOrders } from './server/api.js';
+import { IAuthor, IFullProfile, initialUser, IOrder } from './types.ts';
+import Admin from './Pages/Admin/Admin.tsx';
 
 const App = () => {
     const [currentUser, setCurrentUser] = useState<IFullProfile>({ ...initialUser });
     const [initialBooks, setInitialBooks] = useState<IBook[]>([]);
     const [currentAuthors, setCurrentAuthors] = useState<IAuthor[]>([]);
+    const [currentUsers, setCurrentUsers] = useState<IFullProfile[]>([]);
+    const [currentOrders, setCurrentOrders] = useState<IOrder[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
     const [productsInCart, setProductsInCart] = useState<ICartBook[]>([]);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState<boolean>(false);
@@ -45,6 +48,24 @@ const App = () => {
         }
     };
 
+    const loadUsers = async () => {
+        try {
+            const usersData = await fetchUsers();
+            setCurrentUsers(usersData);
+        } catch (error) {
+            console.error('Ошибка загрузки пользователей:', error);
+        }
+    };
+
+    const loadOrders = async () => {
+        try {
+            const ordersData = await fetchOrders();
+            setCurrentOrders(ordersData);
+        } catch (error) {
+            console.error('Ошибка загрузки заказов:', error);
+        }
+    };
+
     const loadUserAndCart = async () => {
         const savedUserId = sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser');
 
@@ -63,9 +84,21 @@ const App = () => {
         }
     };
 
+    const loadAdminData = async () => {
+        setIsLoading(true);
+        await loadUsers();
+        await loadOrders();
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
+    };
+
     useEffect(() => {
         if (initialBooks.length > 0) {
             loadUserAndCart();
+        }
+        if (currentUser.isAdmin) {
+            loadAdminData();
         }
     }, [initialBooks, currentUser.idUser]);
 
@@ -114,6 +147,16 @@ const App = () => {
                         setCurrentCart={setProductsInCart}
                     />
                 } />
+                {currentUser.isAdmin &&
+                    <Route
+                        path="/admin"
+                        element={
+                            <Admin
+                                isLoading={isLoading}
+                            />
+                        }
+                    />
+                }
             </Routes>
         </div>
     )

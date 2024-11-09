@@ -34,3 +34,13 @@ export const initialUser: IFullProfile = {
     email: "",
     phone: "",
 }
+
+export interface IOrder {
+    id: string,
+    idCartState: string,
+    idAdmin?: string,
+    date: string,
+    address: string,
+    payment: string,
+    status: string,
+}
