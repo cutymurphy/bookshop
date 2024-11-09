@@ -214,34 +214,34 @@ const Cart: FC<ICart> = ({
                             )
                         })}
                     </div>
-                    {/* TO-DO: сделать висячим блок с итогами */}
-                    <div className={styles.cartContentBorder}></div>
-                    <div className={styles.mainTitle}>Итого</div>
-                    <div className={styles.cartSummary}>
-                        <div className={styles.textSummary}>
-                            <div className={styles.mainText}>
-                                {String(getCartCount()) + " " + pluralizeWord(getCartCount()) + " на сумму:"}
+                    <div className={styles.summaryWrapper}>
+                        <div className={styles.mainTitle}>Итого</div>
+                        <div className={styles.cartSummary}>
+                            <div className={styles.textSummary}>
+                                <div className={styles.mainText}>
+                                    {String(getCartCount()) + " " + pluralizeWord(getCartCount()) + " на сумму:"}
+                                </div>
+                                <div className={styles.costText}>
+                                    {String(getCartCost()) + " ₽"}
+                                </div>
                             </div>
-                            <div className={styles.costText}>
-                                {String(getCartCost()) + " ₽"}
-                            </div>
+                            <Button
+                                text="Оформить заказ"
+                                className={styles.checkoutBtn}
+                                disabled={checkedBookItems.length === 0}
+                                onClick={() => checkedBookItems.length > 0 ? setIsOpenedModal(true) : alert('Выберите товары.')}
+                            />
+                            <CartModal
+                                isOpen={isOpenedModal}
+                                setIsOpen={setIsOpenedModal}
+                                setIsLoading={setIsLoading}
+                                checkedBookItems={checkedBookItems}
+                                setCheckedBookItems={setCheckedBookItems}
+                                productsInCart={productsInCart}
+                                setProductsInCart={setProductsInCart}
+                                cartId={cartId}
+                            />
                         </div>
-                        <Button
-                            text="Оформить заказ"
-                            className={styles.checkoutBtn}
-                            disabled={checkedBookItems.length === 0}
-                            onClick={() => checkedBookItems.length > 0 ? setIsOpenedModal(true) : alert('Выберите товары.')}
-                        />
-                        <CartModal
-                            isOpen={isOpenedModal}
-                            setIsOpen={setIsOpenedModal}
-                            setIsLoading={setIsLoading}
-                            checkedBookItems={checkedBookItems}
-                            setCheckedBookItems={setCheckedBookItems}
-                            productsInCart={productsInCart}
-                            setProductsInCart={setProductsInCart}
-                            cartId={cartId}
-                        />
                     </div>
                 </div>
                 {productsInCart.length === 0 &&
