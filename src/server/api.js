@@ -233,3 +233,24 @@ export const addCartState = async (id, idUser, idBook, bookCount) => {
         throw error;
     }
 };
+
+export const addOrder = async (idCartState, date, address, payment, status) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/order`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ idCartState, date, address, payment, status }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при добавлении нового заказа', error);
+        throw error;
+    }
+};

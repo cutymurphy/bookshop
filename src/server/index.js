@@ -234,6 +234,27 @@ app.post('/api/cartStates', (req, res) => {
     });
 });
 
+/* --------- CRUD for orders --------- */
+
+app.post('/api/order', (req, res) => {
+    const { idCartState, date, address, payment, status } = req.body;
+    const id = uuidv4();
+
+    const query = `
+        INSERT INTO bookshop.order (id, idCartState, idAdmin, date, address, payment, status) 
+        VALUES (?, ?, NULL, ?, ?, ?, ?);
+    `;
+
+    db.query(query, [id, idCartState, date, address, payment, status], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send(`Ошибка при добавлении нового заказа`);
+        }
+
+        res.status(201).json(id);
+    });
+});
+
 
 app.listen(PORT, () => {
     console.log(`Сервер запущен на порту ${PORT}`);
