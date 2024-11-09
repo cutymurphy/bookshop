@@ -10,12 +10,16 @@ const Checkbox: FC<ICheckbox> = ({
     checked,
     className,
     classNameLabel,
+    onClick,
 }) => {
     return (
-        <div className={clsx(
-            styles.checkbox,
-            className,
-        )}>
+        <div
+            className={clsx(
+                styles.checkbox,
+                className,
+            )}
+            onClick={onClick}
+        >
             <input
                 type="checkbox"
                 className={styles.checkboxInput}
