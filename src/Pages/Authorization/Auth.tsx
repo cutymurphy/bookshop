@@ -118,7 +118,7 @@ const Auth: FC<IAuth> = ({
                         phone: currentUser.phone.trim(),
                     }
                     await addUser(user);
-                    const newUser: IFullProfile = await getUserByEmailAndPassword(user.email, user.password);
+                    const newUser: IFullProfile = await getUserByEmail(user.email);
                     if (currentCart.length > 0) {
                         const addBookToCartPromises = currentCart.map(async (book: ICartBook) => {
                             await addBookToCart(newUser.idCart, book.book.id, book.count);

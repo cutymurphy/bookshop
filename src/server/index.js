@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 const db = require('./db.js');
 const { v4: uuidv4 } = require('uuid');
 const app = express();
@@ -28,18 +29,19 @@ app.get('/api/authors', (req, res) => {
     });
 });
 
-app.post('/api/user', (req, res) => {
+app.post('/api/user', async (req, res) => {
     const { name, surname, password, email, phone } = req.body;
 
     const id_user = uuidv4();
     const id_cart = id_user;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const query = `
         INSERT INTO bookshop.user_with_cart (idUser, isAdmin, idCart, name, surname, password, email, phone) 
         VALUES (?, FALSE, ?, ?, ?, ?, ?, ?);
     `;
 
-    db.query(query, [id_user, id_cart, name, surname, password, email, phone], (err, results) => {
+    db.query(query, [id_user, id_cart, name, surname, hashedPassword, email, phone], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send('Ошибка при добавлении пользователя');
@@ -91,16 +93,16 @@ app.get('/api/user/email', (req, res) => {
         if (results.length === 0 || !results) {
             return res.json("");
         }
-        res.json(results[0].idUser);
+        res.json(results[0]);
     });
 });
 
 app.get('/api/user/login', (req, res) => {
     const { email, password } = req.query;
 
-    const query = `SELECT * FROM bookshop.user_with_cart WHERE email = ? AND password = ?`;
+    const query = `SELECT * FROM bookshop.user_with_cart WHERE email = ?`;
 
-    db.query(query, [email, password], (err, results) => {
+    db.query(query, [email, password], async (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send('Ошибка при получении данных');
@@ -108,7 +110,14 @@ app.get('/api/user/login', (req, res) => {
         if (results.length === 0 || !results) {
             return res.json("");
         }
-        res.json(results[0]);
+
+        const user = results[0];
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (isMatch) {
+            return res.json(results[0]);
+        }
+        return res.json("");
     });
 });
 
