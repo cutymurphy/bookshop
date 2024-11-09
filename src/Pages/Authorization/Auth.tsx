@@ -1,12 +1,14 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import styles from './Auth.module.scss';
 import { IFullProfile, initialUser, IProfile } from "../../types.ts";
 import { addUser, getUserByEmail, getUserByEmailAndPassword } from "../../server/api";
 import Loader from "../../assets/components/Loader/Loader.tsx";
-import { IAuth, initialErrors } from "./types.ts";
+import { IAuth, IErrors, initialErrors } from "./types.ts";
 import { Link, useNavigate } from "react-router-dom";
 import { EPath } from "../../AppPathes.ts";
 import clsx from "clsx";
+import Button from "../../assets/components/Button/Button.tsx";
+import Checkbox from "../../assets/components/Checkbox/Checkbox.tsx";
 
 const Auth: FC<IAuth> = ({
     currentUser,
@@ -15,7 +17,9 @@ const Auth: FC<IAuth> = ({
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
-    const [errors, setErrors] = useState({ ...initialErrors });
+    const [acceptRules, setAcceptRules] = useState<boolean>(false);
+    const [rememberMe, setRememberMe] = useState<boolean>(false);
+    const [errors, setErrors] = useState<IErrors>({ ...initialErrors });
     const [errorExist, setErrorExist] = useState<string>("");
     const navigate = useNavigate();
 
@@ -60,6 +64,11 @@ const Auth: FC<IAuth> = ({
             isValid = false;
         } else if (currentUser.password.length < 6) {
             newErrors.password = "Пароль должен содержать не менее 6 символов";
+            isValid = false;
+        }
+
+        if (!acceptRules) {
+            newErrors.acceptRules = "Необходимо принять условия";
             isValid = false;
         }
 
@@ -108,19 +117,31 @@ const Auth: FC<IAuth> = ({
                     }
                     await addUser(user);
                     const newUser: IFullProfile = await getUserByEmailAndPassword(user.email, user.password);
-                    sessionStorage.setItem("currentUser", newUser.idUser);
+                    if (rememberMe) {
+                        localStorage.setItem("currentUser", newUser.idUser);
+                    } else {
+                        sessionStorage.setItem("currentUser", newUser.idUser);
+                    }
                     setCurrentUser({ ...newUser, isAdmin: !!newUser.isAdmin });
                     navigate(EPath.auth);
                 } else {
                     clearData();
                     setErrorExist("Такой пользователь уже существует");
                 }
+                setAcceptRules(false);
+                setRememberMe(false);
             } else if (!isSignUp && validateSignIn()) {
                 setIsLoading(true);
                 const userByEmailAndPassword: IFullProfile = await getUserByEmailAndPassword(currentUser.email.trim(), currentUser.password);
                 if (!!userByEmailAndPassword) {
                     setCurrentUser({ ...userByEmailAndPassword, isAdmin: !!userByEmailAndPassword.isAdmin });
-                    sessionStorage.setItem("currentUser", userByEmailAndPassword.idUser);
+                    if (rememberMe) {
+                        localStorage.setItem("currentUser", userByEmailAndPassword.idUser);
+                    } else {
+                        sessionStorage.setItem("currentUser", userByEmailAndPassword.idUser);
+                    }
+                    setAcceptRules(false);
+                    setRememberMe(false);
                     navigate(EPath.auth);
                 } else {
                     clearData();
@@ -147,7 +168,10 @@ const Auth: FC<IAuth> = ({
         ) : (
             !currentUser.idUser ? (<div className={styles.wrapper}>
                 <form
-                    className={styles.authWrapper}
+                    className={clsx(
+                        styles.authWrapper,
+                        isSignUp ? styles["authWrapper-signUp"] : styles["authWrapper-signIn"],
+                    )}
                     key={isSignUp ? "signUp" : "signIn"}
                     onKeyDown={handleKeyDown}
                     onSubmit={handleSubmit}
@@ -208,14 +232,43 @@ const Auth: FC<IAuth> = ({
                         <i className='bx bxs-lock-alt'></i>
                         {!!errors.password && <span className={styles.error}>{errors.password}</span>}
                     </div>
+                    {isSignUp && <div className={styles.checkboxWrapper}>
+                        <Checkbox
+                            id="selectAllCheckbox"
+                            onChange={() => {
+                                setAcceptRules(!acceptRules);
+                                setErrors({ ...errors, acceptRules: "" });
+                            }}
+                            checked={acceptRules}
+                        />
+                        <label
+                            className={styles.checkboxText}
+                            htmlFor="selectAllCheckbox"
+                        >
+                            Я&nbsp;соглашаюсь с&nbsp;условиями пользовательского соглашения и&nbsp;политикой конфиденциальности
+                        </label>
+                        {!!errors.acceptRules && <span className={styles.error}>{errors.acceptRules}</span>}
+                    </div>}
+                    <div className={styles.checkboxWrapper}>
+                        <Checkbox
+                            id="rememberMeCheckbox"
+                            onChange={() => setRememberMe(!rememberMe)}
+                            checked={rememberMe}
+                        />
+                        <label
+                            className={styles.checkboxText}
+                            htmlFor="rememberMeCheckbox"
+                        >
+                            Запомнить меня
+                        </label>
+                    </div>
                     {!!errorExist && <span className={styles.errorExist}>{errorExist}</span>}
-                    <button
+                    <Button
                         className={styles.btn}
                         onClick={(e) => handleSubmit(e)}
                         type="submit"
-                    >
-                        {isSignUp ? "Sign Up" : "Sign In"}
-                    </button>
+                        text={isSignUp ? "Sign Up" : "Sign In"}
+                    />
                 </form>
                 <div className={styles.changeAuthMethodWrapper}>
                     <span className={styles.textNew}>{isSignUp ? "Already have an account?" : "New to TimeForBook?"}</span>
@@ -240,6 +293,7 @@ const Auth: FC<IAuth> = ({
                             setCurrentUser({ ...initialUser });
                             setCurrentCart([]);
                             sessionStorage.removeItem("currentUser");
+                            localStorage.removeItem("currentUser");
                         }}
                     >
                         <div className={styles.btnContent}>

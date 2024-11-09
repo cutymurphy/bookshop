@@ -91,7 +91,7 @@ app.get('/api/user/email', (req, res) => {
         if (results.length === 0 || !results) {
             return res.json("");
         }
-        res.json(results[0].id_user);
+        res.json(results[0].idUser);
     });
 });
 

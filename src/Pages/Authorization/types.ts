@@ -7,10 +7,20 @@ export interface IAuth {
     setCurrentCart: (cart: ICartBook[]) => void,
 }
 
-export const initialErrors: IProfile = {
+export interface IErrors {
+    name: string,
+    surname: string,
+    password: string,
+    email: string,
+    phone: string,
+    acceptRules: string,
+}
+
+export const initialErrors: IErrors = {
     name: "",
     surname: "",
     email: "",
     phone: "",
     password: "",
+    acceptRules: "",
 };

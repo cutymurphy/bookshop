@@ -46,7 +46,8 @@ const App = () => {
     };
 
     const loadUserAndCart = async () => {
-        const savedUserId = sessionStorage.getItem('currentUser');
+        const savedUserId = sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser');
+
         if (!!savedUserId) {
             const user = await getUserById(savedUserId);
             const userCart = await getCartBooksById(user.idCart);
