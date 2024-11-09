@@ -9,6 +9,7 @@ body {
   padding: 0;
   margin: 0;
   border: 0;
+  /* z-index: 1; */
 }
 
 :focus,
@@ -39,6 +40,10 @@ body {
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+}
+
+html {
+  position: relative;
 }
 
 input,

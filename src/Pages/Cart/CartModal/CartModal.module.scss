@@ -1,0 +1,116 @@
+.wrapper {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .modal {
+        width: 60%;
+        height: fit-content;
+        padding: 20px 20px 40px 20px;
+        background-color: var(--white);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        -webkit-box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.3);
+
+        .crossIconWrapper {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+
+            svg {
+                cursor: pointer;
+
+                path {
+                    transition: .3s;
+                }
+
+                &:hover {
+                    path {
+                        fill: var(--boarder-hover-color);
+                    }
+                }
+            }
+        }
+
+        .orderTitle {
+            font-family: var(--ptsans-font);
+            font-size: 26px;
+            font-weight: 600;
+            width: fit-content;
+            margin-bottom: 28px;
+        }
+
+        .orderTypeWrapper {
+            width: 80%;
+            display: flex;
+            margin-bottom: 16px;
+
+            .orderType {
+                width: 50%;
+                display: flex;
+                justify-content: center;
+                padding: 8px 0;
+                border-style: solid;
+                border-color: var(--disabled-gray);
+                color: var(--light-black);
+                cursor: pointer;
+                transition: .3s;
+
+                &-active {
+                    background-color: var(--light-gray);
+                }
+
+                &:hover {
+                    color: var(--black);
+                }
+
+                &:first-child {
+                    border-width: 2px 1px 2px 2px;
+                    border-radius: 10px 0 0 10px;
+                }
+
+                &:last-child {
+                    border-width: 2px 2px 2px 1px;
+                    border-radius: 0 10px 10px 0;
+                }
+            }
+        }
+
+        .form {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            .mapWrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 8px;
+
+                .mapAddress {
+                    span {
+                        color: var(--boarder-hover-color);
+                    }
+                }
+            }
+
+            .orderBtn {
+                margin-top: 16px;
+            }
+        }
+    }
+}
