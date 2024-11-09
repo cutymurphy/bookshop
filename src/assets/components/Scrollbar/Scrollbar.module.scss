@@ -1,0 +1,25 @@
+.scrollbar-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  /* Firefox */
+  -ms-overflow-style: none;
+}
+
+.webkit {
+  &::-webkit-scrollbar{
+    width: 6px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
+}
+
+.safari {
+  scrollbar-gutter: stable;
+}
