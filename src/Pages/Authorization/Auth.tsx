@@ -85,6 +85,13 @@ const Auth: FC<IAuth> = ({
         return isValid;
     }
 
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleSubmit(e as unknown as FormEvent);
+        }
+    };
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         try {
@@ -103,7 +110,7 @@ const Auth: FC<IAuth> = ({
                     const newUser: IFullProfile = await getUserByEmailAndPassword(user.email, user.password);
                     sessionStorage.setItem("currentUser", newUser.idUser);
                     setCurrentUser({ ...newUser, isAdmin: !!newUser.isAdmin });
-                    navigate(EPath.main);
+                    navigate(EPath.auth);
                 } else {
                     clearData();
                     setErrorExist("Такой пользователь уже существует");
@@ -114,7 +121,7 @@ const Auth: FC<IAuth> = ({
                 if (!!userByEmailAndPassword) {
                     setCurrentUser({ ...userByEmailAndPassword, isAdmin: !!userByEmailAndPassword.isAdmin });
                     sessionStorage.setItem("currentUser", userByEmailAndPassword.idUser);
-                    navigate(EPath.main);
+                    navigate(EPath.auth);
                 } else {
                     clearData();
                     setErrorExist("Такого пользователя не существует");
@@ -139,7 +146,12 @@ const Auth: FC<IAuth> = ({
             <div className={styles.loadContainer}><Loader /></div>
         ) : (
             !currentUser.idUser ? (<div className={styles.wrapper}>
-                <div className={styles.authWrapper} key={isSignUp ? "signUp" : "signIn"}>
+                <form
+                    className={styles.authWrapper}
+                    key={isSignUp ? "signUp" : "signIn"}
+                    onKeyDown={handleKeyDown}
+                    onSubmit={handleSubmit}
+                >
                     <h1>{isSignUp ? "Регистрация" : "Войти"}</h1>
                     {isSignUp && <div className={styles.inputBox}>
                         <input
@@ -197,14 +209,14 @@ const Auth: FC<IAuth> = ({
                         {!!errors.password && <span className={styles.error}>{errors.password}</span>}
                     </div>
                     {!!errorExist && <span className={styles.errorExist}>{errorExist}</span>}
-                    {/* TO-DO: по нажатию Enter должен происходить переход по форме */}
                     <button
                         className={styles.btn}
                         onClick={(e) => handleSubmit(e)}
+                        type="submit"
                     >
                         {isSignUp ? "Sign Up" : "Sign In"}
                     </button>
-                </div>
+                </form>
                 <div className={styles.changeAuthMethodWrapper}>
                     <span className={styles.textNew}>{isSignUp ? "Already have an account?" : "New to TimeForBook?"}</span>
                     <span

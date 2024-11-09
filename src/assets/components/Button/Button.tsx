@@ -9,6 +9,7 @@ const Button: FC<IButton> = ({
     disabled,
     text,
     className,
+    type,
 }) => {
     return (
         <button
@@ -18,6 +19,7 @@ const Button: FC<IButton> = ({
                 className,
             )}
             onClick={onClick}
+            type={type}
         >
             {text}
         </button>

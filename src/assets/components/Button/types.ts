@@ -5,4 +5,5 @@ export interface IButton {
     disabled?: boolean,
     text: string,
     className?: string,
+    type?: "button" | "reset" | "submit",
 }
