@@ -42,7 +42,7 @@ const Auth: FC<IAuth> = ({
         if (currentUser.email.trim() === "") {
             newErrors.email = "Почта не может быть пустой";
             isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(currentUser.email)) {
+        } else if (!/\S+@\S+\.\S+/.test(currentUser.email.trim())) {
             newErrors.email = "Неверный формат email";
             isValid = false;
         }
@@ -50,7 +50,7 @@ const Auth: FC<IAuth> = ({
         if (currentUser.phone.trim() === "") {
             newErrors.phone = "Телефон не может быть пустым";
             isValid = false;
-        } else if (!/^\+?\d{10,15}$/.test(currentUser.phone)) {
+        } else if (!/^\+?\d{10,15}$/.test(currentUser.phone.trim())) {
             newErrors.phone = "Неверный формат телефона";
             isValid = false;
         }
@@ -90,10 +90,17 @@ const Auth: FC<IAuth> = ({
         try {
             if (isSignUp && validateSignUp()) {
                 setIsLoading(true);
-                const userByEmail = await getUserByEmail(currentUser.email);
+                const userByEmail = await getUserByEmail(currentUser.email.trim());
                 if (!userByEmail) {
-                    await addUser(currentUser);
-                    const newUser: IFullProfile = await getUserByEmailAndPassword(currentUser.email, currentUser.password);
+                    const user = {
+                        ...currentUser,
+                        name: currentUser.name.trim(),
+                        surname: currentUser.surname.trim(),
+                        email: currentUser.email.trim(),
+                        phone: currentUser.phone.trim(),
+                    }
+                    await addUser(user);
+                    const newUser: IFullProfile = await getUserByEmailAndPassword(user.email, user.password);
                     sessionStorage.setItem("currentUser", newUser.idUser);
                     setCurrentUser({ ...newUser, isAdmin: !!newUser.isAdmin });
                     navigate(EPath.main);
@@ -103,7 +110,7 @@ const Auth: FC<IAuth> = ({
                 }
             } else if (!isSignUp && validateSignIn()) {
                 setIsLoading(true);
-                const userByEmailAndPassword: IFullProfile = await getUserByEmailAndPassword(currentUser.email, currentUser.password);
+                const userByEmailAndPassword: IFullProfile = await getUserByEmailAndPassword(currentUser.email.trim(), currentUser.password);
                 if (!!userByEmailAndPassword) {
                     setCurrentUser({ ...userByEmailAndPassword, isAdmin: !!userByEmailAndPassword.isAdmin });
                     sessionStorage.setItem("currentUser", userByEmailAndPassword.idUser);
