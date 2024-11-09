@@ -3,6 +3,7 @@ import styles from './Header.module.scss'
 import logoWithBookmark from '../assets/pictures/logo-with-bookmark.png';
 import logoWithoutBookmark from '../assets/pictures/logo-without-bookmark.png';
 import userIcon from '../assets/pictures/user_456283.png';
+import settingsIcon from '../assets/pictures/settings.png';
 import tgIcon from '../assets/pictures/app_14936955.png';
 import cartIcon from '../assets/pictures/shopping-bag_1656850.png';
 import slidersIcon from '../assets/pictures/sliders-v_10435878.png';
@@ -17,6 +18,7 @@ const Header: FC<IHeader> = ({
     productsInCart,
     setIsMobileFiltersOpen,
     setSearchInput,
+    isAdmin,
 }) => {
     const tgLink = "https://t.me/Ssushkova";
 
@@ -57,6 +59,13 @@ const Header: FC<IHeader> = ({
                             <img className={styles.iconImage} src={cartIcon} />
                         </Link>
                     </div>
+                    {isAdmin &&
+                        <div className={styles.userIconWrapper}>
+                            <Link to={EPath.auth}>
+                                <img className={styles.iconImage} src={settingsIcon} />
+                            </Link>
+                        </div>
+                    }
                 </div>
                 <button
                     className={styles.menuFilter}

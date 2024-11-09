@@ -83,6 +83,7 @@ const App = () => {
                 productsInCart={productsInCart}
                 setIsMobileFiltersOpen={setIsMobileFiltersOpen}
                 setSearchInput={setSearchInput}
+                isAdmin={currentUser.isAdmin}
             />
             <Routes>
                 <Route path="/" element={

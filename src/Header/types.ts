@@ -4,4 +4,5 @@ export interface IHeader {
     productsInCart: ICartBook[],
     setIsMobileFiltersOpen: (isOpen: boolean) => void,
     setSearchInput: (input: string) => void,
+    isAdmin: boolean, 
 }
