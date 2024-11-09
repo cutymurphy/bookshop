@@ -24,6 +24,7 @@
   --input-placeholder: var(--gray);
   --input-disabled-bc: var(--dark-gray);
   --input-disabled-bg: var(--disabled-gray-2);
+  --tabs-text-color-disabled: rgba(255, 255, 255, 0.25);
 
   --scrollbar-thumb: var(--main-color);
   --scrollbar-track: var(--disabled-gray-2);
