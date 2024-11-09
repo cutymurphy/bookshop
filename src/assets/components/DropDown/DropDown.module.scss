@@ -1,0 +1,120 @@
+.dropdown-wrapper {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.dropdown-input {
+
+    .arrowIcon {
+        display: flex;
+        transition: 0.3s;
+    }
+
+    &-opened {
+        .defaultIcon {
+            transform: rotate(180deg);
+        }
+    }
+
+    div,
+    input {
+        cursor: pointer;
+    }
+
+    div:hover {
+        border: 1px solid var(--main-color);
+    }
+
+    &-disabled {
+
+        div,
+        input {
+            cursor: not-allowed;
+        }
+
+        div:hover {
+            border: 1px solid var(--input-disabled-bc);
+        }
+    }
+}
+
+.dropdown-value-visible input {
+    color: var(--input-placeholder) !important;
+}
+
+.dropdown-list {
+    opacity: 0;
+    z-index: 1;
+
+    background-color: var(--light-gray);
+    border: 1px solid var(--dark-gray);
+    border-radius: 4px;
+
+    overflow: hidden;
+    top: 100%;
+    transition: 0.3s;
+    overflow-y: auto;
+
+    &-absolute {
+        position: absolute;
+    }
+
+    &-value {
+        box-sizing: border-box;
+        min-height: 41px;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        color: var(--black);
+        gap: 10px;
+        transition: 0.3s;
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--main-color-transparent);
+            font-weight: 700;
+        }
+    }
+
+    &-value-checked {
+        background-color: var(--main-color-transparent);
+    }
+
+    &-clear-value {
+        gap: 14px;
+        background-color: var(--disabled-gray);
+        color: var(--dark-gray);
+
+        svg {
+            width: 17px;
+            height: auto;
+        }
+
+        &:hover {
+            background-color: var(--gray);
+        }
+    }
+
+    .searchInput {
+
+        div,
+        input {
+            background-color: var(--main-color);
+            border: 1px solid var(--main-color);
+        }
+    }
+
+    .inputFieldClassName {
+        color: var(--white);
+
+        &::placeholder {
+            color: var(--light-gray);
+        }
+    }
+}
+
+.show {
+    opacity: 1;
+}
