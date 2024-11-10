@@ -7,4 +7,6 @@ export interface IPagination {
     setItemsPerPage: (page: number) => void,
     currentItems: any[],
     type?: EPaginationPage,
+    resultsClassName?: string,
+    paginationClassName?: string,
 }

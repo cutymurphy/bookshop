@@ -15,6 +15,7 @@ import Checkbox from "../../../assets/components/Checkbox/Checkbox.tsx";
 import TrashBinIcon from "../../../assets/components/Icons/TrashBinIcon.tsx";
 import ButtonAdmin from "../../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
 import { deleteCartState, deleteOrder } from "../../../server/api.js";
+import PencilIcon from "../../../assets/components/Icons/PencilIcon.tsx";
 
 const OrdersPanel: FC<IOrdersPanel> = ({
     orders,
@@ -128,15 +129,26 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                                     <Badge type={getBadgeType(status)}>{status}</Badge>
                                 </span>
                                 <span className={styles.rowPadding}>{!!admin ? `${admin.name} ${admin.surname}` : "—"}</span>
-                                <span
-                                    className={clsx(
-                                        styles.rowIcon,
-                                        openedInfo === id && styles["rowIcon-opened"],
-                                    )}
-                                    onClick={() => { openedInfo === id ? setOpenedInfo("") : setOpenedInfo(id) }}
-                                >
-                                    <ArrowDownOutlineIcon />
-                                </span>
+                                <div className={styles.iconsWrapper}>
+                                    <span
+                                        className={clsx(
+                                            styles.rowIcon,
+                                            openedInfo === id && styles["rowIcon-opened"],
+                                        )}
+                                        onClick={() => { openedInfo === id ? setOpenedInfo("") : setOpenedInfo(id) }}
+                                    >
+                                        <ArrowDownOutlineIcon />
+                                    </span>
+                                    <span
+                                        className={clsx(styles.rowIcon, styles.pencilIcon)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            alert("2");
+                                        }}
+                                    >
+                                        <PencilIcon />
+                                    </span>
+                                </div>
                             </div>
                             <div
                                 className={clsx(
@@ -165,8 +177,8 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                                             <div className={styles.bookRow} key={id}>
                                                 <img
                                                     className={styles.productImage}
-                                                    src={book.imgLink}
-                                                    alt={book.name}
+                                                    src={imgLink}
+                                                    alt={name}
                                                 />
                                                 <div className={styles.bookInfo}>
                                                     <div className={styles.bookTitle}>
@@ -190,6 +202,8 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                 setItemsPerPage={setBooksPerPage}
                 currentItems={orders}
                 type={EPaginationPage.admin}
+                resultsClassName={styles.paginator}
+                paginationClassName={styles.paginator}
             />
             <ButtonAdmin
                 className={styles.deleteBtn}

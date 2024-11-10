@@ -12,6 +12,8 @@ const Pagination: FC<IPagination> = ({
     setItemsPerPage,
     currentItems,
     type = EPaginationPage.main,
+    resultsClassName,
+    paginationClassName,
 }) => {
     const [pageRangeDisplayed, setPageRangeDisplayed] = useState(5);
 
@@ -74,9 +76,9 @@ const Pagination: FC<IPagination> = ({
 
     return (
         <div className={styles.paginationWrapper}>
-            <div className={styles.results}>Всего результатов: {currentItems.length}</div>
+            <div className={clsx(styles.results, resultsClassName)}>Всего результатов: {currentItems.length}</div>
             {currentItems.length > itemsPerPage &&
-                <div className={styles.pagination}>
+                <div className={clsx(styles.pagination, paginationClassName)}>
                     <button
                         className={clsx(
                             styles.paginationButton,

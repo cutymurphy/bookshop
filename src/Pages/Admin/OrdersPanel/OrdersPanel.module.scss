@@ -40,18 +40,39 @@
             }
         }
 
-        .rowIcon {
+        .iconsWrapper {
             position: absolute;
             left: 101%;
             top: 8px;
-            cursor: pointer;
             display: flex;
-            height: fit-content;
-            width: fit-content;
-            transition: 0.3s;
+            align-items: center;
+            gap: 20px;
 
-            &-opened {
-                transform: rotate(180deg);
+            .rowIcon {
+                cursor: pointer;
+                display: flex;
+                height: fit-content;
+                width: fit-content;
+                transition: 0.3s;
+
+                svg path {
+                    transition: 0.3s;
+                }
+
+                &:hover {
+                    svg path {
+                        fill: var(--icon-hover-color);
+                    }
+                }
+
+                &-opened {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .pencilIcon svg {
+                height: 15px;
+                width: auto;
             }
         }
 
@@ -171,6 +192,10 @@
         font-weight: 500;
         margin-left: 8px;
     }
+}
+
+.paginator {
+    margin: 0;
 }
 
 .deleteBtn {
