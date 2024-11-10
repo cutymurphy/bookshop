@@ -8,6 +8,8 @@ import { IBook } from './Pages/Main/ShopPanel/ShopContent/types.ts';
 import { fetchBooks, fetchAuthors, getUserById, getCartBooksById, fetchUsers, fetchOrders, getCartStateBooksById } from './server/api.js';
 import { IAuthor, IFullProfile, initialUser, IOrder } from './types.ts';
 import Admin from './Pages/Admin/Admin.tsx';
+import { EPath } from './AppPathes.ts';
+import OrderForm from './Pages/Admin/OrdersPanel/OrderForm/OrderForm.tsx';
 
 const App = () => {
     const [currentUser, setCurrentUser] = useState<IFullProfile>({ ...initialUser });
@@ -151,44 +153,64 @@ const App = () => {
                 isAdmin={currentUser.isAdmin}
             />
             <Routes>
-                <Route path="/" element={
-                    <Main
-                        currentUser={currentUser}
-                        setCurrentUser={setCurrentUser}
-                        initialBooks={initialBooks}
-                        productsInCart={productsInCart}
-                        setProductsInCart={setProductsInCart}
-                        isMobileFiltersOpen={isMobileFiltersOpen}
-                        setIsMobileFiltersOpen={setIsMobileFiltersOpen}
-                        searchInput={searchInput}
-                        isLoading={isLoading}
-                    />
-                } />
-                <Route path="/cart" element={
-                    <Cart
-                        productsInCart={productsInCart}
-                        setProductsInCart={setProductsInCart}
-                        user={currentUser}
-                        orders={currentOrders}
-                        setOrders={setCurrentOrders}
-                    />
-                } />
-                <Route path="/auth" element={
-                    <Auth
-                        currentUser={currentUser}
-                        setCurrentUser={setCurrentUser}
-                        currentCart={productsInCart}
-                        setCurrentCart={setProductsInCart}
-                    />
-                } />
+                <Route
+                    path={EPath.main}
+                    element={
+                        <Main
+                            currentUser={currentUser}
+                            setCurrentUser={setCurrentUser}
+                            initialBooks={initialBooks}
+                            productsInCart={productsInCart}
+                            setProductsInCart={setProductsInCart}
+                            isMobileFiltersOpen={isMobileFiltersOpen}
+                            setIsMobileFiltersOpen={setIsMobileFiltersOpen}
+                            searchInput={searchInput}
+                            isLoading={isLoading}
+                        />
+                    }
+                />
+                <Route
+                    path={EPath.cart}
+                    element={
+                        <Cart
+                            productsInCart={productsInCart}
+                            setProductsInCart={setProductsInCart}
+                            user={currentUser}
+                            orders={currentOrders}
+                            setOrders={setCurrentOrders}
+                        />
+                    }
+                />
+                <Route
+                    path={EPath.auth}
+                    element={
+                        <Auth
+                            currentUser={currentUser}
+                            setCurrentUser={setCurrentUser}
+                            currentCart={productsInCart}
+                            setCurrentCart={setProductsInCart}
+                        />
+                    }
+                />
                 {currentUser.isAdmin &&
                     <Route
-                        path="/admin"
+                        path={EPath.admin}
                         element={
                             <Admin
                                 isLoading={isLoading}
                                 orders={currentOrders}
                                 setOrders={setCurrentOrders}
+                                setIsLoading={setIsLoading}
+                            />
+                        }
+                    />
+                }
+                {currentUser.isAdmin &&
+                    <Route
+                        path={`${EPath.adminOrder}/:id`}
+                        element={
+                            <OrderForm
+                                isLoading={isLoading}
                                 setIsLoading={setIsLoading}
                             />
                         }

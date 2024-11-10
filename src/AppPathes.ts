@@ -3,4 +3,6 @@ export enum EPath {
     cart = '/cart',
     auth = '/auth',
     admin = '/admin',
+    adminOrder = '/admin/order',
+    adminBook = '/admin/book',
 }

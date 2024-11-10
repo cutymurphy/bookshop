@@ -16,6 +16,8 @@ import TrashBinIcon from "../../../assets/components/Icons/TrashBinIcon.tsx";
 import ButtonAdmin from "../../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
 import { deleteCartState, deleteOrder } from "../../../server/api.js";
 import PencilIcon from "../../../assets/components/Icons/PencilIcon.tsx";
+import { useNavigate } from "react-router-dom";
+import { EPath } from "../../../AppPathes.ts";
 
 const OrdersPanel: FC<IOrdersPanel> = ({
     orders,
@@ -26,6 +28,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
     const [openedInfo, setOpenedInfo] = useState<string>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
+    const navigate = useNavigate();
 
     const sortedOrders = orders.sort((a, b) => {
         const [dateA, timeA] = a.date.split(", ");
@@ -143,7 +146,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                                         className={clsx(styles.rowIcon, styles.pencilIcon)}
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            alert("2");
+                                            navigate(`${EPath.adminOrder}/${id}`);
                                         }}
                                     >
                                         <PencilIcon />
