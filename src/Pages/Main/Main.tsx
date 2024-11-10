@@ -68,9 +68,9 @@ const Main: FC<IMain> = ({
                 <Pagination
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
-                    booksPerPage={booksPerPage}
-                    setBooksPerPage={setBooksPerPage}
-                    currentBooks={currentBooks}
+                    itemsPerPage={booksPerPage}
+                    setItemsPerPage={setBooksPerPage}
+                    currentItems={currentBooks}
                 />
             </div>
         )

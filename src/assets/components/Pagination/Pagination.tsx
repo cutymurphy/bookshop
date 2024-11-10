@@ -3,17 +3,19 @@ import { IPagination } from "./types";
 import React from "react";
 import styles from './Pagination.module.scss';
 import clsx from "clsx";
+import { EPaginationPage } from "./enum.ts";
 
 const Pagination: FC<IPagination> = ({
     currentPage,
     setCurrentPage,
-    booksPerPage,
-    setBooksPerPage,
-    currentBooks,
+    itemsPerPage,
+    setItemsPerPage,
+    currentItems,
+    type = EPaginationPage.main,
 }) => {
     const [pageRangeDisplayed, setPageRangeDisplayed] = useState(5);
 
-    const totalPages = Math.ceil(currentBooks.length / booksPerPage);
+    const totalPages = Math.ceil(currentItems.length / itemsPerPage);
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -27,13 +29,13 @@ const Pagination: FC<IPagination> = ({
         }
     };
 
-    const updateBooksPerPage = () => {
+    const updateitemsPerPage = () => {
         const width = window.innerWidth;
-        if (width >= 1440) setBooksPerPage(12);
-        else if (width >= 1024) setBooksPerPage(6);
-        else if (width >= 768) setBooksPerPage(12);
-        else if (width >= 425) setBooksPerPage(9);
-        else setBooksPerPage(6);
+        if (width >= 1440) setItemsPerPage(type === "main" ? 12 : 10);
+        else if (width >= 1024) setItemsPerPage(6);
+        else if (width >= 768) setItemsPerPage(12);
+        else if (width >= 425) setItemsPerPage(9);
+        else setItemsPerPage(6);
 
         if (width >= 1440) setPageRangeDisplayed(7);
         else if (width >= 1024) setPageRangeDisplayed(5);
@@ -41,9 +43,9 @@ const Pagination: FC<IPagination> = ({
     };
 
     useEffect(() => {
-        updateBooksPerPage();
-        window.addEventListener("resize", updateBooksPerPage);
-        return () => window.removeEventListener("resize", updateBooksPerPage);
+        updateitemsPerPage();
+        window.addEventListener("resize", updateitemsPerPage);
+        return () => window.removeEventListener("resize", updateitemsPerPage);
     }, []);
 
     const renderPages = () => {
@@ -72,8 +74,8 @@ const Pagination: FC<IPagination> = ({
 
     return (
         <div className={styles.paginationWrapper}>
-            <div className={styles.results}>Всего результатов: {currentBooks.length}</div>
-            {currentBooks.length > booksPerPage &&
+            <div className={styles.results}>Всего результатов: {currentItems.length}</div>
+            {currentItems.length > itemsPerPage &&
                 <div className={styles.pagination}>
                     <button
                         className={clsx(

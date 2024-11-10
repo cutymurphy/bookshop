@@ -1,7 +1,10 @@
+import { EPaginationPage } from "./enum";
+
 export interface IPagination {
     currentPage: number,
     setCurrentPage: (page: number) => void,
-    booksPerPage: number,
-    setBooksPerPage: (page: number) => void,
-    currentBooks: any[],
+    itemsPerPage: number,
+    setItemsPerPage: (page: number) => void,
+    currentItems: any[],
+    type?: EPaginationPage,
 }
