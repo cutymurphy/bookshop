@@ -6,7 +6,7 @@ import ShopContent from "./ShopPanel/ShopContent/ShopContent.tsx";
 import { IMain, initialPickedFilters } from "./types.ts";
 import { IFilter } from "./ShopPanel/ShopFilters/types.ts";
 import clsx from "clsx";
-import Pagination from "./Pagination/Pagination.tsx";
+import Pagination from "../../assets/components/Pagination/Pagination.tsx";
 import { IBook } from "./ShopPanel/ShopContent/types.ts";
 import Loader from "../../assets/components/Loader/Loader.tsx";
 
