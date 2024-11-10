@@ -55,4 +55,5 @@ export interface IOrder {
     user: IShortProfile,
     admin: IShortProfile | undefined,
     books: ICartBook[],
+    message?: string,
 }

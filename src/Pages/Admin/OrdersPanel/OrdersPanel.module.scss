@@ -188,9 +188,14 @@
         }
     }
 
-    .bolder {
+    .bolder,
+    .message {
         font-weight: 500;
         margin-left: 8px;
+    }
+
+    .message {
+        color: var(--main-color);
     }
 }
 

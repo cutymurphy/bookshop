@@ -93,7 +93,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                 </div>
                 {sortedOrders
                     .slice(currentPage * booksPerPage - booksPerPage, currentPage * booksPerPage)
-                    .map(({ id, date, address, totalCost, payment, status, user, admin, books }: IOrder, index: number) => (
+                    .map(({ id, date, address, totalCost, payment, status, user, admin, books, message }: IOrder, index: number) => (
                         <div
                             className={clsx(
                                 styles.rowWrapper,
@@ -171,6 +171,11 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                                     <span>Точное время заказа:
                                         <span className={styles.bolder}>{date}</span>
                                     </span>
+                                    {!!message &&
+                                        <span>Сообщение:
+                                            <span className={styles.message}>{message}</span>
+                                        </span>
+                                    }
                                 </div>
                                 <div className={styles.rowInfoColBooks}>
                                     {books.map(({ book, count }: ICartBook) => {
