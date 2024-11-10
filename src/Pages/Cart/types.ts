@@ -1,3 +1,4 @@
+import { IFullProfile, IOrder } from "../../types";
 import { IBook } from "../Main/ShopPanel/ShopContent/types";
 
 export interface ICartBook {
@@ -8,5 +9,7 @@ export interface ICartBook {
 export interface ICart {
     productsInCart: ICartBook[],
     setProductsInCart: (books: ICartBook[]) => void,
-    cartId: string,
+    user: IFullProfile,
+    orders: IOrder[],
+    setOrders: (order: IOrder[]) => void,
 }

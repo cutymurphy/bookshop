@@ -285,15 +285,15 @@ app.get('/api/cartStates/:id', (req, res) => {
 /* --------- CRUD for orders --------- */
 
 app.post('/api/order', (req, res) => {
-    const { idCartState, idUser, date, address, totalCost, payment, status } = req.body;
-    const id = uuidv4();
+    const { id, idCartState, idUser, date, address, totalCost, payment, status } = req.body;
+    const newId = !!id ? id : uuidv4();
 
     const query = `
         INSERT INTO bookshop.order (id, idCartState, idUser, idAdmin, date, address, totalCost, payment, status) 
         VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?);
     `;
 
-    db.query(query, [id, idCartState, idUser, date, address, totalCost, payment, status], (err, results) => {
+    db.query(query, [newId, idCartState, idUser, date, address, totalCost, payment, status], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send(`Ошибка при добавлении нового заказа`);

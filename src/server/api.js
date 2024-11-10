@@ -280,14 +280,14 @@ export const getCartStateBooksById = async (idCartState) => {
     }
 };
 
-export const addOrder = async (idCartState, idUser, date, address, totalCost, payment, status) => {
+export const addOrder = async (id, idCartState, idUser, date, address, totalCost, payment, status) => {
     try {
         const response = await fetch(`${API_BASE_URL}/order`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ idCartState, idUser, date, address, totalCost, payment, status }),
+            body: JSON.stringify({ id, idCartState, idUser, date, address, totalCost, payment, status }),
         });
 
         if (!response.ok) {

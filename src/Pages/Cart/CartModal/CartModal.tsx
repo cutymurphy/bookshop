@@ -13,6 +13,7 @@ import { IListOption } from "../../../assets/components/DropDown/types.ts";
 import { addCartState, addOrder, deleteBookFromCart } from "../../../server/api.js";
 import { v4 as uuidv4 } from 'uuid';
 import { ICartBook } from "../types.ts";
+import { IOrder } from "../../../types.ts";
 
 const CartModal: FC<ICartModal> = ({
     isOpen,
@@ -22,7 +23,9 @@ const CartModal: FC<ICartModal> = ({
     setCheckedBookItems,
     productsInCart,
     setProductsInCart,
-    cartId,
+    user,
+    setOrders,
+    orders,
     className,
 }) => {
     const [activeOrderType, setActiveOrderType] = useState<EOrderType>(EOrderType.delivery);
@@ -35,13 +38,14 @@ const CartModal: FC<ICartModal> = ({
     const getCartCost = (productsInCart: ICartBook[]): number => {
         let count = 0;
         productsInCart.forEach((product: ICartBook) => {
-                count += product.book.price * product.count;
+            count += product.book.price * product.count;
         });
         return Math.round(count * 100) / 100;
     }
 
     const handleAddCartState = async () => {
         const stateId = uuidv4();
+        const orderId = uuidv4();
         const orderAddress = activeOrderType === EOrderType.delivery ? address.trim() : defaultPickupAddress;
         const orderDate = (new Date()).toLocaleString();
         const orderStatus = EStatusType.placed;
@@ -53,11 +57,27 @@ const CartModal: FC<ICartModal> = ({
                 const currentBook = productsInCart.find((book: ICartBook) => book.book.id === bookId);
                 if (!!currentBook?.book) booksArr.push(currentBook);
                 const currentBookCount = currentBook?.count || 1;
-                await deleteBookFromCart(cartId, bookId);
+                await deleteBookFromCart(user.idCart, bookId);
                 await addCartState(stateId, bookId, currentBookCount);
             });
             await Promise.all(deleteAndAddPromises);
-            await addOrder(stateId, cartId, orderDate, orderAddress, getCartCost(booksArr), activePayType, orderStatus);
+            await addOrder(orderId, stateId, user.idUser, orderDate, orderAddress, getCartCost(booksArr), activePayType, orderStatus);
+            const currentOrder: IOrder = {
+                id: orderId,
+                date: orderDate,
+                address: orderAddress,
+                totalCost: getCartCost(booksArr),
+                payment: activePayType,
+                status: orderStatus,
+                user: {
+                    name: user.name,
+                    surname: user.surname,
+                    phone: !!user.phone ? user.phone : undefined,
+                },
+                admin: undefined,
+                books: booksArr,
+            }
+            setOrders([...orders, currentOrder]);
         } catch (error) {
             console.error("Ошибка при обработке состояния корзины и добавлении заказа:", error);
         } finally {
@@ -107,6 +127,7 @@ const CartModal: FC<ICartModal> = ({
                         <div className={styles.form}>
                             {activeOrderType === EOrderType.delivery ?
                                 <>
+                                    {/* TO-DO: сделать ограничения по вводимым символам */}
                                     <Input
                                         label="Адрес доставки"
                                         placeholder="Улица, дом, квартира..."

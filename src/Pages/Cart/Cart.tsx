@@ -18,8 +18,11 @@ import Button from "../../assets/components/Button/Button.tsx";
 const Cart: FC<ICart> = ({
     productsInCart,
     setProductsInCart,
-    cartId,
+    user,
+    orders,
+    setOrders,
 }) => {
+    const { idCart } = user;
     const imagePaths = [pictureCat1, pictureCat2, pictureCat3, pictureCat4];
     const randomIndex = Math.floor(Math.random() * imagePaths.length);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -78,12 +81,12 @@ const Cart: FC<ICart> = ({
         const newCount = operation === "plus" ? bookInCart.count + 1 : bookInCart.count - 1;
 
         try {
-            if (!!cartId) {
+            if (!!idCart) {
                 if (newCount === 0) {
                     setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookInCart.book.id));
-                    await deleteBookFromCart(cartId, bookInCart.book.id);
+                    await deleteBookFromCart(idCart, bookInCart.book.id);
                 } else {
-                    await updateCartBookCount(cartId, bookInCart.book.id, newCount);
+                    await updateCartBookCount(idCart, bookInCart.book.id, newCount);
                 }
             }
         } catch (error) {
@@ -103,7 +106,7 @@ const Cart: FC<ICart> = ({
             );
             setTimeout(() => {
                 setIsLoading(false);
-            }, !!cartId ? 500 : 200);
+            }, !!idCart ? 500 : 200);
         }
     };
 
@@ -112,16 +115,16 @@ const Cart: FC<ICart> = ({
         setProductsInCart(productsInCart.filter((book: ICartBook) =>
             book.book.id !== bookToDelete.book.id));
         try {
-            if (!!cartId) {
+            if (!!idCart) {
                 setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookToDelete.book.id));
-                await deleteBookFromCart(cartId, bookToDelete.book.id);
+                await deleteBookFromCart(idCart, bookToDelete.book.id);
             }
         } catch (error) {
             console.error("Ошибка при удалении книги из корзины:", error);
         } finally {
             setTimeout(() => {
                 setIsLoading(false);
-            }, !!cartId ? 500 : 200);
+            }, !!idCart ? 500 : 200);
         }
     };
 
@@ -231,7 +234,7 @@ const Cart: FC<ICart> = ({
                                 className={styles.checkoutBtn}
                                 disabled={checkedBookItems.length === 0}
                                 onClick={() => {
-                                    if (!!cartId) {
+                                    if (!!idCart) {
                                         (checkedBookItems.length > 0 ? setIsOpenedModal(true) : alert('Выберите товары.'))
                                     } else {
                                         alert('Сначала войдите в профиль или зарегистрируйтесь');
@@ -247,7 +250,9 @@ const Cart: FC<ICart> = ({
                                 setCheckedBookItems={setCheckedBookItems}
                                 productsInCart={productsInCart}
                                 setProductsInCart={setProductsInCart}
-                                cartId={cartId}
+                                user={user}
+                                setOrders={setOrders}
+                                orders={orders}
                             />
                         </div>
                     </div>

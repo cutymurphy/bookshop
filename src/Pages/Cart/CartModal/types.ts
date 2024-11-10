@@ -1,3 +1,4 @@
+import { IFullProfile, IOrder } from "../../../types";
 import { ICartBook } from "../types";
 
 export interface ICartModal {
@@ -9,5 +10,7 @@ export interface ICartModal {
     setCheckedBookItems: (books: string[]) => void,
     productsInCart: ICartBook[],
     setProductsInCart: (books: ICartBook[]) => void,
-    cartId: string,
+    user: IFullProfile,
+    orders: IOrder[],
+    setOrders: (order: IOrder[]) => void,
 }

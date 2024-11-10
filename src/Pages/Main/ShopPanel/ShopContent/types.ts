@@ -1,4 +1,3 @@
-import { IFullProfile } from "../../../../types";
 import { ICartBook } from "../../../Cart/types";
 import { IFilter } from "../ShopFilters/types";
 

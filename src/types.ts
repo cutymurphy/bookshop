@@ -52,6 +52,6 @@ export interface IOrder {
     payment: string,
     status: EStatusType,
     user: IShortProfile,
-    admin: IShortProfile,
+    admin: IShortProfile | undefined,
     books: ICartBook[],
 }

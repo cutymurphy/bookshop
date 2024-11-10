@@ -26,8 +26,8 @@ const App = () => {
             setCurrentAuthors(authorsData);
 
             const booksData = await fetchBooks();
-            const currBooks = booksData.map(({ id, name, price, category, genre, pagesCount, weight, imgLink, coverType, id_author }) => {
-                const author = authorsData.find(({ id }: IAuthor) => id === id_author)?.name || null;
+            const currBooks = booksData.map(({ id, name, price, category, genre, pagesCount, weight, imgLink, coverType, idAuthor }) => {
+                const author = authorsData.find(({ id }: IAuthor) => id === idAuthor)?.name || null;
                 const newBook: IBook = {
                     id,
                     name,
@@ -168,7 +168,9 @@ const App = () => {
                     <Cart
                         productsInCart={productsInCart}
                         setProductsInCart={setProductsInCart}
-                        cartId={currentUser.idCart}
+                        user={currentUser}
+                        orders={currentOrders}
+                        setOrders={setCurrentOrders}
                     />
                 } />
                 <Route path="/auth" element={
@@ -185,6 +187,8 @@ const App = () => {
                         element={
                             <Admin
                                 isLoading={isLoading}
+                                orders={currentOrders}
+                                setOrders={setCurrentOrders}
                             />
                         }
                     />
