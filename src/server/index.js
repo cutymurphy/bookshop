@@ -245,14 +245,14 @@ app.delete('/api/cartBook/:idCart/:idBook', (req, res) => {
 /* --------- CRUD for cart states --------- */
 
 app.post('/api/cartStates', (req, res) => {
-    const { id, idUser, idBook, bookCount } = req.body;
+    const { id, idBook, bookCount } = req.body;
 
     const query = `
-        INSERT INTO bookshop.cart_states (id, idUser, idBook, bookCount) 
-        VALUES (?, ?, ?, ?);
+        INSERT INTO bookshop.cart_states (id, idBook, bookCount) 
+        VALUES (?, ?, ?);
     `;
 
-    db.query(query, [id, idUser, idBook, bookCount], (err, results) => {
+    db.query(query, [id, idBook, bookCount], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send(`Ошибка при добавлении нового состояния`);
@@ -262,18 +262,41 @@ app.post('/api/cartStates', (req, res) => {
     });
 });
 
+app.get('/api/cartStates/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `SELECT * FROM bookshop.cart_states WHERE id = ?`;
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при получении состояния корзины на момент заказа');
+        }
+        if (results.length === 0 || !results) {
+            return res.json("");
+        }
+        res.json({
+            userId: results[0].idUser,
+            books: results.map(({ idBook, bookCount }) => ({
+                idBook,
+                bookCount,
+            }))
+        });
+    });
+});
+
 /* --------- CRUD for orders --------- */
 
 app.post('/api/order', (req, res) => {
-    const { idCartState, date, address, payment, status } = req.body;
+    const { idCartState, idUser, date, address, payment, status } = req.body;
     const id = uuidv4();
 
     const query = `
-        INSERT INTO bookshop.order (id, idCartState, idAdmin, date, address, payment, status) 
-        VALUES (?, ?, NULL, ?, ?, ?, ?);
+        INSERT INTO bookshop.order (id, idCartState, idUser, idAdmin, date, address, payment, status) 
+        VALUES (?, ?, ?, NULL, ?, ?, ?, ?);
     `;
 
-    db.query(query, [id, idCartState, date, address, payment, status], (err, results) => {
+    db.query(query, [id, idCartState, idUser, date, address, payment, status], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send(`Ошибка при добавлении нового заказа`);

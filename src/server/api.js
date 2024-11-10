@@ -239,14 +239,14 @@ export const deleteBookFromCart = async (idCart, idBook) => {
     }
 };
 
-export const addCartState = async (id, idUser, idBook, bookCount) => {
+export const addCartState = async (id, idBook, bookCount) => {
     try {
         const response = await fetch(`${API_BASE_URL}/cartStates`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ id, idUser, idBook, bookCount }),
+            body: JSON.stringify({ id, idBook, bookCount }),
         });
 
         if (!response.ok) {
@@ -260,14 +260,34 @@ export const addCartState = async (id, idUser, idBook, bookCount) => {
     }
 };
 
-export const addOrder = async (idCartState, date, address, payment, status) => {
+export const getCartStateBooksById = async (idCartState) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/cartStates/${idCartState}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении книг из состояния корзины', error);
+        throw error;
+    }
+};
+
+export const addOrder = async (idCartState, idUser, date, address, payment, status) => {
     try {
         const response = await fetch(`${API_BASE_URL}/order`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ idCartState, date, address, payment, status }),
+            body: JSON.stringify({ idCartState, idUser, date, address, payment, status }),
         });
 
         if (!response.ok) {

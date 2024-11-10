@@ -43,10 +43,10 @@ const CartModal: FC<ICartModal> = ({
             const deleteAndAddPromises = checkedBookItems.map(async (bookId: string) => {
                 const currentBookCount = productsInCart.find((book: ICartBook) => book.book.id === bookId)?.count || 1;
                 await deleteBookFromCart(cartId, bookId);
-                await addCartState(stateId, cartId, bookId, currentBookCount);
+                await addCartState(stateId, bookId, currentBookCount);
             });
             await Promise.all(deleteAndAddPromises);
-            await addOrder(stateId, orderDate, orderAddress, activePayType, orderStatus);
+            await addOrder(stateId, cartId, orderDate, orderAddress, activePayType, orderStatus);
         } catch (error) {
             console.error("Ошибка при обработке состояния корзины и добавлении заказа:", error);
         } finally {
