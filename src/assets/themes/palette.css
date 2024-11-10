@@ -8,6 +8,7 @@
   --light-black: rgb(87, 87, 87);
   --white: rgb(255, 255, 255);
   --main-color: rgb(168, 118, 255);
+  --main-color-light: rgb(208, 181, 255);
 
   --boarder-hover-color: rgb(116, 35, 255);
   --icon-hover-color: rgb(116, 35, 255);
@@ -25,9 +26,16 @@
   --input-disabled-bc: var(--dark-gray);
   --input-disabled-bg: var(--disabled-gray-2);
   --tabs-text-color-disabled: rgba(255, 255, 255, 0.25);
-
+  --border-light: var(--main-color-light);
   --scrollbar-thumb: var(--main-color);
   --scrollbar-track: var(--disabled-gray-2);
+
+  --badge-red-bg: rgb(255, 77, 77);
+  --badge-blue-bg: rgb(132, 167, 255);
+  --badge-purple-bg: rgb(179, 135, 255);
+  --badge-gray-bg: var(--gray);
+  --badge-green-bg: rgb(131, 255, 187);
+  --badge-pink-bg: rgb(255, 158, 174);
 
   --rad: 20px;
   --dur: 0.3s;

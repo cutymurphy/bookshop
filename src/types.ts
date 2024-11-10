@@ -1,3 +1,4 @@
+import { EStatusType } from "./Pages/Cart/CartModal/enums"
 import { ICartBook } from "./Pages/Cart/types"
 
 export interface IAuthor {
@@ -49,7 +50,7 @@ export interface IOrder {
     address: string,
     totalCost: number,
     payment: string,
-    status: string,
+    status: EStatusType,
     user: IShortProfile,
     admin: IShortProfile,
     books: ICartBook[],
