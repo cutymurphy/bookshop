@@ -6,7 +6,7 @@ import Loader from '../../../../assets/components/Loader/Loader.tsx';
 import { IOrder } from '../../../../types.ts';
 import PencilIcon from '../../../../assets/components/Icons/PencilIcon.tsx';
 import DropDown from '../../../../assets/components/DropDown/DropDown.tsx';
-import { EStatusType } from '../../../Cart/CartModal/enums.ts';
+import { defaultPickupAddress, EStatusType } from '../../../Cart/CartModal/enums.ts';
 import Input from '../../../../assets/components/Input/Input.tsx';
 import ButtonAdmin from '../../../../assets/components/ButtonAdmin/ButtonAdmin.tsx';
 import ArrowLeftOutlineIcon from '../../../../assets/components/Icons/ArrowLeftOutlineIcon.tsx';
@@ -15,6 +15,7 @@ import Badge from '../../../../assets/components/Badge/Badge.tsx';
 import { getBadgeType } from '../utils.ts';
 import { IListOption } from '../../../../assets/components/DropDown/types.ts';
 import { editOrder } from '../../../../server/api.js';
+import { ICartBook } from '../../../Cart/types.ts';
 
 const OrderForm: FC<IOrderForm> = ({
     currentAdmin,
@@ -68,8 +69,8 @@ const OrderForm: FC<IOrderForm> = ({
         setOrderInfo(currentOrder);
         setInitialOrderInfo(currentOrder);
         setTimeout(() => {
-            setIsLoading(false);
-        }, 1000)
+        setIsLoading(false);
+        }, 1000);
     }, [id, orders]);
 
     if (!orderInfo) {
@@ -142,6 +143,45 @@ const OrderForm: FC<IOrderForm> = ({
                             type={"gray"}
                         />
                     }
+                </div>
+                <div className={styles.orderInfoWrapper}>
+                    <span className={styles.title}>Подробная информация о заказе:</span>
+                    <div className={styles.orderInfo}>
+                        <div className={styles.info}>
+                            <span>Покупатель: <span className={styles.bolder}>{orderInfo.user.name} {orderInfo.user.surname}</span></span>
+                            <span>Номер для связи: <span className={styles.bolder}>{orderInfo.user.phone}</span></span>
+                            <span>Дата заказа: <span className={styles.bolder}>{orderInfo.date}</span></span>
+                            <span>Получение: <span className={styles.bolder}>{orderInfo.address !== defaultPickupAddress ? "Доставка" : "Самовывоз"}</span></span>
+                            <span>Адрес получения: <span className={styles.bolder}>{orderInfo.address}</span></span>
+                            <span>Стоимость: <span className={styles.bolder}>{orderInfo.totalCost} руб.</span></span>
+                            <span>Оплата: <span className={styles.bolder}>{orderInfo.payment}</span></span>
+                        </div>
+                        <div className={styles.books}>
+                            <span className={styles.booksTitle}>Книги в заказе:</span>
+                            <div className={styles.booksWrapper}>
+                                {orderInfo.books.map(({ book, count }: ICartBook) => {
+                                    const { id, name, imgLink, author } = book;
+    
+                                    return (
+                                        <div className={styles.bookRow} key={id}>
+                                            <img
+                                                className={styles.productImage}
+                                                src={imgLink}
+                                                alt={name}
+                                            />
+                                            <div className={styles.bookInfo}>
+                                                <div className={styles.bookTitle}>
+                                                    <span className={styles.bookInfoName}>{name}</span>
+                                                    {!!author && <span>{author}</span>}
+                                                </div>
+                                                <span className={styles.bookInfoCount}>Количество: {count}</span>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
