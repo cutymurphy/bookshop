@@ -5,9 +5,8 @@ import styles from "./OrdersPanel.module.scss";
 import clsx from "clsx";
 import { IOrder } from "../../../types";
 import ArrowDownOutlineIcon from "../../../assets/components/Icons/ArrowDownOutlineIcon.tsx";
-import { defaultPickupAddress, EStatusType } from "../../Cart/CartModal/enums.ts";
+import { defaultPickupAddress } from "../../Cart/CartModal/enums.ts";
 import Badge from "../../../assets/components/Badge/Badge.tsx";
-import { EBadgeType } from "../../../assets/components/Badge/enums.ts";
 import { ICartBook } from "../../Cart/types.ts";
 import Pagination from "../../../assets/components/Pagination/Pagination.tsx";
 import { EPaginationPage } from "../../../assets/components/Pagination/enum.ts";
@@ -18,6 +17,7 @@ import { deleteCartState, deleteOrder } from "../../../server/api.js";
 import PencilIcon from "../../../assets/components/Icons/PencilIcon.tsx";
 import { useNavigate } from "react-router-dom";
 import { EPath } from "../../../AppPathes.ts";
+import { getBadgeType } from "./utils.ts";
 
 const OrdersPanel: FC<IOrdersPanel> = ({
     orders,
@@ -41,16 +41,6 @@ const OrdersPanel: FC<IOrdersPanel> = ({
 
         return dateObjB.getTime() - dateObjA.getTime();
     });
-
-    const getBadgeType = (status: EStatusType): EBadgeType => {
-        if (status === EStatusType.placed) return EBadgeType.gray;
-        if (status === EStatusType.cancelled) return EBadgeType.red;
-        if (status === EStatusType.ready) return EBadgeType.green;
-        if (status === EStatusType.closed) return EBadgeType.blue;
-        if (status === EStatusType["in-process"]) return EBadgeType.pink;
-        if (status === EStatusType.delivered) return EBadgeType.purple;
-        return EBadgeType.gray;
-    }
 
     const handleDeleteOrders = (ordersId: string[]) => {
         setIsLoading(true);
@@ -83,7 +73,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                         classNameLabel={styles.checkboxLabel}
                     />
                     <span>№</span>
-                    <span>Пользователь</span>
+                    <span>Получатель</span>
                     <span>Цена</span>
                     <span>Дата</span>
                     <span>Адрес</span>
@@ -217,7 +207,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                 className={styles.deleteBtn}
                 onClick={() => checkedItems.length === 0 ? alert("Выберите заказы") : handleDeleteOrders(checkedItems)}
                 disabled={checkedItems.length === 0}
-                icon={<TrashBinIcon />}
+                rightIcon={<TrashBinIcon />}
                 text="Удалить"
             />
         </div>

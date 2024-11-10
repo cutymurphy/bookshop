@@ -210,6 +210,9 @@ const App = () => {
                         path={`${EPath.adminOrder}/:id`}
                         element={
                             <OrderForm
+                                currentAdmin={currentUser}
+                                orders={currentOrders}
+                                setOrders={setCurrentOrders}
                                 isLoading={isLoading}
                                 setIsLoading={setIsLoading}
                             />

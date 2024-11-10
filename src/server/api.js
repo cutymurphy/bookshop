@@ -321,6 +321,27 @@ export const addOrder = async (id, idCartState, idUser, date, address, totalCost
     }
 };
 
+export const editOrder = async (id, idAdmin, dateModified, message, status) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/order/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ idAdmin, dateModified, message, status }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при обновлении пользователя', error);
+        throw error;
+    }
+};
+
 export const deleteOrder = async (id) => {
     try {
         const response = await fetch(`${API_BASE_URL}/order/${id}`, {

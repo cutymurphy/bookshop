@@ -47,13 +47,15 @@ export const initialUser: IFullProfile = {
 export interface IOrder {
     id: string,
     idCartState: string,
+    idAdmin?: string,
     date: string,
     address: string,
     totalCost: number,
     payment: string,
     status: EStatusType,
     user: IShortProfile,
-    admin: IShortProfile | undefined,
+    admin?: IShortProfile,
+    dateModified?: string,
     books: ICartBook[],
     message?: string,
 }

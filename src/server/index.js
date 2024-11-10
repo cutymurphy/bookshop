@@ -323,6 +323,34 @@ app.post('/api/order', (req, res) => {
     });
 });
 
+app.put('/api/order/:id', (req, res) => {
+    const { id } = req.params;
+    const { idAdmin, dateModified, message, status } = req.body;
+    
+    const query = `
+        UPDATE bookshop.order
+        SET 
+            idAdmin = COALESCE(?, idAdmin), 
+            dateModified = COALESCE(?, dateModified), 
+            message = COALESCE(?, message), 
+            status = COALESCE(?, status)
+        WHERE id = ?;
+    `;
+
+    db.query(query, [idAdmin, dateModified, message, status, id], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при обновлении заказа');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Заказ не найден');
+        }
+
+        res.status(200).json(id);
+    });
+});
+
 app.get('/api/order', (req, res) => {
     db.query('SELECT * FROM bookshop.order', (err, results) => {
         if (err) {
