@@ -3,9 +3,12 @@ import { IAdmin } from "./types";
 import styles from "./Admin.module.scss";
 import Loader from "../../assets/components/Loader/Loader.tsx";
 import Tabs from "../../assets/components/Tabs/Tabs.tsx";
+import OrdersPanel from "./OrdersPanel/OrdersPanel.tsx";
 
 const Admin: FC<IAdmin> = ({
     isLoading,
+    orders,
+    setOrders,
 }) => {
     return (
         isLoading ? (
@@ -16,7 +19,10 @@ const Admin: FC<IAdmin> = ({
                     tabsItems={[
                         {
                             title: "Заказы",
-                            content: <div>Заказы</div>
+                            content: <OrdersPanel
+                                orders={orders}
+                                setOrders={setOrders}
+                            />
                         },
                         {
                             title: "Пользователи",
