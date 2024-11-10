@@ -280,6 +280,26 @@ export const getCartStateBooksById = async (idCartState) => {
     }
 };
 
+export const deleteCartState = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/cartStates/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при удалении состояния корзины', error);
+        throw error;
+    }
+};
+
 export const addOrder = async (id, idCartState, idUser, date, address, totalCost, payment, status) => {
     try {
         const response = await fetch(`${API_BASE_URL}/order`, {
@@ -297,6 +317,26 @@ export const addOrder = async (id, idCartState, idUser, date, address, totalCost
         return await response.json();
     } catch (error) {
         console.error('Ошибка при добавлении нового заказа', error);
+        throw error;
+    }
+};
+
+export const deleteOrder = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/order/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при удалении заказа', error);
         throw error;
     }
 };

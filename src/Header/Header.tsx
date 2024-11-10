@@ -43,6 +43,7 @@ const Header: FC<IHeader> = ({
                 <div className={styles.icons}>
                     <div className={styles.userIconWrapper}>
                         <Link to={EPath.auth}>
+                            {/* TO-DO: добавить работающий userName */}
                             <div className={styles.userName}></div>
                             <img className={styles.iconImage} src={userIcon} />
                         </Link>

@@ -11,11 +11,17 @@ import { EBadgeType } from "../../../assets/components/Badge/enums.ts";
 import { ICartBook } from "../../Cart/types.ts";
 import Pagination from "../../../assets/components/Pagination/Pagination.tsx";
 import { EPaginationPage } from "../../../assets/components/Pagination/enum.ts";
+import Checkbox from "../../../assets/components/Checkbox/Checkbox.tsx";
+import TrashBinIcon from "../../../assets/components/Icons/TrashBinIcon.tsx";
+import ButtonAdmin from "../../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
+import { deleteCartState, deleteOrder } from "../../../server/api.js";
 
 const OrdersPanel: FC<IOrdersPanel> = ({
     orders,
     setOrders,
+    setIsLoading,
 }) => {
+    const [checkedItems, setCheckedItems] = useState<string[]>([]);
     const [openedInfo, setOpenedInfo] = useState<string>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
@@ -42,10 +48,36 @@ const OrdersPanel: FC<IOrdersPanel> = ({
         return EBadgeType.gray;
     }
 
+    const handleDeleteOrders = (ordersId: string[]) => {
+        setIsLoading(true);
+        ordersId.forEach(async (id: string) => {
+            const stateId = orders.find((order: IOrder) => order.id === id)?.idCartState;
+            await deleteOrder(id);
+            await deleteCartState(stateId);
+        })
+        setCurrentPage(1);
+        setOpenedInfo("");
+        setOrders(orders.filter((order: IOrder) => !ordersId.includes(order.id)));
+        setCheckedItems([]);
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
+    }
+
     return (
         <div className={styles.orders}>
             <div className={styles.ordersTable}>
                 <div className={clsx(styles.ordersRow, styles.headerRow)}>
+                    <Checkbox
+                        id="commonCheckbox"
+                        onChange={() => checkedItems.length === orders.length ?
+                            setCheckedItems([]) :
+                            setCheckedItems(orders.map((order: IOrder) => order.id))
+                        }
+                        checked={checkedItems.length === orders.length}
+                        className={styles.checkbox}
+                        classNameLabel={styles.checkboxLabel}
+                    />
                     <span>№</span>
                     <span>Пользователь</span>
                     <span>Цена</span>
@@ -69,6 +101,16 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                                 className={clsx(styles.ordersRow, styles.mainRow)}
                                 onClick={() => { openedInfo === id ? setOpenedInfo("") : setOpenedInfo(id) }}
                             >
+                                <Checkbox
+                                    id={id}
+                                    onChange={() => checkedItems.includes(id) ?
+                                        setCheckedItems(checkedItems.filter((item: string) => item !== id)) :
+                                        setCheckedItems([...checkedItems, id])
+                                    }
+                                    checked={checkedItems.includes(id)}
+                                    className={styles.checkbox}
+                                    classNameLabel={styles.checkboxLabel}
+                                />
                                 <span>{orders.findIndex((order: IOrder) => order.id === id) + 1}</span>
                                 <span className={styles.rowPadding}>{`${user.name} ${user.surname}`}</span>
                                 <span className={styles.rowPadding}>{totalCost}</span>
@@ -148,6 +190,13 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                 setItemsPerPage={setBooksPerPage}
                 currentItems={orders}
                 type={EPaginationPage.admin}
+            />
+            <ButtonAdmin
+                className={styles.deleteBtn}
+                onClick={() => checkedItems.length === 0 ? alert("Выберите заказы") : handleDeleteOrders(checkedItems)}
+                disabled={checkedItems.length === 0}
+                icon={<TrashBinIcon />}
+                text="Удалить"
             />
         </div>
     )

@@ -9,6 +9,7 @@ const Admin: FC<IAdmin> = ({
     isLoading,
     orders,
     setOrders,
+    setIsLoading,
 }) => {
     return (
         isLoading ? (
@@ -22,6 +23,7 @@ const Admin: FC<IAdmin> = ({
                             content: <OrdersPanel
                                 orders={orders}
                                 setOrders={setOrders}
+                                setIsLoading={setIsLoading}
                             />
                         },
                         {

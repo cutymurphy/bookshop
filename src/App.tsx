@@ -82,7 +82,7 @@ const App = () => {
                     : undefined;
 
                 const userImportant = (({ idUser, isAdmin, idCart, password, email, ...rest }) => rest)(user);
-                const orderImportant = (({ idCartState, idUser, idAdmin, ...rest }) => rest)(order);
+                const orderImportant = (({ idUser, idAdmin, ...rest }) => rest)(order);
 
                 const orderInfo: IOrder = {
                     ...orderImportant,
@@ -189,6 +189,7 @@ const App = () => {
                                 isLoading={isLoading}
                                 orders={currentOrders}
                                 setOrders={setCurrentOrders}
+                                setIsLoading={setIsLoading}
                             />
                         }
                     />

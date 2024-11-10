@@ -1,0 +1,52 @@
+.btn {
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--main-color);
+    background: none;
+    border: none;
+    outline: none;
+    font-family: var(--ptsans-font);
+    font-weight: 500;
+    font-size: 20px;
+    padding: 0 8px;
+    border-radius: 5px;
+    transition: .3s;
+
+    svg {
+        height: 20px;
+        width: auto;
+
+        path {
+            transition: .3s;
+            fill: var(--main-color);
+        }
+    }
+
+    &:hover {
+        color: var(--icon-hover-color);
+
+        svg path {
+            fill: var(--icon-hover-color);
+        }
+    }
+
+    &-disabled {
+        color: var(--gray);
+        cursor: not-allowed;
+
+        svg path {
+            fill: var(--gray);
+        }
+
+        &:hover {
+            color: var(--gray);
+    
+            svg path {
+                fill: var(--gray);
+            }
+        }
+    }
+}

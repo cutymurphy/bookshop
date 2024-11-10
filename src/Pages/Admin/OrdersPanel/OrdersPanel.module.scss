@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    position: relative;
 }
 
 .ordersTable {
@@ -21,6 +22,22 @@
             font-family: var(--ptsans-font);
             word-break: break-word;
             overflow-wrap: break-word;
+        }
+
+        .checkbox {
+            position: absolute;
+            right: 102%;
+            top: 8px;
+
+            .checkboxLabel:before {
+                border: 1px solid var(--boarder-system-color);
+            }
+
+            &:hover {
+                .checkboxLabel:before {
+                    border: 1px solid var(--main-color);
+                }
+            }
         }
 
         .rowIcon {
@@ -154,4 +171,11 @@
         font-weight: 500;
         margin-left: 8px;
     }
+}
+
+.deleteBtn {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    top: -75px;
 }

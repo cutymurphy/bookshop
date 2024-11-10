@@ -282,6 +282,26 @@ app.get('/api/cartStates/:id', (req, res) => {
     });
 });
 
+app.delete('/api/cartStates/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `DELETE FROM bookshop.cart_states WHERE id = ?`;
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса на удаление:', err);
+            return res.status(500).send('Ошибка при удалении состояния корзины');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Запись для удаления не найдена');
+        }
+
+        res.status(200).json(id);
+    });
+});
+
+
 /* --------- CRUD for orders --------- */
 
 app.post('/api/order', (req, res) => {
@@ -310,6 +330,25 @@ app.get('/api/order', (req, res) => {
             return res.status(500).send('Ошибка при получении данных о заказах');
         }
         res.json(results);
+    });
+});
+
+app.delete('/api/order/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `DELETE FROM bookshop.order WHERE id = ?`;
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса на удаление:', err);
+            return res.status(500).send('Ошибка при удалении заказа');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Запись для удаления не найдена');
+        }
+
+        res.status(200).json(id);
     });
 });
 

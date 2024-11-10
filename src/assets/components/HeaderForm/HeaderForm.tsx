@@ -27,6 +27,7 @@ const HeaderForm: FC<IHeaderForm> = ({
     return (
         <div className={styles.search}>
             <form className={styles.headerForm}>
+                {/* TO-DO: сделать так, чтобы поиск работал на любой странице */}
                 <input
                     type="search"
                     placeholder="Search..."

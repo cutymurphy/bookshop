@@ -64,6 +64,7 @@ const CartModal: FC<ICartModal> = ({
             await addOrder(orderId, stateId, user.idUser, orderDate, orderAddress, getCartCost(booksArr), activePayType, orderStatus);
             const currentOrder: IOrder = {
                 id: orderId,
+                idCartState: stateId,
                 date: orderDate,
                 address: orderAddress,
                 totalCost: getCartCost(booksArr),
