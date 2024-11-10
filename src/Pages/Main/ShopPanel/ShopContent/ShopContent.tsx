@@ -99,7 +99,7 @@ const ShopContent: FC<IShopContent> = ({
                         .slice(currentPage * booksPerPage - booksPerPage, currentPage * booksPerPage)
                         .map((book: IBook) => {
                             const isBookInCart = productsInCart.some(({ book: product }: ICartBook) => JSON.stringify(product) === JSON.stringify(book));
-
+                            /* TO-DO: добавить детальную страницу товара  */
                             return (
                                 <div
                                     className={styles.productСard}

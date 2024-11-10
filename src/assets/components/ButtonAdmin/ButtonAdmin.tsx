@@ -9,19 +9,24 @@ const ButtonAdmin: FC<IButtonAdmin> = ({
     disabled,
     text,
     className,
-    icon,
+    leftIcon,
+    rightIcon,
+    type = "purple",
+    fill = "clear",
 }) => {
     return (
         <button
             className={clsx(
                 styles.btn,
-                disabled && styles["btn-disabled"],
+                styles[`btn-${fill}-${type}`],
+                !!disabled && styles[`btn-${fill}-disabled`],
                 className,
             )}
             onClick={onClick}
         >
+            {leftIcon}
             {text}
-            {icon}
+            {rightIcon}
         </button>
     )
 }

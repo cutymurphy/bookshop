@@ -4,7 +4,6 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    color: var(--main-color);
     background: none;
     border: none;
     outline: none;
@@ -12,8 +11,80 @@
     font-weight: 500;
     font-size: 20px;
     padding: 0 8px;
-    border-radius: 5px;
+    border-radius: 10px;
     transition: .3s;
+
+    &-clear-purple {
+        color: var(--main-color);
+
+        svg path {
+            fill: var(--main-color);
+        }
+
+        &:hover {
+            color: var(--icon-hover-color);
+
+            svg path {
+                fill: var(--icon-hover-color);
+            }
+        }
+    }
+
+    &-clear-gray {
+        color: var(--gray);
+
+        svg path {
+            fill: var(--gray);
+        }
+
+        &:hover {
+            color: var(--dark-gray);
+
+            svg path {
+                fill: var(--dark-gray);
+            }
+        }
+    }
+
+    &-outline-purple {
+        color: var(--main-color);
+        border: 1px solid var(--main-color);
+        padding: 4px 28px;
+        height: fit-content;
+
+        svg path {
+            fill: var(--main-color);
+        }
+
+        &:hover {
+            color: var(--icon-hover-color);
+            border: 1px solid var(--icon-hover-color);
+
+            svg path {
+                fill: var(--icon-hover-color);
+            }
+        }
+    }
+
+    &-outline-gray {
+        color: var(--gray);
+        border: 1px solid var(--main-color);
+        padding: 4px 28px;
+        height: fit-content;
+
+        svg path {
+            fill: var(--gray);
+        }
+
+        &:hover {
+            color: var(--dark-gray);
+            border: 1px solid var(--dark-gray);
+
+            svg path {
+                fill: var(--dark-gray);
+            }
+        }
+    }
 
     svg {
         height: 20px;
@@ -21,19 +92,10 @@
 
         path {
             transition: .3s;
-            fill: var(--main-color);
         }
     }
 
-    &:hover {
-        color: var(--icon-hover-color);
-
-        svg path {
-            fill: var(--icon-hover-color);
-        }
-    }
-
-    &-disabled {
+    &-clear-disabled {
         color: var(--gray);
         cursor: not-allowed;
 
@@ -43,7 +105,26 @@
 
         &:hover {
             color: var(--gray);
-    
+
+            svg path {
+                fill: var(--gray);
+            }
+        }
+    }
+
+    &-outline-disabled {
+        color: var(--gray);
+        border: 1px solid var(--gray);
+        cursor: not-allowed;
+
+        svg path {
+            fill: var(--gray);
+        }
+
+        &:hover {
+            color: var(--gray);
+            border: 1px solid var(--gray);
+
             svg path {
                 fill: var(--gray);
             }
