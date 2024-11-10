@@ -1,0 +1,157 @@
+.orders {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ordersTable {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+
+    .ordersRow {
+        display: grid;
+        grid-template-columns: 5% 15% 10% 12% 15% 15% 13% 15%;
+        padding: 8px 0 16px 0;
+        position: relative;
+        cursor: pointer;
+
+        span {
+            font-family: var(--ptsans-font);
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .rowIcon {
+            position: absolute;
+            left: 101%;
+            top: 8px;
+            cursor: pointer;
+            display: flex;
+            height: fit-content;
+            width: fit-content;
+            transition: 0.3s;
+
+            &-opened {
+                transform: rotate(180deg);
+            }
+        }
+
+        .rowPadding {
+            padding-right: 20px;
+        }
+
+        .defaultAddress {
+            font-weight: 600;
+        }
+    }
+
+    .mainRow {
+        cursor: pointer;
+    }
+
+    .headerRow {
+        cursor: default;
+
+        span {
+            font-weight: 600;
+            font-size: 18px;
+        }
+    }
+
+    .rowWrapper {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid var(--disabled-gray-2);
+        transition: .3s;
+
+        &:last-child {
+            border-bottom: unset;
+        }
+    }
+
+    .borderPurple {
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .rowInfo {
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+        padding: 0 5%;
+        background-color: var(--white);
+        transition: .3s;
+        display: flex;
+        gap: 20px;
+
+        &-opened {
+            height: fit-content;
+            opacity: 1;
+            overflow: visible;
+            transition: .3s;
+            padding: 16px 5% 24px 5%;
+        }
+
+        .rowInfoColInfo {
+            display: flex;
+            flex-direction: column;
+            width: 40%;
+            flex-shrink: 1;
+            gap: 12px;
+        }
+
+        .rowInfoColBooks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            width: 60%;
+            flex-shrink: 0;
+
+            .bookRow {
+                width: calc(50% - 6px);
+                display: flex;
+                gap: 16px;
+
+                .productImage {
+                    max-width: 80px;
+                    height: 100%;
+                }
+
+                .bookInfo {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    padding: 8px 16px 8px 0;
+                    height: -webkit-fill-available;
+                    justify-content: space-between;
+
+                    .bookTitle {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                    }
+
+                    &Name {
+                        font-weight: 500;
+                    }
+
+                    &Count {
+                        font-weight: 500;
+                        color: var(--main-color);
+                    }
+
+                    span {
+                        word-break: break-word;
+                        overflow-wrap: break-word;
+                    }
+                }
+            }
+        }
+    }
+
+    .bolder {
+        font-weight: 500;
+        margin-left: 8px;
+    }
+}
