@@ -32,6 +32,14 @@ const CartModal: FC<ICartModal> = ({
     const isOrderDisabled = activeOrderType === EOrderType.delivery && (!address.trim() || !activePayType) ||
         activeOrderType === EOrderType.pickup && !activePayType;
 
+    const getCartCost = (productsInCart: ICartBook[]): number => {
+        let count = 0;
+        productsInCart.forEach((product: ICartBook) => {
+                count += product.book.price * product.count;
+        });
+        return Math.round(count * 100) / 100;
+    }
+
     const handleAddCartState = async () => {
         const stateId = uuidv4();
         const orderAddress = activeOrderType === EOrderType.delivery ? address.trim() : defaultPickupAddress;
@@ -40,13 +48,16 @@ const CartModal: FC<ICartModal> = ({
 
         setIsLoading(true);
         try {
+            let booksArr: ICartBook[] = [];
             const deleteAndAddPromises = checkedBookItems.map(async (bookId: string) => {
-                const currentBookCount = productsInCart.find((book: ICartBook) => book.book.id === bookId)?.count || 1;
+                const currentBook = productsInCart.find((book: ICartBook) => book.book.id === bookId);
+                if (!!currentBook?.book) booksArr.push(currentBook);
+                const currentBookCount = currentBook?.count || 1;
                 await deleteBookFromCart(cartId, bookId);
                 await addCartState(stateId, bookId, currentBookCount);
             });
             await Promise.all(deleteAndAddPromises);
-            await addOrder(stateId, cartId, orderDate, orderAddress, activePayType, orderStatus);
+            await addOrder(stateId, cartId, orderDate, orderAddress, getCartCost(booksArr), activePayType, orderStatus);
         } catch (error) {
             console.error("Ошибка при обработке состояния корзины и добавлении заказа:", error);
         } finally {

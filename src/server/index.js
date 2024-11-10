@@ -275,28 +275,25 @@ app.get('/api/cartStates/:id', (req, res) => {
         if (results.length === 0 || !results) {
             return res.json("");
         }
-        res.json({
-            userId: results[0].idUser,
-            books: results.map(({ idBook, bookCount }) => ({
-                idBook,
-                bookCount,
-            }))
-        });
+        res.json(results.map(({ idBook, bookCount }) => ({
+            idBook,
+            bookCount,
+        })));
     });
 });
 
 /* --------- CRUD for orders --------- */
 
 app.post('/api/order', (req, res) => {
-    const { idCartState, idUser, date, address, payment, status } = req.body;
+    const { idCartState, idUser, date, address, totalCost, payment, status } = req.body;
     const id = uuidv4();
 
     const query = `
-        INSERT INTO bookshop.order (id, idCartState, idUser, idAdmin, date, address, payment, status) 
-        VALUES (?, ?, ?, NULL, ?, ?, ?, ?);
+        INSERT INTO bookshop.order (id, idCartState, idUser, idAdmin, date, address, totalCost, payment, status) 
+        VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?);
     `;
 
-    db.query(query, [id, idCartState, idUser, date, address, payment, status], (err, results) => {
+    db.query(query, [id, idCartState, idUser, date, address, totalCost, payment, status], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send(`Ошибка при добавлении нового заказа`);

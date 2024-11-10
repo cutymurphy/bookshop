@@ -1,3 +1,5 @@
+import { ICartBook } from "./Pages/Cart/types"
+
 export interface IAuthor {
     id: string,
     name: string,
@@ -24,6 +26,12 @@ export interface IFullProfile {
     phone: string,
 }
 
+export interface IShortProfile {
+    name: string,
+    surname: string,
+    phone?: string,
+}
+
 export const initialUser: IFullProfile = {
     idUser: "",
     isAdmin: false,
@@ -37,10 +45,12 @@ export const initialUser: IFullProfile = {
 
 export interface IOrder {
     id: string,
-    idCartState: string,
-    idAdmin?: string,
     date: string,
     address: string,
+    totalCost: number,
     payment: string,
     status: string,
+    user: IShortProfile,
+    admin: IShortProfile,
+    books: ICartBook[],
 }

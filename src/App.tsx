@@ -5,7 +5,7 @@ import { Auth, Cart, Main } from './Pages/index.ts';
 import { Route, Routes } from 'react-router-dom';
 import { ICartBook } from './Pages/Cart/types.ts';
 import { IBook } from './Pages/Main/ShopPanel/ShopContent/types.ts';
-import { fetchBooks, fetchAuthors, getUserById, getCartBooksById, fetchUsers, fetchOrders } from './server/api.js';
+import { fetchBooks, fetchAuthors, getUserById, getCartBooksById, fetchUsers, fetchOrders, getCartStateBooksById } from './server/api.js';
 import { IAuthor, IFullProfile, initialUser, IOrder } from './types.ts';
 import Admin from './Pages/Admin/Admin.tsx';
 
@@ -52,15 +52,47 @@ const App = () => {
         try {
             const usersData = await fetchUsers();
             setCurrentUsers(usersData);
+            return usersData;
         } catch (error) {
             console.error('Ошибка загрузки пользователей:', error);
+            return [];
         }
     };
 
-    const loadOrders = async () => {
+    const loadOrders = async (users) => {
         try {
             const ordersData = await fetchOrders();
-            setCurrentOrders(ordersData);
+
+            const orders = await Promise.all(ordersData.map(async (order) => {
+
+                const booksData = await getCartStateBooksById(order.idCartState);
+                const orderBooks = booksData.map((book) => {
+                    const bookInfo = initialBooks.find((currBook) => book.idBook === currBook.id);
+                    return {
+                        book: bookInfo,
+                        count: book.bookCount,
+                    }
+                });
+
+                const user = users.find((currUser) => currUser.idUser === order.idUser);
+                const admin = users.find((currUser) => currUser.idUser === order.idAdmin);
+
+                const adminImportant = admin
+                    ? (({ idUser, isAdmin, idCart, password, email, phone, ...rest }) => rest)(admin)
+                    : undefined;
+
+                const userImportant = (({ idUser, isAdmin, idCart, password, email, ...rest }) => rest)(user);
+                const orderImportant = (({ idCartState, idUser, idAdmin, ...rest }) => rest)(order);
+
+                const orderInfo: IOrder = {
+                    ...orderImportant,
+                    user: userImportant,
+                    admin: adminImportant,
+                    books: orderBooks,
+                }
+                return (orderInfo);
+            }));
+            setCurrentOrders(orders);
         } catch (error) {
             console.error('Ошибка загрузки заказов:', error);
         }
@@ -86,8 +118,8 @@ const App = () => {
 
     const loadAdminData = async () => {
         setIsLoading(true);
-        await loadUsers();
-        await loadOrders();
+        const usersData = await loadUsers();
+        await loadOrders(usersData);
         setTimeout(() => {
             setIsLoading(false);
         }, 2000);
