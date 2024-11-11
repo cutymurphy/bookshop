@@ -2,13 +2,75 @@ const API_BASE_URL = 'http://localhost:3001/api';
 
 export const fetchBooks = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/books`);
+        const response = await fetch(`${API_BASE_URL}/book`);
         if (!response.ok) {
             throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
         }
         return await response.json();
     } catch (error) {
         console.error('Ошибка при получении книг:', error);
+        throw error;
+    }
+};
+
+export const addBook = async (id, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/book`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при добавлении новой книги', error);
+        throw error;
+    }
+};
+
+export const editBook = async (id, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/book/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при обновлении книги', error);
+        throw error;
+    }
+};
+
+export const deleteBook = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/book/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при удалении книги', error);
         throw error;
     }
 };

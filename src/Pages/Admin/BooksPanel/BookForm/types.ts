@@ -1,7 +1,7 @@
-import { IAuthor, IFullProfile } from "../../../types";
-import { IBook } from "../../Main/ShopPanel/ShopContent/types";
+import { IAuthor, IFullProfile } from "../../../../types";
+import { IBook } from "../../../Main/ShopPanel/ShopContent/types";
 
-export interface IBooksPanel {
+export interface IBookForm {
     books: IBook[],
     setBooks: (orders: IBook[]) => void,
     authors: IAuthor[],

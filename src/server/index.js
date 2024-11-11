@@ -12,13 +12,86 @@ app.use(express.json());
 
 /* --------- CRUD for books --------- */
 
-app.get('/api/books', (req, res) => {
+app.get('/api/book', (req, res) => {
     db.query('SELECT * FROM bookshop.book', (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send('Ошибка при получении данных о книгах');
         }
         res.json(results);
+    });
+});
+
+app.post('/api/book', (req, res) => {
+    const { idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = req.body;
+    const newId = !!id ? id : uuidv4();
+
+    const query = `
+        INSERT INTO bookshop.book (id, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    `;
+
+    db.query(query, [newId, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send(`Ошибка при добавлении новой книгиы`);
+        }
+
+        res.status(201).json(id);
+    });
+});
+
+app.put('/api/book/:id', (req, res) => {
+    const { id } = req.params;
+    const { idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = req.body;
+    
+    const query = `
+        UPDATE bookshop.book
+        SET 
+            idAdmin = COALESCE(?, idAdmin), 
+            dateModified = COALESCE(?, dateModified), 
+            name = COALESCE(?, name), 
+            price = COALESCE(?, price),
+            category = COALESCE(?, category),
+            genre = COALESCE(?, genre),
+            imgLink = COALESCE(?, imgLink),
+            idAuthor = COALESCE(?, idAuthor),
+            pagesCount = COALESCE(?, pagesCount),
+            weight = COALESCE(?, weight),
+            coverType = COALESCE(?, coverType),
+        WHERE id = ?;
+    `;
+
+    db.query(query, [idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType, id], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при обновлении книги');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Заказ не найден');
+        }
+
+        res.status(200).json(id);
+    });
+});
+
+app.delete('/api/book/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `DELETE FROM bookshop.book WHERE id = ?`;
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса на удаление:', err);
+            return res.status(500).send('Ошибка при удалении книги');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Запись для удаления не найдена');
+        }
+
+        res.status(200).json(id);
     });
 });
 
