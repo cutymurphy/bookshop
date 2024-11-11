@@ -3,17 +3,18 @@ import { IFilter } from "../ShopFilters/types";
 
 export interface IBook {
     id: string,
-    author: string | null,
+    idAuthor?: string,
+    author?: string,
+    idAdmin: string,
+    dateModified: string,
     name: string,
     price: number,
     category: string,
     genre: string,
-    pagesCount: number | null,
-    weight: number | null,
+    pagesCount?: number,
+    weight?: number,
     imgLink: string,
-    coverType: "Мягкая" | "Твердая" | null,
-    // newPrice: string,
-    // availability: string,
+    coverType?: "Мягкая" | "Твердая",
 }
 
 export interface IShopContent {

@@ -28,19 +28,11 @@ const App = () => {
             setCurrentAuthors(authorsData);
 
             const booksData = await fetchBooks();
-            const currBooks = booksData.map(({ id, name, price, category, genre, pagesCount, weight, imgLink, coverType, idAuthor }) => {
-                const author = authorsData.find(({ id }: IAuthor) => id === idAuthor)?.name || null;
+            const currBooks = booksData.map((book) => {
+                const author = authorsData.find(({ id }: IAuthor) => id === book.idAuthor)?.name || null;
                 const newBook: IBook = {
-                    id,
-                    name,
-                    category,
-                    imgLink,
-                    price,
+                    ...book,
                     author,
-                    genre,
-                    pagesCount,
-                    weight,
-                    coverType,
                 }
                 return newBook;
             });
@@ -119,21 +111,29 @@ const App = () => {
     };
 
     const loadAdminData = async () => {
-        setIsLoading(true);
-        const usersData = await loadUsers();
-        await loadOrders(usersData);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
+        try {
+            setIsLoading(true);
+            const usersData = await loadUsers();
+            await loadOrders(usersData);
+        } catch (error) {
+            console.error('Ошибка при загрузке данных администратора:', error);
+        } finally {
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 2000);
+        }
     };
 
     useEffect(() => {
-        if (initialBooks.length > 0) {
-            loadUserAndCart();
-        }
-        if (currentUser.isAdmin) {
-            loadAdminData();
-        }
+        const initializeData = async () => {
+            if (initialBooks.length > 0) {
+                await loadUserAndCart();
+            }
+            if (currentUser.isAdmin) {
+                await loadAdminData();
+            }
+        };
+        initializeData();
     }, [initialBooks, currentUser.idUser]);
 
     useEffect(() => {
