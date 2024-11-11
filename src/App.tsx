@@ -10,6 +10,7 @@ import { IAuthor, IFullProfile, initialUser, IOrder } from './types.ts';
 import Admin from './Pages/Admin/Admin.tsx';
 import { EPath } from './AppPathes.ts';
 import OrderForm from './Pages/Admin/OrdersPanel/OrderForm/OrderForm.tsx';
+import BooksForm from './Pages/Admin/BooksPanel/BookForm/BookForm.tsx';
 
 const App = () => {
     const [currentUser, setCurrentUser] = useState<IFullProfile>({ ...initialUser });
@@ -201,6 +202,11 @@ const App = () => {
                                 orders={currentOrders}
                                 setOrders={setCurrentOrders}
                                 setIsLoading={setIsLoading}
+                                books={initialBooks}
+                                setBooks={setInitialBooks}
+                                authors={currentAuthors}
+                                users={currentUsers}
+                                currentAdmin={currentUser}
                             />
                         }
                     />
@@ -213,6 +219,38 @@ const App = () => {
                                 currentAdmin={currentUser}
                                 orders={currentOrders}
                                 setOrders={setCurrentOrders}
+                                isLoading={isLoading}
+                                setIsLoading={setIsLoading}
+                            />
+                        }
+                    />
+                }
+                {currentUser.isAdmin &&
+                    <Route
+                        path={`${EPath.adminBook}/:id`}
+                        element={
+                            <BooksForm
+                                currentAdmin={currentUser}
+                                books={initialBooks}
+                                authors={currentAuthors}
+                                users={currentUsers}
+                                setBooks={setInitialBooks}
+                                isLoading={isLoading}
+                                setIsLoading={setIsLoading}
+                            />
+                        }
+                    />
+                }
+                {currentUser.isAdmin &&
+                    <Route
+                        path={EPath.adminBook}
+                        element={
+                            <BooksForm
+                                currentAdmin={currentUser}
+                                books={initialBooks}
+                                authors={currentAuthors}
+                                users={currentUsers}
+                                setBooks={setInitialBooks}
                                 isLoading={isLoading}
                                 setIsLoading={setIsLoading}
                             />

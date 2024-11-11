@@ -16,6 +16,7 @@ import { getBadgeType } from '../utils.ts';
 import { IListOption } from '../../../../assets/components/DropDown/types.ts';
 import { editOrder } from '../../../../server/api.js';
 import { ICartBook } from '../../../Cart/types.ts';
+import { ETabTitle } from '../../enums.ts';
 
 const OrderForm: FC<IOrderForm> = ({
     currentAdmin,
@@ -56,7 +57,7 @@ const OrderForm: FC<IOrderForm> = ({
         } catch (error) {
             console.error("Ошибка при редактировании заказа:", error);
         } finally {
-            navigate(EPath.admin);
+            navigate(`${EPath.admin}?tab=${ETabTitle.orders}`);
             setTimeout(() => {
                 setIsLoading(false);
             }, 1000);
@@ -69,7 +70,7 @@ const OrderForm: FC<IOrderForm> = ({
         setOrderInfo(currentOrder);
         setInitialOrderInfo(currentOrder);
         setTimeout(() => {
-        setIsLoading(false);
+            setIsLoading(false);
         }, 1000);
     }, [id, orders]);
 
@@ -94,7 +95,7 @@ const OrderForm: FC<IOrderForm> = ({
                     <ButtonAdmin
                         text='Назад'
                         leftIcon={<ArrowLeftOutlineIcon />}
-                        onClick={() => navigate(EPath.admin)}
+                        onClick={() => navigate(`${EPath.admin}?tab=${ETabTitle.orders}`)}
                         type={"gray"}
                     />
                 </div>
@@ -161,7 +162,7 @@ const OrderForm: FC<IOrderForm> = ({
                             <div className={styles.booksWrapper}>
                                 {orderInfo.books.map(({ book, count }: ICartBook) => {
                                     const { id, name, imgLink, author } = book;
-    
+
                                     return (
                                         <div className={styles.bookRow} key={id}>
                                             <img
