@@ -25,7 +25,7 @@ const ButtonAdmin: FC<IButtonAdmin> = ({
             onClick={onClick}
         >
             {leftIcon}
-            {text}
+            <span className={styles.btnText}>{text}</span>
             {rightIcon}
         </button>
     )

@@ -14,6 +14,10 @@
     border-radius: 10px;
     transition: .3s;
 
+    .btnText {
+        height: fit-content;
+    }
+
     &-clear-purple {
         color: var(--main-color);
 
