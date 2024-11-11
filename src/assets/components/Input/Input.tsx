@@ -23,6 +23,7 @@ const Input: FC<IInput> = ({
     iconLeft,
     iconRight,
     inputWrapperRef,
+    type = "text",
 }) => {
     return (
         <div
@@ -58,6 +59,7 @@ const Input: FC<IInput> = ({
                     readOnly={readonly}
                     disabled={disabled}
                     style={!!valueWidth ? { width: `${valueWidth + 2}ch` } : {}}
+                    type={type}
                 />
                 {iconRight && <span className={styles["icon-right"]}>{iconRight}</span>}
             </div>

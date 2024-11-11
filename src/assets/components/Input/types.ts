@@ -19,4 +19,5 @@ export interface IInput {
     iconLeft?: ReactNode
     iconRight?: ReactNode
     inputWrapperRef?: RefObject<HTMLDivElement>
+    type?: "number" | "text"
 }
