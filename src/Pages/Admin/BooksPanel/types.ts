@@ -4,9 +4,6 @@ import { IBook } from "../../Main/ShopPanel/ShopContent/types";
 export interface IBooksPanel {
     books: IBook[],
     setBooks: (orders: IBook[]) => void,
-    authors: IAuthor[],
     users: IFullProfile[],
-    currentAdmin: IFullProfile,
-    isLoading: boolean,
     setIsLoading: (isLoading: boolean) => void,
 }

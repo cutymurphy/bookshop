@@ -80,10 +80,7 @@ const Admin: FC<IAdmin> = ({
                             content: <BooksPanel
                                 books={books}
                                 setBooks={setBooks}
-                                authors={authors}
                                 users={users}
-                                currentAdmin={currentAdmin}
-                                isLoading={isLoading}
                                 setIsLoading={setIsLoading}
                             />
                         },

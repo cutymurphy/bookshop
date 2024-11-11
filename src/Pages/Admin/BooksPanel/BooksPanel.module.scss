@@ -1,0 +1,169 @@
+.books {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+}
+
+.booksTable {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+
+    .booksRow {
+        display: grid;
+        grid-template-columns: 5% 15% 25% 15% 15% 10% 15%;
+        padding: 8px 0 16px 0;
+        position: relative;
+        cursor: pointer;
+
+        span {
+            font-family: var(--ptsans-font);
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .productImage {
+            max-width: 80px;
+            height: 100%;
+        }
+
+        .checkbox {
+            position: absolute;
+            right: 102%;
+            top: 15px;
+
+            .checkboxLabel:before {
+                border: 1px solid var(--boarder-system-color);
+            }
+
+            &:hover {
+                .checkboxLabel:before {
+                    border: 1px solid var(--main-color);
+                }
+            }
+        }
+
+        .iconsWrapper {
+            position: absolute;
+            left: 101%;
+            top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            .rowIcon {
+                cursor: pointer;
+                display: flex;
+                height: fit-content;
+                width: fit-content;
+                transition: 0.3s;
+
+                svg path {
+                    transition: 0.3s;
+                }
+
+                &:hover {
+                    svg path {
+                        fill: var(--icon-hover-color);
+                    }
+                }
+
+                &-opened {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .pencilIcon svg {
+                height: 15px;
+                width: auto;
+            }
+        }
+
+        .rowPadding {
+            padding-right: 30px;
+            padding-top: 10px;
+        }
+
+        .defaultAddress {
+            font-weight: 600;
+        }
+    }
+
+    .mainRow {
+        cursor: pointer;
+    }
+
+    .headerRow {
+        cursor: default;
+
+        span {
+            font-weight: 600;
+            font-size: 18px;
+        }
+    }
+
+    .rowWrapper {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid var(--disabled-gray-2);
+        transition: .3s;
+
+        &:last-child {
+            border-bottom: unset;
+        }
+    }
+
+    .borderPurple {
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .rowInfo {
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+        padding: 0 5%;
+        background-color: var(--white);
+        transition: .3s;
+        display: flex;
+        gap: 20px;
+
+        &-opened {
+            height: fit-content;
+            opacity: 1;
+            overflow: visible;
+            transition: .3s;
+            padding: 16px 5% 24px 5%;
+        }
+
+        .rowInfoColInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+    }
+
+    .bolder,
+    .message {
+        font-weight: 500;
+        margin-left: 8px;
+    }
+
+    .message {
+        color: var(--main-color);
+    }
+}
+
+.paginator {
+    margin: 0;
+}
+
+.btns {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    top: -75px;
+    display: flex;
+    gap: 28px;
+}

@@ -63,7 +63,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
             <div className={styles.ordersTable}>
                 <div className={clsx(styles.ordersRow, styles.headerRow)}>
                     <Checkbox
-                        id="commonCheckbox"
+                        id="commonCheckbox-orders"
                         onChange={() => checkedItems.length === orders.length ?
                             setCheckedItems([]) :
                             setCheckedItems(orders.map((order: IOrder) => order.id))
