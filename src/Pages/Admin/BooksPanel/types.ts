@@ -1,4 +1,4 @@
-import { IAuthor, IFullProfile } from "../../../types";
+import { IFullProfile } from "../../../types";
 import { IBook } from "../../Main/ShopPanel/ShopContent/types";
 
 export interface IBooksPanel {

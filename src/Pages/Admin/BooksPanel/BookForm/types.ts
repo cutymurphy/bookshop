@@ -10,3 +10,13 @@ export interface IBookForm {
     isLoading: boolean,
     setIsLoading: (isLoading: boolean) => void,
 }
+
+export interface IErrors {
+    name: string,
+    price: string,
+    category: string,
+    genre: string,
+    pagesCount: string,
+    imgLink: string,
+    weight: string,
+}
