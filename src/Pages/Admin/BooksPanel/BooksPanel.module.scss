@@ -5,6 +5,19 @@
     position: relative;
 }
 
+.input {
+    margin-top: -16px;
+    margin-bottom: 20px;
+}
+
+.inputWrapper {
+    border: 1px solid transparent;
+
+    &:focus-within {
+        border: 1px solid var(--boarder-system-color);
+    }
+}
+
 .booksTable {
     display: flex;
     flex-direction: column;

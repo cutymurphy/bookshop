@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import { EPath } from "../../../AppPathes.ts";
 import { IBook } from "../../Main/ShopPanel/ShopContent/types.ts";
 import PlusIcon from "../../../assets/components/Icons/PlusIcon.tsx";
+import Input from "../../../assets/components/Input/Input.tsx";
+import MagnifierIcon from "../../../assets/components/Icons/MagnifierIcon.tsx";
 
 const BooksPanel: FC<IBooksPanel> = ({
     books,
@@ -24,6 +26,7 @@ const BooksPanel: FC<IBooksPanel> = ({
     setIsLoading,
 }) => {
     const [checkedItems, setCheckedItems] = useState<string[]>([]);
+    const [input, setInput] = useState<string>("");
     const [openedInfo, setOpenedInfo] = useState<string>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
@@ -41,6 +44,10 @@ const BooksPanel: FC<IBooksPanel> = ({
         return dateObjB.getTime() - dateObjA.getTime();
     });
 
+    const filteredBooks = sortedBooks.filter((book: IBook) =>
+        book.name.toLowerCase().includes(input.trim().toLowerCase())
+    );
+
     const handleDeleteBooks = (booksId: string[]) => {
         setIsLoading(true);
         booksId.forEach(async (id: string) => {
@@ -57,6 +64,14 @@ const BooksPanel: FC<IBooksPanel> = ({
 
     return (
         <div className={styles.books}>
+            <Input
+                className={styles.input}
+                inputClassName={styles.inputWrapper}
+                iconRight={<MagnifierIcon />}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Введите название книги"
+            />
             <div className={styles.booksTable}>
                 <div className={clsx(styles.booksRow, styles.headerRow)}>
                     <Checkbox
@@ -77,7 +92,7 @@ const BooksPanel: FC<IBooksPanel> = ({
                     <span>Цена</span>
                     <span>Изменено</span>
                 </div>
-                {sortedBooks
+                {filteredBooks
                     .slice(currentPage * booksPerPage - booksPerPage, currentPage * booksPerPage)
                     .map(({ id, author, idAdmin, name, price, category, genre, pagesCount, weight, imgLink, coverType }: IBook, index: number) => {
                         const admin = users.find((user: IFullProfile) => user.idUser === idAdmin);
@@ -173,7 +188,7 @@ const BooksPanel: FC<IBooksPanel> = ({
                 setCurrentPage={setCurrentPage}
                 itemsPerPage={booksPerPage}
                 setItemsPerPage={setBooksPerPage}
-                currentItems={books}
+                currentItems={filteredBooks}
                 type={EPaginationPage.admin}
                 resultsClassName={styles.paginator}
                 paginationClassName={styles.paginator}
