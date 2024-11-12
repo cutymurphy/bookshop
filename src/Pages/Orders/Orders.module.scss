@@ -1,0 +1,159 @@
+.loadContainer {
+    z-index: 9999;
+    position: absolute;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+.ordersWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 40px;
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .total {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--gray-purple);
+        margin-bottom: 20px;
+    }
+
+    .order {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding-bottom: 40px;
+        border-bottom: 3px dashed var(--gray-purple);
+
+        svg {
+            height: 24px !important;
+        }
+
+        .orderTitle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--light-black);
+        }
+
+        .modifyWrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            span {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--gray-purple);
+            }
+        }
+
+        .orderInfo {
+            display: flex;
+
+            .info {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                width: 50%;
+                padding-right: 80px;
+
+                span {
+                    color: var(--light-black);
+                    line-height: 20px;
+                    word-break: break-word;
+                    overflow-wrap: break-word;
+                }
+
+                .bolder {
+                    font-weight: 500;
+                }
+
+                .bolderMessage {
+                    color: var(--color-brand);
+                    font-weight: 500;
+                }
+            }
+
+            .books {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+                width: 50%;
+                flex-shrink: 0;
+
+                .booksTitle {
+                    font-weight: 500;
+                    color: var(--light-black);
+                }
+
+                .booksWrapper {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 12px;
+
+                    .bookRow {
+                        width: calc(50% - 6px);
+                        display: flex;
+                        gap: 16px;
+                        height: fit-content;
+
+                        .productImage {
+                            max-width: 80px;
+                        }
+
+                        .bookInfo {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 8px;
+                            padding: 8px 16px 8px 0;
+                            justify-content: space-between;
+
+                            .bookTitle {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 8px;
+                            }
+
+                            &Name {
+                                font-weight: 500;
+                            }
+
+                            &Count {
+                                font-weight: 500;
+                                color: var(--color-brand);
+                            }
+
+                            span {
+                                word-break: break-word;
+                                overflow-wrap: break-word;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .btnCancel {
+            width: fit-content;
+        }
+
+        &:last-child {
+            border-bottom: unset;
+        }
+    }
+}

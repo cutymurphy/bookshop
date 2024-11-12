@@ -70,6 +70,7 @@ const CartModal: FC<ICartModal> = ({
                 totalCost: getCartCost(booksArr),
                 payment: activePayType,
                 status: orderStatus,
+                idUser: user.idUser,
                 user: {
                     name: user.name,
                     surname: user.surname,

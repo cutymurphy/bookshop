@@ -18,6 +18,7 @@
 
 .upperLayedLogo {
     position: absolute;
+    transition: 0.5s;
 
     &:hover {
         cursor: pointer;

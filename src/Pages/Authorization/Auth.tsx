@@ -10,6 +10,7 @@ import clsx from "clsx";
 import Button from "../../assets/components/Button/Button.tsx";
 import Checkbox from "../../assets/components/Checkbox/Checkbox.tsx";
 import { ICartBook } from "../Cart/types.ts";
+import Ordercon from "../../assets/components/Icons/Ordercon.tsx";
 
 const Auth: FC<IAuth> = ({
     currentUser,
@@ -306,6 +307,10 @@ const Auth: FC<IAuth> = ({
                 <div className={clsx(styles.wrapper, styles.wrapperText)}>
                     <span className={styles.text}>Здравствуйте, <span className={styles.name}>{currentUser.name} {currentUser.surname}</span>!</span>
                     <span className={styles.text}>В нашем <Link className={clsx(styles.name, styles.link)} to={EPath.main}>каталоге</Link> Вы точно найдете книгу по душе!</span>
+                    <span className={clsx(styles.text, styles.orders)}>
+                        <Link className={clsx(styles.name, styles.link)} to={EPath.orders}>Ваши заказы</Link>
+                        <Ordercon />
+                    </span>
                     <button
                         className={styles.btnLogOut}
                         onClick={() => {

@@ -11,6 +11,7 @@ import Admin from './Pages/Admin/Admin.tsx';
 import { EPath } from './AppPathes.ts';
 import OrderForm from './Pages/Admin/OrdersPanel/OrderForm/OrderForm.tsx';
 import BooksForm from './Pages/Admin/BooksPanel/BookForm/BookForm.tsx';
+import Orders from './Pages/Orders/Orders.tsx';
 
 const App = () => {
     const [currentUser, setCurrentUser] = useState<IFullProfile>({ ...initialUser });
@@ -77,7 +78,7 @@ const App = () => {
                     : undefined;
 
                 const userImportant = (({ idUser, isAdmin, idCart, password, email, ...rest }) => rest)(user);
-                const orderImportant = (({ idUser, idAdmin, ...rest }) => rest)(order);
+                const orderImportant = (({ idAdmin, ...rest }) => rest)(order);
 
                 const orderInfo: IOrder = {
                     ...orderImportant,
@@ -179,6 +180,16 @@ const App = () => {
                             user={currentUser}
                             orders={currentOrders}
                             setOrders={setCurrentOrders}
+                        />
+                    }
+                />
+                <Route
+                    path={EPath.orders}
+                    element={
+                        <Orders
+                            orders={currentOrders.filter((order: IOrder) => order.idUser === currentUser.idUser)}
+                            setOrders={setCurrentOrders}
+                            setIsLoading={setIsLoading}
                         />
                     }
                 />

@@ -169,6 +169,13 @@
     }
 }
 
+.orders {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .btnLogOut {
     background-color: transparent;
     outline: none;
@@ -176,7 +183,7 @@
     font-size: 20px;
     box-sizing: border-box;
     transition: .3s;
-    margin-top: 300px;
+    margin-top: 250px;
 
     .btnContent {
         display: flex;
