@@ -29,6 +29,18 @@ const BooksPanel: FC<IBooksPanel> = ({
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
     const navigate = useNavigate();
 
+    const sortedBooks = books.sort((a: IBook, b: IBook) => {
+        const [dateA, timeA] = a.dateModified.split(", ");
+        const [dayA, monthA, yearA] = dateA.split(".");
+        const dateObjA = new Date(`${yearA}-${monthA}-${dayA}T${timeA}`);
+
+        const [dateB, timeB] = b.dateModified.split(", ");
+        const [dayB, monthB, yearB] = dateB.split(".");
+        const dateObjB = new Date(`${yearB}-${monthB}-${dayB}T${timeB}`);
+
+        return dateObjB.getTime() - dateObjA.getTime();
+    });
+
     const handleDeleteBooks = (booksId: string[]) => {
         setIsLoading(true);
         booksId.forEach(async (id: string) => {
@@ -65,7 +77,7 @@ const BooksPanel: FC<IBooksPanel> = ({
                     <span>Цена</span>
                     <span>Изменено</span>
                 </div>
-                {books
+                {sortedBooks
                     .slice(currentPage * booksPerPage - booksPerPage, currentPage * booksPerPage)
                     .map(({ id, author, idAdmin, name, price, category, genre, pagesCount, weight, imgLink, coverType }: IBook, index: number) => {
                         const admin = users.find((user: IFullProfile) => user.idUser === idAdmin);

@@ -30,7 +30,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
     const navigate = useNavigate();
 
-    const sortedOrders = orders.sort((a, b) => {
+    const sortedOrders = orders.sort((a: IOrder, b: IOrder) => {
         const [dateA, timeA] = a.date.split(", ");
         const [dayA, monthA, yearA] = dateA.split(".");
         const dateObjA = new Date(`${yearA}-${monthA}-${dayA}T${timeA}`);

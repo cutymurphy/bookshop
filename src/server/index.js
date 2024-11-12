@@ -23,7 +23,7 @@ app.get('/api/book', (req, res) => {
 });
 
 app.post('/api/book', (req, res) => {
-    const { idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = req.body;
+    const { id, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = req.body;
     const newId = !!id ? id : uuidv4();
 
     const query = `
@@ -48,17 +48,17 @@ app.put('/api/book/:id', (req, res) => {
     const query = `
         UPDATE bookshop.book
         SET 
-            idAdmin = COALESCE(?, idAdmin), 
-            dateModified = COALESCE(?, dateModified), 
-            name = COALESCE(?, name), 
-            price = COALESCE(?, price),
-            category = COALESCE(?, category),
-            genre = COALESCE(?, genre),
-            imgLink = COALESCE(?, imgLink),
-            idAuthor = COALESCE(?, idAuthor),
-            pagesCount = COALESCE(?, pagesCount),
-            weight = COALESCE(?, weight),
-            coverType = COALESCE(?, coverType),
+            idAdmin = ?, 
+            dateModified = ?, 
+            name = ?, 
+            price = ?,
+            category = ?,
+            genre = ?,
+            imgLink = ?,
+            idAuthor = ?,
+            pagesCount = ?,
+            weight = ?,
+            coverType = ?
         WHERE id = ?;
     `;
 

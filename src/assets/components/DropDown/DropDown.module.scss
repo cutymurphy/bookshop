@@ -67,24 +67,25 @@
         padding: 10px 20px;
         display: flex;
         align-items: center;
-        color: var(--black);
+        color: var(--light-black);
         gap: 10px;
         transition: 0.3s;
 
         &:hover {
             cursor: pointer;
             background-color: var(--main-color-transparent);
-            font-weight: 700;
+            color: var(--black);
         }
     }
 
     &-value-checked {
         background-color: var(--main-color-transparent);
+        color: var(--black);
     }
 
     &-clear-value {
         gap: 14px;
-        background-color: var(--disabled-gray);
+        background-color: var(--light-gray);
         color: var(--dark-gray);
 
         svg {
@@ -93,7 +94,8 @@
         }
 
         &:hover {
-            background-color: var(--gray);
+            background-color: var(--disabled-gray);
+            font-weight: inherit;
         }
     }
 

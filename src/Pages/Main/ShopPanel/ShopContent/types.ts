@@ -14,8 +14,10 @@ export interface IBook {
     pagesCount?: number,
     weight?: number,
     imgLink: string,
-    coverType?: "Мягкая" | "Твердая",
+    coverType?: TCover,
 }
+
+export type TCover = "Мягкая" | "Твердая";
 
 export interface IShopContent {
     productsInCart: ICartBook[],
