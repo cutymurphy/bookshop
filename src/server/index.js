@@ -230,6 +230,25 @@ app.get('/api/user', (req, res) => {
     });
 });
 
+app.delete('/api/user/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `DELETE FROM bookshop.user_with_cart WHERE idUser = ?`;
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса на удаление:', err);
+            return res.status(500).send('Ошибка при удалении пользователя');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Запись для удаления не найдена');
+        }
+
+        res.status(200).json(id);
+    });
+});
+
 
 /* --------- CRUD for cart --------- */
 

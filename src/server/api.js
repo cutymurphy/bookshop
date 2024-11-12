@@ -216,6 +216,26 @@ export const getUserByEmailAndPassword = async (email, password) => {
     }
 };
 
+export const deleteUser = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/user/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при удалении пользователя', error);
+        throw error;
+    }
+};
+
 
 /* --------- CRUD for cart functions --------- */
 

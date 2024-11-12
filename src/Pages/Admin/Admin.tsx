@@ -7,6 +7,7 @@ import OrdersPanel from "./OrdersPanel/OrdersPanel.tsx";
 import BooksPanel from "./BooksPanel/BooksPanel.tsx";
 import { useSearchParams } from "react-router-dom";
 import { ETabTitle } from "./enums.ts";
+import UsersPanel from "./UsersPanel/UsersPanel.tsx";
 
 const Admin: FC<IAdmin> = ({
     isLoading,
@@ -17,6 +18,7 @@ const Admin: FC<IAdmin> = ({
     setBooks,
     authors,
     users,
+    setUsers,
     currentAdmin,
 }) => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -86,7 +88,12 @@ const Admin: FC<IAdmin> = ({
                         },
                         {
                             title: "Пользователи",
-                            content: <div>Пользователи</div>
+                            content: <UsersPanel
+                            users={users}
+                            setUsers={setUsers}
+                            currentAdmin={currentAdmin}
+                            setIsLoading={setIsLoading}
+                        />
                         },
                         {
                             title: "Авторы",

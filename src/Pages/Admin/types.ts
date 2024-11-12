@@ -10,5 +10,6 @@ export interface IAdmin {
     setBooks: (orders: IBook[]) => void,
     authors: IAuthor[],
     users: IFullProfile[],
+    setUsers: (users: IFullProfile[]) => void,
     currentAdmin: IFullProfile,
 }
