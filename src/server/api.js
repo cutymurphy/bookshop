@@ -383,14 +383,14 @@ export const addOrder = async (id, idCartState, idUser, date, address, totalCost
     }
 };
 
-export const editOrder = async (id, idAdmin, dateModified, message, status) => {
+export const editOrder = async (id, idAdmin, dateModified, status, message) => {
     try {
         const response = await fetch(`${API_BASE_URL}/order/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ idAdmin, dateModified, message, status }),
+            body: JSON.stringify({ idAdmin, dateModified, status, message }),
         });
 
         if (!response.ok) {

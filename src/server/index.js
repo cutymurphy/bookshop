@@ -140,11 +140,11 @@ app.put('/api/user/:id', (req, res) => {
     const query = `
         UPDATE bookshop.user_with_cart 
         SET 
-            name = COALESCE(?, name), 
-            surname = COALESCE(?, surname), 
-            password = COALESCE(?, password), 
-            email = COALESCE(?, email), 
-            phone = COALESCE(?, phone)
+            name = ?, 
+            surname = ?, 
+            password = ?, 
+            email = ?, 
+            phone = ?
         WHERE idUser = ?;
     `;
 
@@ -277,7 +277,7 @@ app.put('/api/cartBook/:idCart/:idBook', (req, res) => {
 
     const query = `
         UPDATE bookshop.cart_book 
-        SET bookCount = COALESCE(?, bookCount) 
+        SET bookCount = ? 
         WHERE idCart = ? AND idBook = ?;
     `;
 
@@ -398,19 +398,19 @@ app.post('/api/order', (req, res) => {
 
 app.put('/api/order/:id', (req, res) => {
     const { id } = req.params;
-    const { idAdmin, dateModified, message, status } = req.body;
+    const { idAdmin, dateModified, status, message } = req.body;
     
     const query = `
         UPDATE bookshop.order
         SET 
-            idAdmin = COALESCE(?, idAdmin), 
-            dateModified = COALESCE(?, dateModified), 
-            message = COALESCE(?, message), 
-            status = COALESCE(?, status)
+            idAdmin = ?, 
+            dateModified = ?, 
+            status = ?,
+            message = ? 
         WHERE id = ?;
     `;
 
-    db.query(query, [idAdmin, dateModified, message, status, id], (err, results) => {
+    db.query(query, [idAdmin, dateModified, status, message , id], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send('Ошибка при обновлении заказа');

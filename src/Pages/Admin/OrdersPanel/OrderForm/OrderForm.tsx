@@ -38,7 +38,7 @@ const OrderForm: FC<IOrderForm> = ({
             const modifyDate = (new Date()).toLocaleString();
             const message = orderInfo?.message?.trim();
 
-            await editOrder(orderInfo?.id, currentAdmin.idUser, modifyDate, message, orderInfo?.status);
+            await editOrder(orderInfo?.id, currentAdmin.idUser, modifyDate, orderInfo?.status, !!message ? message : null);
             setOrders(orders.map((order: IOrder) => {
                 if (order.id !== orderInfo?.id) {
                     return order;
