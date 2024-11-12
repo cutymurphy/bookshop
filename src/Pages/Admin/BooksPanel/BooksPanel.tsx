@@ -66,7 +66,7 @@ const BooksPanel: FC<IBooksPanel> = ({
                             setCheckedItems(books.map((book: IBook) => book.id))
                         }
                         checked={checkedItems.length === books.length}
-                        className={styles.checkbox}
+                        className={clsx(styles.checkbox, styles.mainCheckbox)}
                         classNameLabel={styles.checkboxLabel}
                     />
                     <span>№</span>
