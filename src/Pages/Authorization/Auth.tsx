@@ -145,7 +145,7 @@ const Auth: FC<IAuth> = ({
                     if (currentCart.length > 0) {
                         const userCart = await getCartBooksById(userByEmailAndPassword.idCart);
                         const addBookToCartPromises = currentCart.map(async (book: ICartBook) => {
-                            if (!userCart.find(cartBook => cartBook.idBook === book.book.id)) {
+                            if (!userCart || userCart.lenght === 0 || !userCart.find(cartBook => cartBook.idBook === book.book.id)) {
                                 await addBookToCart(userByEmailAndPassword.idCart, book.book.id, book.count);
                             } else {
                                 await updateCartBookCount(userByEmailAndPassword.idCart, book.book.id, book.count)
