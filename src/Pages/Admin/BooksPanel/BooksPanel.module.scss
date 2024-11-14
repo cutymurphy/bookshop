@@ -118,6 +118,19 @@
         span {
             font-weight: 600;
             font-size: 18px;
+            transition: .3s;
+        }
+
+        .sortField {
+            cursor: pointer;
+
+            &:hover {
+                color: var(--icon-hover-color);
+            }
+        }
+
+        .sortedField {
+            color: var(--icon-hover-color);
         }
     }
 

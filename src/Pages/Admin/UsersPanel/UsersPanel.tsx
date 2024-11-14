@@ -22,7 +22,27 @@ const UsersPanel: FC<IUsersPanel> = ({
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [usersPerPage, setUsersPerPage] = useState<number>(10);
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+    const [sortColumn, setSortColumn] = useState<string | null>(null);
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
     const currUserId = currentAdmin.idUser;
+
+    const sortedUsers = [...users].sort((a: IFullProfile, b: IFullProfile) => {
+        if (!sortColumn) return 0;
+        let compareValue = 0;
+        if (sortColumn === "surname") {
+            compareValue = a.surname.localeCompare(b.surname);
+        }
+        return sortDirection === "asc" ? compareValue : -compareValue;
+    });
+
+    const handleSort = (column: string) => {
+        if (sortColumn === column) {
+            setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+        } else {
+            setSortColumn(column);
+            setSortDirection("asc");
+        }
+    };
 
     const handleDeleteUsers = (usersId: string[]) => {
         setIsLoading(true);
@@ -62,11 +82,16 @@ const UsersPanel: FC<IUsersPanel> = ({
                     <span>№</span>
                     <span>Админ</span>
                     <span>Имя</span>
-                    <span>Фамилия</span>
+                    <span
+                        onClick={() => handleSort("surname")}
+                        className={clsx(styles.sortField, sortColumn === "surname" && styles.sortedField)}
+                    >
+                        Фамилия
+                    </span>
                     <span>Почта</span>
                     <span>Телефон</span>
                 </div>
-                {users
+                {sortedUsers
                     .slice(currentPage * usersPerPage - usersPerPage, currentPage * usersPerPage)
                     .map(({ idUser, isAdmin, name, surname, email, phone }: IFullProfile, index: number) => (
                         <div

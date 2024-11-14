@@ -30,19 +30,44 @@ const OrdersPanel: FC<IOrdersPanel> = ({
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+    const [sortColumn, setSortColumn] = useState<string | null>(null);
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
     const navigate = useNavigate();
 
-    const sortedOrders = orders.sort((a: IOrder, b: IOrder) => {
-        const [dateA, timeA] = a.date.split(", ");
-        const [dayA, monthA, yearA] = dateA.split(".");
-        const dateObjA = new Date(`${yearA}-${monthA}-${dayA}T${timeA}`);
+    const sortedOrders = [...orders].sort((a: IOrder, b: IOrder) => {
+        if (!sortColumn) return 0;
 
-        const [dateB, timeB] = b.date.split(", ");
-        const [dayB, monthB, yearB] = dateB.split(".");
-        const dateObjB = new Date(`${yearB}-${monthB}-${dayB}T${timeB}`);
+        let compareValue = 0;
+        if (sortColumn === "date") {
+            const [dateA, timeA] = a.date.split(", ");
+            const [dayA, monthA, yearA] = dateA.split(".");
+            const dateObjA = new Date(`${yearA}-${monthA}-${dayA}T${timeA}`);
 
-        return dateObjB.getTime() - dateObjA.getTime();
+            const [dateB, timeB] = b.date.split(", ");
+            const [dayB, monthB, yearB] = dateB.split(".");
+            const dateObjB = new Date(`${yearB}-${monthB}-${dayB}T${timeB}`);
+
+            compareValue = dateObjA.getTime() - dateObjB.getTime();
+        } else if (sortColumn === "totalCost") {
+            compareValue = a.totalCost - b.totalCost;
+        } else if (sortColumn === "payment") {
+            compareValue = a.payment.localeCompare(b.payment);
+        } else if (sortColumn === "status") {
+            compareValue = a.status.localeCompare(b.status);
+        } else if (sortColumn === "user") {
+            compareValue = a.user.surname.localeCompare(b.user.surname);
+        }
+        return sortDirection === "asc" ? compareValue : -compareValue;
     });
+
+    const handleSort = (column: string) => {
+        if (sortColumn === column) {
+            setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+        } else {
+            setSortColumn(column);
+            setSortDirection("asc");
+        }
+    };
 
     const handleDeleteOrders = (ordersId: string[]) => {
         setIsLoading(true);
@@ -80,12 +105,38 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                         classNameLabel={styles.checkboxLabel}
                     />
                     <span>№</span>
-                    <span>Получатель</span>
-                    <span>Цена</span>
-                    <span>Дата</span>
+                    <span
+                        onClick={() => handleSort("user")}
+                        className={clsx(styles.sortField, sortColumn === "user" && styles.sortedField)}
+                    >
+                        Получатель
+                    </span>
+                    <span
+                        onClick={() => handleSort("totalCost")}
+                        className={clsx(styles.sortField, sortColumn === "totalCost" && styles.sortedField)}
+                    >
+                        Цена
+                    </span>
+                    <span
+                        onClick={() => handleSort("date")}
+                        className={clsx(styles.sortField, sortColumn === "date" && styles.sortedField)}
+                    >
+                        Дата
+                    </span>
                     <span>Адрес</span>
-                    <span>Оплата</span>
-                    <span style={{ paddingLeft: "8px" }}>Статус</span>
+                    <span
+                        onClick={() => handleSort("payment")}
+                        className={clsx(styles.sortField, sortColumn === "payment" && styles.sortedField)}
+                    >
+                        Оплата
+                    </span>
+                    <span
+                        onClick={() => handleSort("status")}
+                        className={clsx(styles.sortField, sortColumn === "status" && styles.sortedField)}
+                        style={{ paddingLeft: "8px" }}
+                    >
+                        Статус
+                    </span>
                     <span>Изменено</span>
                 </div>
                 {sortedOrders

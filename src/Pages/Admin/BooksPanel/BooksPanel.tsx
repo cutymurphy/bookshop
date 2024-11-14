@@ -32,23 +32,49 @@ const BooksPanel: FC<IBooksPanel> = ({
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+    const [sortColumn, setSortColumn] = useState<string | null>(null);
+    // const [sortColumn, setSortColumn] = useState<string>("dateModified");
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
     const navigate = useNavigate();
-    
-    const sortedBooks = books.sort((a: IBook, b: IBook) => {
-        const [dateA, timeA] = a.dateModified.split(", ");
-        const [dayA, monthA, yearA] = dateA.split(".");
-        const dateObjA = new Date(`${yearA}-${monthA}-${dayA}T${timeA}`);
 
-        const [dateB, timeB] = b.dateModified.split(", ");
-        const [dayB, monthB, yearB] = dateB.split(".");
-        const dateObjB = new Date(`${yearB}-${monthB}-${dayB}T${timeB}`);
+    const sortedBooks = [...books].sort((a: IBook, b: IBook) => {
+        if (!sortColumn) return 0;
 
-        return dateObjB.getTime() - dateObjA.getTime();
+        let compareValue = 0;
+        if (sortColumn === "dateModified") {
+            const [dateA, timeA] = a.dateModified.split(", ");
+            const [dayA, monthA, yearA] = dateA.split(".");
+            const dateObjA = new Date(`${yearA}-${monthA}-${dayA}T${timeA}`);
+
+            const [dateB, timeB] = b.dateModified.split(", ");
+            const [dayB, monthB, yearB] = dateB.split(".");
+            const dateObjB = new Date(`${yearB}-${monthB}-${dayB}T${timeB}`);
+
+            compareValue = dateObjA.getTime() - dateObjB.getTime();
+        } else if (sortColumn === "cost") {
+            compareValue = a.price - b.price;
+        } else if (sortColumn === "author") {
+            compareValue = (a.author ?? "").localeCompare(b.author ?? "");
+        } else if (sortColumn === "genre") {
+            compareValue = a.genre.localeCompare(b.genre);
+        } else if (sortColumn === "name") {
+            compareValue = a.name.localeCompare(b.name);
+        }
+        return sortDirection === "asc" ? compareValue : -compareValue;
     });
 
     const filteredBooks = sortedBooks.filter((book: IBook) =>
         book.name.toLowerCase().includes(input.trim().toLowerCase())
     );
+
+    const handleSort = (column: string) => {
+        if (sortColumn === column) {
+            setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+        } else {
+            setSortColumn(column);
+            setSortDirection("asc");
+        }
+    };
 
     const handleDeleteBooks = (booksId: string[]) => {
         /* TO-DO: пофиксить удаление, если книга состоит в каких-то таблицах (и другое похожее глянуть) */
@@ -94,10 +120,30 @@ const BooksPanel: FC<IBooksPanel> = ({
                     />
                     <span>№</span>
                     <span>Изображение</span>
-                    <span>Название</span>
-                    <span>Автор</span>
-                    <span>Жанр</span>
-                    <span>Цена</span>
+                    <span
+                        onClick={() => handleSort("name")}
+                        className={clsx(styles.sortField, sortColumn === "name" && styles.sortedField)}
+                    >
+                        Название
+                    </span>
+                    <span
+                        onClick={() => handleSort("author")}
+                        className={clsx(styles.sortField, sortColumn === "author" && styles.sortedField)}
+                    >
+                        Автор
+                    </span>
+                    <span
+                        onClick={() => handleSort("genre")}
+                        className={clsx(styles.sortField, sortColumn === "genre" && styles.sortedField)}
+                    >
+                        Жанр
+                    </span>
+                    <span
+                        onClick={() => handleSort("cost")}
+                        className={clsx(styles.sortField, sortColumn === "cost" && styles.sortedField)}
+                    >
+                        Цена
+                    </span>
                     <span>Изменено</span>
                 </div>
                 {filteredBooks
