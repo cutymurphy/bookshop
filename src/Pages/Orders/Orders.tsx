@@ -69,7 +69,7 @@ const Orders: FC<IOrders> = ({
                 {sortedOrders.map(({ id, date, address, totalCost, payment, status, dateModified, books, message }: IOrder) => (
                     <div className={styles.order} key={id}>
                         <div className={styles.orderTitle}>
-                            <span className={styles.title}>Заказ №{id}</span>
+                            <span className={styles.title}>Заказ №{id.slice(-4)}</span>
                             <Badge type={getBadgeType(status)}>{status}</Badge>
                         </div>
                         {dateModified &&

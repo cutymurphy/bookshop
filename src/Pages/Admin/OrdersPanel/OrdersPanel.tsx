@@ -19,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { EPath } from "../../../AppPathes.ts";
 import { getBadgeType } from "./utils.ts";
 import Modal from "../../../assets/components/Modal/Modal.tsx";
+import Input from "../../../assets/components/Input/Input.tsx";
+import MagnifierIcon from "../../../assets/components/Icons/MagnifierIcon.tsx";
 
 const OrdersPanel: FC<IOrdersPanel> = ({
     orders,
@@ -32,6 +34,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const [sortColumn, setSortColumn] = useState<string | null>(null);
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+    const [input, setInput] = useState<string>("");
     const navigate = useNavigate();
 
     const sortedOrders = [...orders].sort((a: IOrder, b: IOrder) => {
@@ -59,6 +62,9 @@ const OrdersPanel: FC<IOrdersPanel> = ({
         }
         return sortDirection === "asc" ? compareValue : -compareValue;
     });
+
+    const filteredOrders = !!input ?
+        sortedOrders.filter((order: IOrder) => order.id.slice(-4) === input) : sortedOrders;
 
     const handleSort = (column: string) => {
         if (sortColumn === column) {
@@ -92,6 +98,14 @@ const OrdersPanel: FC<IOrdersPanel> = ({
 
     return (
         <div className={styles.orders}>
+            <Input
+                className={styles.input}
+                inputClassName={styles.inputWrapper}
+                iconRight={<MagnifierIcon />}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Введите 4 последние знака заказа"
+            />
             <div className={styles.ordersTable}>
                 <div className={clsx(styles.ordersRow, styles.headerRow)}>
                     <Checkbox
@@ -139,7 +153,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                     </span>
                     <span>Изменено</span>
                 </div>
-                {sortedOrders
+                {filteredOrders
                     .slice(currentPage * booksPerPage - booksPerPage, currentPage * booksPerPage)
                     .map(({ id, date, address, totalCost, payment, status, user, admin, books, message }: IOrder, index: number) => (
                         <div
