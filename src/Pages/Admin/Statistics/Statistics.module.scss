@@ -1,0 +1,30 @@
+.statisticsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    font-size: 18px;
+    color: var(--black);
+
+    .statisticsTitle {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--main-color);
+    }
+
+    .statisticsList {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        list-style: circle;
+
+        .point {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .pointDate {
+                font-weight: 500;
+            }
+        }
+    }
+}

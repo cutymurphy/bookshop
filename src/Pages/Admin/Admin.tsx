@@ -8,6 +8,7 @@ import BooksPanel from "./BooksPanel/BooksPanel.tsx";
 import { useSearchParams } from "react-router-dom";
 import { ETabTitle } from "./enums.ts";
 import UsersPanel from "./UsersPanel/UsersPanel.tsx";
+import Statisctics from "./Statistics/Statistics.tsx";
 
 const Admin: FC<IAdmin> = ({
     isLoading,
@@ -37,6 +38,9 @@ const Admin: FC<IAdmin> = ({
             case 2:
                 setSearchParams({ tab: ETabTitle.users });
                 break;
+            case 3:
+                setSearchParams({ tab: ETabTitle.statistics });
+                break;
             default:
                 setSearchParams({ tab: ETabTitle.orders });
         }
@@ -54,6 +58,9 @@ const Admin: FC<IAdmin> = ({
                 break;
             case ETabTitle.users:
                 setActiveTabIndex(2);
+                break;
+            case ETabTitle.statistics:
+                setActiveTabIndex(3);
                 break;
             default:
                 setActiveTabIndex(0);
@@ -89,16 +96,22 @@ const Admin: FC<IAdmin> = ({
                         {
                             title: "Пользователи",
                             content: <UsersPanel
-                            users={users}
-                            setUsers={setUsers}
-                            currentAdmin={currentAdmin}
-                            setIsLoading={setIsLoading}
-                        />
+                                users={users}
+                                setUsers={setUsers}
+                                currentAdmin={currentAdmin}
+                                setIsLoading={setIsLoading}
+                            />
                         },
+                        // {
+                        //     title: "Авторы",
+                        //     content: <div>Авторы</div>,
+                        //     disabled: true,
+                        // },
                         {
-                            title: "Авторы",
-                            content: <div>Авторы</div>,
-                            disabled: true,
+                            title: "Статистика",
+                            content: <Statisctics
+                                orders={orders}
+                            />
                         },
                     ]}
                 />
