@@ -19,6 +19,7 @@
   --boarder-system-color: rgb(219, 219, 219);
   --sales-color: rgb(174, 20, 20);
   --errors-color: rgb(200, 0, 0);
+  --warning-color: rgb(255, 77, 77);
   --color-brand: rgb(116, 35, 255);
   --color-brand-hover: rgb(96, 31, 208);
   --input-border: var(--gray);
@@ -31,7 +32,7 @@
   --scrollbar-thumb: var(--main-color);
   --scrollbar-track: var(--disabled-gray-2);
 
-  --badge-red-bg: rgb(255, 77, 77);
+  --badge-red-bg: var(--warning-color);
   --badge-blue-bg: rgb(132, 167, 255);
   --badge-purple-bg: rgb(179, 135, 255);
   --badge-gray-bg: var(--gray);

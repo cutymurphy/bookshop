@@ -11,12 +11,15 @@ import { ICartBook } from "../Cart/types.ts";
 import ButtonAdmin from "../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
 import { deleteOrder } from "../../server/api.js";
 import Loader from "../../assets/components/Loader/Loader.tsx";
+import Modal from "../../assets/components/Modal/Modal.tsx";
 
 const Orders: FC<IOrders> = ({
     orders,
     setOrders,
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+    const [orderId, setOrderId] = useState<string>("");
 
     const sortedOrders = orders.sort((a: IOrder, b: IOrder) => {
         const [dateA, timeA] = a.date.split(", ");
@@ -43,6 +46,12 @@ const Orders: FC<IOrders> = ({
             }, 2000);
         }
     };
+
+    useEffect(() => {
+        if (!isModalOpen) {
+            setOrderId("");
+        }
+    }, [isModalOpen]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -112,11 +121,32 @@ const Orders: FC<IOrders> = ({
                                 text="Отменить заказ"
                                 fill={"outline"}
                                 type={"gray"}
-                                onClick={() => handleDeleteOrder(id)}
+                                onClick={() => {
+                                    setOrderId(id);
+                                    setIsOpenModal(true);
+                                }}
+                            />
+                        }
+                        {(status === EStatusType.closed || status === EStatusType.cancelled || status === EStatusType.delivered) &&
+                            <ButtonAdmin
+                                className={styles.btnCancel}
+                                text="Удалить заказ из списка"
+                                fill={"outline"}
+                                type={"gray"}
+                                onClick={() => {
+                                    setOrderId(id);
+                                    setIsOpenModal(true);
+                                }}
                             />
                         }
                     </div>
                 ))}
+                <Modal
+                    isOpen={isModalOpen}
+                    setIsOpen={setIsOpenModal}
+                    okFunction={() => !!orderId ? handleDeleteOrder(orderId) : () => { }}
+                    innerText="Вы действительно хотите удалить этот заказ?"
+                />
             </div>
         )
     )

@@ -10,6 +10,7 @@ import TrashBinIcon from "../../../assets/components/Icons/TrashBinIcon.tsx";
 import ButtonAdmin from "../../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
 import { deleteUser } from "../../../server/api.js";
 import { IUsersPanel } from "./types.ts";
+import Modal from "../../../assets/components/Modal/Modal.tsx";
 
 const UsersPanel: FC<IUsersPanel> = ({
     users,
@@ -20,19 +21,25 @@ const UsersPanel: FC<IUsersPanel> = ({
     const [checkedItems, setCheckedItems] = useState<string[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [usersPerPage, setUsersPerPage] = useState<number>(10);
+    const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const currUserId = currentAdmin.idUser;
 
     const handleDeleteUsers = (usersId: string[]) => {
         setIsLoading(true);
-        usersId.forEach(async (id: string) => {
-            await deleteUser(id);
-        })
-        setCurrentPage(1);
-        setUsers(users.filter((user: IFullProfile) => !usersId.includes(user.idUser)));
-        setCheckedItems([]);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
+        try {
+            usersId.forEach(async (id: string) => {
+                await deleteUser(id);
+            })
+        } catch (error) {
+            console.error(`Ошибка при удалении пользователей: ${error}`);
+        } finally {
+            setCurrentPage(1);
+            setUsers(users.filter((user: IFullProfile) => !usersId.includes(user.idUser)));
+            setCheckedItems([]);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 2000);
+        }
     }
 
     return (
@@ -111,12 +118,17 @@ const UsersPanel: FC<IUsersPanel> = ({
             <div className={styles.btns}>
                 <ButtonAdmin
                     className={styles.deleteBtn}
-                    onClick={() => checkedItems.length === 0 ? alert("Выберите пользователей") : handleDeleteUsers(checkedItems)}
+                    onClick={() => checkedItems.length === 0 ? alert("Выберите пользователей") : setIsOpenModal(true)}
                     disabled={checkedItems.length === 0}
                     rightIcon={<TrashBinIcon />}
                     text="Удалить"
                 />
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                setIsOpen={setIsOpenModal}
+                okFunction={() => handleDeleteUsers(checkedItems)}
+            />
         </div>
     )
 }

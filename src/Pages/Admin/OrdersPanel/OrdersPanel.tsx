@@ -18,6 +18,7 @@ import PencilIcon from "../../../assets/components/Icons/PencilIcon.tsx";
 import { useNavigate } from "react-router-dom";
 import { EPath } from "../../../AppPathes.ts";
 import { getBadgeType } from "./utils.ts";
+import Modal from "../../../assets/components/Modal/Modal.tsx";
 
 const OrdersPanel: FC<IOrdersPanel> = ({
     orders,
@@ -28,6 +29,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
     const [openedInfo, setOpenedInfo] = useState<string>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
+    const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const sortedOrders = orders.sort((a: IOrder, b: IOrder) => {
@@ -44,18 +46,23 @@ const OrdersPanel: FC<IOrdersPanel> = ({
 
     const handleDeleteOrders = (ordersId: string[]) => {
         setIsLoading(true);
-        ordersId.forEach(async (id: string) => {
-            const stateId = orders.find((order: IOrder) => order.id === id)?.idCartState;
-            await deleteOrder(id);
-            await deleteCartState(stateId);
-        })
-        setCurrentPage(1);
-        setOpenedInfo("");
-        setOrders(orders.filter((order: IOrder) => !ordersId.includes(order.id)));
-        setCheckedItems([]);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
+        try {
+            ordersId.forEach(async (id: string) => {
+                const stateId = orders.find((order: IOrder) => order.id === id)?.idCartState;
+                await deleteOrder(id);
+                await deleteCartState(stateId);
+            })
+        } catch (error) {
+            console.error(`Ошибка при удалении заказов: ${error}`);
+        } finally {
+            setCurrentPage(1);
+            setOpenedInfo("");
+            setOrders(orders.filter((order: IOrder) => !ordersId.includes(order.id)));
+            setCheckedItems([]);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 2000);
+        }
     }
 
     return (
@@ -205,10 +212,15 @@ const OrdersPanel: FC<IOrdersPanel> = ({
             />
             <ButtonAdmin
                 className={styles.deleteBtn}
-                onClick={() => checkedItems.length === 0 ? alert("Выберите заказы") : handleDeleteOrders(checkedItems)}
+                onClick={() => checkedItems.length === 0 ? alert("Выберите заказы") : setIsOpenModal(true)}
                 disabled={checkedItems.length === 0}
                 rightIcon={<TrashBinIcon />}
                 text="Удалить"
+            />
+            <Modal
+                isOpen={isModalOpen}
+                setIsOpen={setIsOpenModal}
+                okFunction={() => handleDeleteOrders(checkedItems)}
             />
         </div>
     )

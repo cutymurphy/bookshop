@@ -18,6 +18,7 @@ import { IBook } from "../../Main/ShopPanel/ShopContent/types.ts";
 import PlusIcon from "../../../assets/components/Icons/PlusIcon.tsx";
 import Input from "../../../assets/components/Input/Input.tsx";
 import MagnifierIcon from "../../../assets/components/Icons/MagnifierIcon.tsx";
+import Modal from "../../../assets/components/Modal/Modal.tsx";
 
 const BooksPanel: FC<IBooksPanel> = ({
     books,
@@ -30,8 +31,9 @@ const BooksPanel: FC<IBooksPanel> = ({
     const [openedInfo, setOpenedInfo] = useState<string>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
+    const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const navigate = useNavigate();
-
+    
     const sortedBooks = books.sort((a: IBook, b: IBook) => {
         const [dateA, timeA] = a.dateModified.split(", ");
         const [dayA, monthA, yearA] = dateA.split(".");
@@ -49,17 +51,23 @@ const BooksPanel: FC<IBooksPanel> = ({
     );
 
     const handleDeleteBooks = (booksId: string[]) => {
+        /* TO-DO: пофиксить удаление, если книга состоит в каких-то таблицах (и другое похожее глянуть) */
         setIsLoading(true);
-        booksId.forEach(async (id: string) => {
-            await deleteBook(id);
-        })
-        setCurrentPage(1);
-        setOpenedInfo("");
-        setBooks(books.filter((book: IBook) => !booksId.includes(book.id)));
-        setCheckedItems([]);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
+        try {
+            booksId.forEach(async (id: string) => {
+                await deleteBook(id);
+            })
+        } catch (error) {
+            console.error(`Ошибка при удалении книг: ${error}`);
+        } finally {
+            setCurrentPage(1);
+            setOpenedInfo("");
+            setBooks(books.filter((book: IBook) => !booksId.includes(book.id)));
+            setCheckedItems([]);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 2000);
+        }
     }
 
     return (
@@ -202,12 +210,17 @@ const BooksPanel: FC<IBooksPanel> = ({
                 />
                 <ButtonAdmin
                     className={styles.deleteBtn}
-                    onClick={() => checkedItems.length === 0 ? alert("Выберите заказы") : handleDeleteBooks(checkedItems)}
+                    onClick={() => checkedItems.length === 0 ? alert("Выберите заказы") : setIsOpenModal(true)}
                     disabled={checkedItems.length === 0}
                     rightIcon={<TrashBinIcon />}
                     text="Удалить"
                 />
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                setIsOpen={setIsOpenModal}
+                okFunction={() => handleDeleteBooks(checkedItems)}
+            />
         </div>
     )
 }
