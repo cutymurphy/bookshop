@@ -11,9 +11,13 @@ const Statistics: FC<IStatistics> = ({
         acc[date] = (acc[date] || 0) + 1;
         return acc;
     }, {} as Record<string, number>);
-
-    const orderStatistics = Object.entries(orderCountByDate);
-
+    
+    const orderStatistics = Object.entries(orderCountByDate).sort(([dateA], [dateB]) => {
+        const [dayA, monthA, yearA] = dateA.split(".").map(Number);
+        const [dayB, monthB, yearB] = dateB.split(".").map(Number);
+        return new Date(yearB, monthB - 1, dayB).getTime() - new Date(yearA, monthA - 1, dayA).getTime();
+    });
+    
     const pluralizeWord = (number: number): string => {
         if (number % 10 === 1 && number % 100 !== 11) {
             return 'заказ';
@@ -30,7 +34,8 @@ const Statistics: FC<IStatistics> = ({
             <ul className={styles.statisticsList}>
                 {orderStatistics.map(([date, count]) => (
                     <li className={styles.point} key={date}>
-                        <span className={styles.pointDate}>— {date}:</span>
+                        <span>— </span>
+                        <span className={styles.pointDate}>{date}:</span>
                         <span>{count} {pluralizeWord(count)}</span>
                     </li>
                 ))}
