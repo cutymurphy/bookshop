@@ -10,3 +10,16 @@ export const getBadgeType = (status: EStatusType): EBadgeType => {
     if (status === EStatusType.delivered) return EBadgeType.purple;
     return EBadgeType.gray;
 }
+
+export const pluralizeWord = (number: number): string => {
+    const mod10 = number % 10;
+    const mod100 = number % 100;
+
+    if (mod10 === 1 && mod100 !== 11) {
+        return "запись";
+    } else if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
+        return "записи";
+    } else {
+        return "записей";
+    }
+}

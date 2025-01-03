@@ -12,6 +12,7 @@ import { deleteUser } from "../../../server/api.js";
 import { IUsersPanel } from "./types.ts";
 import Modal from "../../../assets/components/Modal/Modal.tsx";
 import { toast } from "sonner";
+import { pluralizeWord } from "../OrdersPanel/utils.ts";
 
 const UsersPanel: FC<IUsersPanel> = ({
     users,
@@ -155,6 +156,7 @@ const UsersPanel: FC<IUsersPanel> = ({
                 isOpen={isModalOpen}
                 setIsOpen={setIsOpenModal}
                 okFunction={() => handleDeleteUsers(checkedItems)}
+                innerText={`Вы действительно хотите удалить ${checkedItems.length} ${pluralizeWord(checkedItems.length)}?`}
             />
         </div>
     )

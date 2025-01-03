@@ -17,7 +17,7 @@ import { deleteCartState, deleteOrder } from "../../../server/api.js";
 import PencilIcon from "../../../assets/components/Icons/PencilIcon.tsx";
 import { useNavigate } from "react-router-dom";
 import { EPath } from "../../../AppPathes.ts";
-import { getBadgeType } from "./utils.ts";
+import { getBadgeType, pluralizeWord } from "./utils.ts";
 import Modal from "../../../assets/components/Modal/Modal.tsx";
 import Input from "../../../assets/components/Input/Input.tsx";
 import MagnifierIcon from "../../../assets/components/Icons/MagnifierIcon.tsx";
@@ -65,7 +65,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
     });
 
     const filteredOrders = !!input ?
-        sortedOrders.filter((order: IOrder) => order.id.slice(-4) === input) : sortedOrders;
+        sortedOrders.filter((order: IOrder) => order.number === +input) : sortedOrders;
 
     const handleSort = (column: string) => {
         if (sortColumn === column) {
@@ -101,182 +101,189 @@ const OrdersPanel: FC<IOrdersPanel> = ({
     return (
         <div className={styles.orders}>
             <Input
+                type='number'
                 className={styles.input}
                 inputClassName={styles.inputWrapper}
                 iconRight={<MagnifierIcon />}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Введите 4 последние знака заказа"
+                placeholder="Введите номер заказа"
             />
-            <div className={styles.ordersTable}>
-                <div className={clsx(styles.ordersRow, styles.headerRow)}>
-                    <Checkbox
-                        id="commonCheckbox-orders"
-                        onChange={() => checkedItems.length === orders.length ?
-                            setCheckedItems([]) :
-                            setCheckedItems(orders.map((order: IOrder) => order.id))
-                        }
-                        checked={checkedItems.length === orders.length}
-                        className={styles.checkbox}
-                        classNameLabel={styles.checkboxLabel}
-                    />
-                    <span>№</span>
-                    <span
-                        onClick={() => handleSort("user")}
-                        className={clsx(styles.sortField, sortColumn === "user" && styles.sortedField)}
-                    >
-                        Получатель
-                    </span>
-                    <span
-                        onClick={() => handleSort("totalCost")}
-                        className={clsx(styles.sortField, sortColumn === "totalCost" && styles.sortedField)}
-                    >
-                        Цена
-                    </span>
-                    <span
-                        onClick={() => handleSort("date")}
-                        className={clsx(styles.sortField, sortColumn === "date" && styles.sortedField)}
-                    >
-                        Дата
-                    </span>
-                    <span>Адрес</span>
-                    <span
-                        onClick={() => handleSort("payment")}
-                        className={clsx(styles.sortField, sortColumn === "payment" && styles.sortedField)}
-                    >
-                        Оплата
-                    </span>
-                    <span
-                        onClick={() => handleSort("status")}
-                        className={clsx(styles.sortField, sortColumn === "status" && styles.sortedField)}
-                        style={{ paddingLeft: "8px" }}
-                    >
-                        Статус
-                    </span>
-                    <span>Изменено</span>
-                </div>
-                {filteredOrders
-                    .slice(currentPage * booksPerPage - booksPerPage, currentPage * booksPerPage)
-                    .map(({ id, date, address, totalCost, payment, status, user, admin, books, message }: IOrder, index: number) => (
-                        <div
-                            className={clsx(
-                                styles.rowWrapper,
-                                index % 2 !== 0 && styles.borderPurple,
-                            )}
-                            key={id}
-                        >
-                            <div
-                                className={clsx(styles.ordersRow, styles.mainRow)}
-                                onClick={() => { openedInfo === id ? setOpenedInfo("") : setOpenedInfo(id) }}
+            {filteredOrders.length > 0 ?
+                <>
+                    <div className={styles.ordersTable}>
+                        <div className={clsx(styles.ordersRow, styles.headerRow)}>
+                            <Checkbox
+                                id="commonCheckbox-orders"
+                                onChange={() => checkedItems.length === orders.length ?
+                                    setCheckedItems([]) :
+                                    setCheckedItems(orders.map((order: IOrder) => order.id))
+                                }
+                                checked={checkedItems.length === orders.length}
+                                className={styles.checkbox}
+                                classNameLabel={styles.checkboxLabel}
+                            />
+                            <span>№</span>
+                            <span
+                                onClick={() => handleSort("user")}
+                                className={clsx(styles.sortField, sortColumn === "user" && styles.sortedField)}
                             >
-                                <Checkbox
-                                    id={id}
-                                    onChange={() => checkedItems.includes(id) ?
-                                        setCheckedItems(checkedItems.filter((item: string) => item !== id)) :
-                                        setCheckedItems([...checkedItems, id])
-                                    }
-                                    checked={checkedItems.includes(id)}
-                                    className={styles.checkbox}
-                                    classNameLabel={styles.checkboxLabel}
-                                />
-                                <span>{orders.findIndex((order: IOrder) => order.id === id) + 1}</span>
-                                <span className={styles.rowPadding}>{`${user.name} ${user.surname}`}</span>
-                                <span className={styles.rowPadding}>{totalCost}</span>
-                                <span>{date.split(",")[0]}</span>
-                                <span
+                                Получатель
+                            </span>
+                            <span
+                                onClick={() => handleSort("totalCost")}
+                                className={clsx(styles.sortField, sortColumn === "totalCost" && styles.sortedField)}
+                            >
+                                Цена
+                            </span>
+                            <span
+                                onClick={() => handleSort("date")}
+                                className={clsx(styles.sortField, sortColumn === "date" && styles.sortedField)}
+                            >
+                                Дата
+                            </span>
+                            <span>Адрес</span>
+                            <span
+                                onClick={() => handleSort("payment")}
+                                className={clsx(styles.sortField, sortColumn === "payment" && styles.sortedField)}
+                            >
+                                Оплата
+                            </span>
+                            <span
+                                onClick={() => handleSort("status")}
+                                className={clsx(styles.sortField, sortColumn === "status" && styles.sortedField)}
+                                style={{ paddingLeft: "8px" }}
+                            >
+                                Статус
+                            </span>
+                            <span>Изменено</span>
+                        </div>
+                        {filteredOrders
+                            .slice(currentPage * booksPerPage - booksPerPage, currentPage * booksPerPage)
+                            .map(({ id, number, date, address, totalCost, payment, status, user, admin, books, message }: IOrder, index: number) => (
+                                <div
                                     className={clsx(
-                                        styles.rowPadding,
-                                        address === defaultPickupAddress && styles.defaultAddress,
+                                        styles.rowWrapper,
+                                        index % 2 !== 0 && styles.borderPurple,
                                     )}
+                                    key={id}
                                 >
-                                    {address}
-                                </span>
-                                <span>{payment}</span>
-                                <span>
-                                    <Badge type={getBadgeType(status)}>{status}</Badge>
-                                </span>
-                                <span className={styles.rowPadding}>{!!admin ? `${admin.name} ${admin.surname}` : "—"}</span>
-                                <div className={styles.iconsWrapper}>
-                                    <span
-                                        className={clsx(
-                                            styles.rowIcon,
-                                            openedInfo === id && styles["rowIcon-opened"],
-                                        )}
+                                    <div
+                                        className={clsx(styles.ordersRow, styles.mainRow)}
                                         onClick={() => { openedInfo === id ? setOpenedInfo("") : setOpenedInfo(id) }}
                                     >
-                                        <ArrowDownOutlineIcon />
-                                    </span>
-                                    <span
-                                        className={clsx(styles.rowIcon, styles.pencilIcon)}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            navigate(`${EPath.adminOrder}/${id}`);
-                                        }}
+                                        <Checkbox
+                                            id={id}
+                                            onChange={() => checkedItems.includes(id) ?
+                                                setCheckedItems(checkedItems.filter((item: string) => item !== id)) :
+                                                setCheckedItems([...checkedItems, id])
+                                            }
+                                            checked={checkedItems.includes(id)}
+                                            className={styles.checkbox}
+                                            classNameLabel={styles.checkboxLabel}
+                                        />
+                                        <span>{number}</span>
+                                        <span className={styles.rowPadding}>{`${user.name} ${user.surname}`}</span>
+                                        <span className={styles.rowPadding}>{totalCost}</span>
+                                        <span>{date.split(",")[0]}</span>
+                                        <span
+                                            className={clsx(
+                                                styles.rowPadding,
+                                                address === defaultPickupAddress && styles.defaultAddress,
+                                            )}
+                                        >
+                                            {address}
+                                        </span>
+                                        <span>{payment}</span>
+                                        <span>
+                                            <Badge type={getBadgeType(status)}>{status}</Badge>
+                                        </span>
+                                        <span className={styles.rowPadding}>{!!admin ? `${admin.name} ${admin.surname}` : "—"}</span>
+                                        <div className={styles.iconsWrapper}>
+                                            <span
+                                                className={clsx(
+                                                    styles.rowIcon,
+                                                    openedInfo === id && styles["rowIcon-opened"],
+                                                )}
+                                                onClick={() => { openedInfo === id ? setOpenedInfo("") : setOpenedInfo(id) }}
+                                            >
+                                                <ArrowDownOutlineIcon />
+                                            </span>
+                                            <span
+                                                className={clsx(styles.rowIcon, styles.pencilIcon)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    navigate(`${EPath.adminOrder}/${id}`);
+                                                }}
+                                            >
+                                                <PencilIcon />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className={clsx(
+                                            styles.rowInfo,
+                                            openedInfo === id && styles["rowInfo-opened"],
+                                        )}
                                     >
-                                        <PencilIcon />
-                                    </span>
-                                </div>
-                            </div>
-                            <div
-                                className={clsx(
-                                    styles.rowInfo,
-                                    openedInfo === id && styles["rowInfo-opened"],
-                                )}
-                            >
-                                <div className={styles.rowInfoColInfo}>
-                                    {!!user.phone &&
-                                        <span>Телефон для связи:
-                                            <span className={styles.bolder}>{user.phone}</span>
-                                        </span>
-                                    }
-                                    <span>Тип доставки:
-                                        <span className={styles.bolder}>{address === defaultPickupAddress ? "Самовывоз" : "Доставка"}</span>
-                                    </span>
-                                    <span>Точное время заказа:
-                                        <span className={styles.bolder}>{date}</span>
-                                    </span>
-                                    {!!message &&
-                                        <span>Сообщение:
-                                            <span className={styles.message}>{message}</span>
-                                        </span>
-                                    }
-                                </div>
-                                <div className={styles.rowInfoColBooks}>
-                                    {books.map(({ book, count }: ICartBook) => {
-                                        const { id, name, imgLink, author } = book;
+                                        <div className={styles.rowInfoColInfo}>
+                                            {!!user.phone &&
+                                                <span>Телефон для связи:
+                                                    <span className={styles.bolder}>{user.phone}</span>
+                                                </span>
+                                            }
+                                            <span>Тип доставки:
+                                                <span className={styles.bolder}>{address === defaultPickupAddress ? "Самовывоз" : "Доставка"}</span>
+                                            </span>
+                                            <span>Точное время заказа:
+                                                <span className={styles.bolder}>{date}</span>
+                                            </span>
+                                            {!!message &&
+                                                <span>Сообщение:
+                                                    <span className={styles.message}>{message}</span>
+                                                </span>
+                                            }
+                                        </div>
+                                        <div className={styles.rowInfoColBooks}>
+                                            {books.map(({ book, count }: ICartBook) => {
+                                                const { id, name, imgLink, author } = book;
 
-                                        return (
-                                            <div className={styles.bookRow} key={id}>
-                                                <img
-                                                    className={styles.productImage}
-                                                    src={imgLink}
-                                                    alt={name}
-                                                />
-                                                <div className={styles.bookInfo}>
-                                                    <div className={styles.bookTitle}>
-                                                        <span className={styles.bookInfoName}>{name}</span>
-                                                        {!!author && <span>{author}</span>}
+                                                return (
+                                                    <div className={styles.bookRow} key={id}>
+                                                        <img
+                                                            className={styles.productImage}
+                                                            src={imgLink}
+                                                            alt={name}
+                                                        />
+                                                        <div className={styles.bookInfo}>
+                                                            <div className={styles.bookTitle}>
+                                                                <span className={styles.bookInfoName}>{name}</span>
+                                                                {!!author && <span>{author}</span>}
+                                                            </div>
+                                                            <span className={styles.bookInfoCount}>Количество: {count}</span>
+                                                        </div>
                                                     </div>
-                                                    <span className={styles.bookInfoCount}>Количество: {count}</span>
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
+                                                )
+                                            })}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    ))}
-            </div>
-            <Pagination
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                itemsPerPage={booksPerPage}
-                setItemsPerPage={setBooksPerPage}
-                currentItems={orders}
-                type={EPaginationPage.admin}
-                resultsClassName={styles.paginator}
-                paginationClassName={styles.paginator}
-            />
+                            ))}
+                    </div>
+                    <Pagination
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        itemsPerPage={booksPerPage}
+                        setItemsPerPage={setBooksPerPage}
+                        currentItems={filteredOrders}
+                        type={EPaginationPage.admin}
+                        resultsClassName={styles.paginator}
+                        paginationClassName={styles.paginator}
+                    />
+                </>
+                :
+                <span className={styles.zeroResult}>Ничего не найдено</span>
+            }
             <ButtonAdmin
                 className={styles.deleteBtn}
                 onClick={() => checkedItems.length === 0 ? toast.warning("Выберите заказы") : setIsOpenModal(true)}
@@ -288,6 +295,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                 isOpen={isModalOpen}
                 setIsOpen={setIsOpenModal}
                 okFunction={() => handleDeleteOrders(checkedItems)}
+                innerText={`Вы действительно хотите удалить ${checkedItems.length} ${pluralizeWord(checkedItems.length)}?`}
             />
         </div>
     )

@@ -46,6 +46,7 @@ export const initialUser: IFullProfile = {
 
 export interface IOrder {
     id: string,
+    number: number,
     idCartState: string,
     idUser: string,
     idAdmin?: string,
