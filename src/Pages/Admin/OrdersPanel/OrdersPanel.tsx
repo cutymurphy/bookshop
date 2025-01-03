@@ -21,6 +21,7 @@ import { getBadgeType } from "./utils.ts";
 import Modal from "../../../assets/components/Modal/Modal.tsx";
 import Input from "../../../assets/components/Input/Input.tsx";
 import MagnifierIcon from "../../../assets/components/Icons/MagnifierIcon.tsx";
+import { toast } from "sonner";
 
 const OrdersPanel: FC<IOrdersPanel> = ({
     orders,
@@ -83,8 +84,9 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                 await deleteOrder(id);
                 await deleteCartState(stateId);
             })
+            toast.info("Выбранные заказы удалены");
         } catch (error) {
-            console.error(`Ошибка при удалении заказов: ${error}`);
+            toast.error(`Ошибка при удалении заказов: ${error}`);
         } finally {
             setCurrentPage(1);
             setOpenedInfo("");
@@ -277,7 +279,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
             />
             <ButtonAdmin
                 className={styles.deleteBtn}
-                onClick={() => checkedItems.length === 0 ? alert("Выберите заказы") : setIsOpenModal(true)}
+                onClick={() => checkedItems.length === 0 ? toast.warning("Выберите заказы") : setIsOpenModal(true)}
                 disabled={checkedItems.length === 0}
                 rightIcon={<TrashBinIcon />}
                 text="Удалить"

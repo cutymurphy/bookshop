@@ -19,6 +19,7 @@ import PlusIcon from "../../../assets/components/Icons/PlusIcon.tsx";
 import Input from "../../../assets/components/Input/Input.tsx";
 import MagnifierIcon from "../../../assets/components/Icons/MagnifierIcon.tsx";
 import Modal from "../../../assets/components/Modal/Modal.tsx";
+import { toast } from "sonner";
 
 const BooksPanel: FC<IBooksPanel> = ({
     books,
@@ -77,14 +78,16 @@ const BooksPanel: FC<IBooksPanel> = ({
     };
 
     const handleDeleteBooks = (booksId: string[]) => {
-        /* TO-DO: пофиксить удаление, если книга состоит в каких-то таблицах (и другое похожее глянуть) */
+        /* TO-DO: пофиксить удаление, если книга состоит в каких-то таблицах (и другое похожее глянуть);
+        как я поняла, короче, если книга состоит уже в каком-то заказе */
         setIsLoading(true);
         try {
             booksId.forEach(async (id: string) => {
                 await deleteBook(id);
             })
+            toast.info("Выбранные книги удалены");
         } catch (error) {
-            console.error(`Ошибка при удалении книг: ${error}`);
+            toast.error(`Ошибка при удалении книг: ${error}`);
         } finally {
             setCurrentPage(1);
             setOpenedInfo("");
@@ -256,7 +259,7 @@ const BooksPanel: FC<IBooksPanel> = ({
                 />
                 <ButtonAdmin
                     className={styles.deleteBtn}
-                    onClick={() => checkedItems.length === 0 ? alert("Выберите заказы") : setIsOpenModal(true)}
+                    onClick={() => checkedItems.length === 0 ? toast.warning("Выберите книги") : setIsOpenModal(true)}
                     disabled={checkedItems.length === 0}
                     rightIcon={<TrashBinIcon />}
                     text="Удалить"

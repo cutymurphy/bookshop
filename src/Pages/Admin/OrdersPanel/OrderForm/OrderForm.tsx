@@ -17,6 +17,7 @@ import { IListOption } from '../../../../assets/components/DropDown/types.ts';
 import { editOrder } from '../../../../server/api.js';
 import { ICartBook } from '../../../Cart/types.ts';
 import { ETabTitle } from '../../enums.ts';
+import { toast } from 'sonner';
 
 const OrderForm: FC<IOrderForm> = ({
     currentAdmin,
@@ -30,6 +31,7 @@ const OrderForm: FC<IOrderForm> = ({
     const [initialOrderInfo, setInitialOrderInfo] = useState<IOrder | null>(null);
     const [orderInfo, setOrderInfo] = useState<IOrder | null>(null);
 
+    /* TO-DO: подкорректировать */
     const isOrderChanged = JSON.stringify(initialOrderInfo) !== JSON.stringify(orderInfo);
 
     const handleChangeOrder = async () => {
@@ -54,8 +56,9 @@ const OrderForm: FC<IOrderForm> = ({
                     }
                 };
             }))
+            toast.success("Информация о заказе отредактирована");
         } catch (error) {
-            console.error("Ошибка при редактировании заказа:", error);
+            toast.error("Ошибка при редактировании заказа:", error);
         } finally {
             navigate(`${EPath.admin}?tab=${ETabTitle.orders}`);
             setTimeout(() => {
@@ -132,7 +135,7 @@ const OrderForm: FC<IOrderForm> = ({
                 <div className={styles.btnsWrapper}>
                     <ButtonAdmin
                         text='Сохранить'
-                        onClick={() => isOrderChanged ? handleChangeOrder() : () => { }}
+                        onClick={() => isOrderChanged ? handleChangeOrder() : toast.warning("Нет изменений для сохранения")}
                         type={"purple"}
                         fill={"outline"}
                         disabled={!isOrderChanged}

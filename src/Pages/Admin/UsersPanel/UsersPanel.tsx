@@ -11,6 +11,7 @@ import ButtonAdmin from "../../../assets/components/ButtonAdmin/ButtonAdmin.tsx"
 import { deleteUser } from "../../../server/api.js";
 import { IUsersPanel } from "./types.ts";
 import Modal from "../../../assets/components/Modal/Modal.tsx";
+import { toast } from "sonner";
 
 const UsersPanel: FC<IUsersPanel> = ({
     users,
@@ -50,8 +51,9 @@ const UsersPanel: FC<IUsersPanel> = ({
             usersId.forEach(async (id: string) => {
                 await deleteUser(id);
             })
+            toast.info("Выбранные пользователи удалены из системы");
         } catch (error) {
-            console.error(`Ошибка при удалении пользователей: ${error}`);
+            toast.error(`Ошибка при удалении пользователей: ${error}`);
         } finally {
             setCurrentPage(1);
             setUsers(users.filter((user: IFullProfile) => !usersId.includes(user.idUser)));
@@ -143,7 +145,7 @@ const UsersPanel: FC<IUsersPanel> = ({
             <div className={styles.btns}>
                 <ButtonAdmin
                     className={styles.deleteBtn}
-                    onClick={() => checkedItems.length === 0 ? alert("Выберите пользователей") : setIsOpenModal(true)}
+                    onClick={() => checkedItems.length === 0 ? toast.warning("Выберите пользователей") : setIsOpenModal(true)}
                     disabled={checkedItems.length === 0}
                     rightIcon={<TrashBinIcon />}
                     text="Удалить"

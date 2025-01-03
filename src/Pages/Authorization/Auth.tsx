@@ -11,6 +11,7 @@ import Button from "../../assets/components/Button/Button.tsx";
 import Checkbox from "../../assets/components/Checkbox/Checkbox.tsx";
 import { ICartBook } from "../Cart/types.ts";
 import Ordercon from "../../assets/components/Icons/Ordercon.tsx";
+import { toast } from "sonner";
 
 const Auth: FC<IAuth> = ({
     currentUser,
@@ -169,7 +170,7 @@ const Auth: FC<IAuth> = ({
                 }
             }
         } catch (error) {
-            console.error(`Ошибка при ${isSignUp ? "регистрации" : "входе"} пользователя:`, error);
+            toast.error(`Ошибка при ${isSignUp ? "регистрации" : "входе"} пользователя:`, error);
         } finally {
             setTimeout(() => {
                 setIsLoading(false);

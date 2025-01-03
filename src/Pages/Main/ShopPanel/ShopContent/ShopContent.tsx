@@ -8,6 +8,7 @@ import { EFiltersNames, IFilter } from "../ShopFilters/types.ts";
 import { ICartBook } from "../../../Cart/types.ts";
 import Loader from "../../../../assets/components/Loader/Loader.tsx";
 import { addBookToCart } from "../../../../server/api.js";
+import { toast } from "sonner";
 
 const ShopContent: FC<IShopContent> = ({
     currentBooks,
@@ -42,6 +43,7 @@ const ShopContent: FC<IShopContent> = ({
         }
         setTimeout(() => {
             setIsLoading(false);
+            toast.success('Книга добавлена в корзину');
         }, !!cartId ? 500 : 200);
     }
 

@@ -14,6 +14,7 @@ import { addCartState, addOrder, deleteBookFromCart } from "../../../server/api.
 import { v4 as uuidv4 } from 'uuid';
 import { ICartBook } from "../types.ts";
 import { IOrder } from "../../../types.ts";
+import { toast } from "sonner";
 
 const CartModal: FC<ICartModal> = ({
     isOpen,
@@ -80,8 +81,9 @@ const CartModal: FC<ICartModal> = ({
                 books: booksArr,
             }
             setOrders([...orders, currentOrder]);
+            toast.success('Заказ создан');
         } catch (error) {
-            console.error("Ошибка при обработке состояния корзины и добавлении заказа:", error);
+            toast.error("Ошибка при обработке состояния корзины и добавлении заказа:", error);
         } finally {
             setCheckedBookItems([]);
             setProductsInCart(productsInCart.filter((book: ICartBook) => !checkedBookItems.includes(book.book.id)));

@@ -17,6 +17,7 @@ import { IListOption } from "../../../../assets/components/DropDown/types.ts";
 import Input from "../../../../assets/components/Input/Input.tsx";
 import { ETabTitle } from "../../enums.ts";
 import { initialBook, initialErrors, trimBookInfo } from "./utils.ts";
+import { toast } from "sonner";
 
 const BooksForm: FC<IBookForm> = ({
     books,
@@ -113,6 +114,7 @@ const BooksForm: FC<IBookForm> = ({
                             idAdmin: currentAdmin.idUser,
                         };
                     }));
+                    toast.success("Информация о книге отредактирована");
                 } else {
                     const { name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = trimmedBookInfo;
                     await addBook(newId, currentAdmin.idUser, modifyDate, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType);
@@ -122,10 +124,13 @@ const BooksForm: FC<IBookForm> = ({
                         dateModified: modifyDate,
                         idAdmin: currentAdmin.idUser,
                     }]);
+                    toast.success("Запись о новой книге создана");
                 }
+            } else {
+                toast.error("Заполните все поля правильно");
             }
         } catch (error) {
-            console.error(`Ошибка при ${!!id ? "редактировании" : "создании"} книги:`, error);
+            toast.error(`Ошибка при ${!!id ? "редактировании" : "создании"} книги:`, error);
         } finally {
             if (isValid) {
                 !!id ? navigate(`${EPath.admin}?tab=${ETabTitle.books}`) : navigate(`${EPath.adminBook}/${newId}`);
@@ -232,6 +237,7 @@ const BooksForm: FC<IBookForm> = ({
                             errorMessage={errors.imgLink}
                         />
                         <DropDown
+                            /* TO-DO: отсортировать по имени список авторов */
                             label="Автор"
                             placeholder="Укажите автора книги"
                             listOfOptions={authors.map((author: IAuthor) => ({
@@ -276,6 +282,7 @@ const BooksForm: FC<IBookForm> = ({
                             errorMessage={errors.weight}
                         />
                     </div>
+                    {/* TO-DO: сделать что-то с тем, что фото книги нет */}
                     <div className={styles.imgWrapper}>
                         {imgLink &&
                             <img
@@ -289,9 +296,10 @@ const BooksForm: FC<IBookForm> = ({
                 <div className={styles.btnsWrapper}>
                     <ButtonAdmin
                         text='Сохранить'
-                        onClick={handleManipulateBook}
+                        onClick={() => !!id ? (isBookChanged ? handleManipulateBook() : toast.warning("Нет изменений для сохранения")) : handleManipulateBook()}
                         type={"purple"}
                         fill={"outline"}
+                        disabled={!!id ? !isBookChanged : false}
                     />
                     {isBookChanged &&
                         <ButtonAdmin

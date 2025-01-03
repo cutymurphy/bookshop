@@ -12,6 +12,7 @@ import { EPath } from './AppPathes.ts';
 import OrderForm from './Pages/Admin/OrdersPanel/OrderForm/OrderForm.tsx';
 import BooksForm from './Pages/Admin/BooksPanel/BookForm/BookForm.tsx';
 import Orders from './Pages/Orders/Orders.tsx';
+import { Toaster } from 'sonner';
 
 const App = () => {
     const [currentUser, setCurrentUser] = useState<IFullProfile>({ ...initialUser });
@@ -148,6 +149,7 @@ const App = () => {
 
     return (
         <div className={styles.wrapper}>
+            <Toaster richColors duration={1500} gap={10} position="bottom-right" />
             <Header
                 productsInCart={productsInCart}
                 setIsMobileFiltersOpen={setIsMobileFiltersOpen}

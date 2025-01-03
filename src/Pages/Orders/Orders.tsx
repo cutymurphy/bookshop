@@ -12,6 +12,7 @@ import ButtonAdmin from "../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
 import { deleteOrder } from "../../server/api.js";
 import Loader from "../../assets/components/Loader/Loader.tsx";
 import Modal from "../../assets/components/Modal/Modal.tsx";
+import { toast } from "sonner";
 
 const Orders: FC<IOrders> = ({
     orders,
@@ -38,8 +39,10 @@ const Orders: FC<IOrders> = ({
         try {
             await deleteOrder(id);
             setOrders(orders.filter((order: IOrder) => id !== order.id));
+            toast.info(`Заказ ${id.slice(-4)} удален`);
+            /* TO-DO: сделать нормальные номера заказов (да, и там где поиск по номеру заказа, тоже подкорректировать) */
         } catch (error) {
-            console.error(`Ошибка при удалении заказа: ${error}`)
+            toast.error(`Ошибка при удалении заказа: ${error}`)
         } finally {
             setTimeout(() => {
                 setIsLoading(false);

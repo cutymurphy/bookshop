@@ -14,6 +14,7 @@ import { deleteBookFromCart, updateCartBookCount } from "../../server/api.js";
 import Checkbox from "../../assets/components/Checkbox/Checkbox.tsx";
 import CartModal from "./CartModal/CartModal.tsx";
 import Button from "../../assets/components/Button/Button.tsx";
+import { toast } from "sonner";
 
 const Cart: FC<ICart> = ({
     productsInCart,
@@ -90,7 +91,7 @@ const Cart: FC<ICart> = ({
                 }
             }
         } catch (error) {
-            console.error("Ошибка при добавлении / удалении книг в корзине:", error);
+            toast.error("Ошибка при добавлении / удалении книг в корзине:", error);
         } finally {
             setProductsInCart(productsInCart
                 .map((item: ICartBook) => {
@@ -112,15 +113,16 @@ const Cart: FC<ICart> = ({
 
     const handleDeleteBookFromCart = async (bookToDelete: ICartBook) => {
         setIsLoading(true);
-        setProductsInCart(productsInCart.filter((book: ICartBook) =>
-            book.book.id !== bookToDelete.book.id));
         try {
+            setProductsInCart(productsInCart.filter((book: ICartBook) =>
+                book.book.id !== bookToDelete.book.id));
+            setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookToDelete.book.id));
             if (!!idCart) {
-                setCheckedBookItems(checkedBookItems.filter((id: string) => id !== bookToDelete.book.id));
                 await deleteBookFromCart(idCart, bookToDelete.book.id);
             }
+            toast.info('Книга удалена из корзины');
         } catch (error) {
-            console.error("Ошибка при удалении книги из корзины:", error);
+            toast.error("Ошибка при удалении книги из корзины:", error);
         } finally {
             setTimeout(() => {
                 setIsLoading(false);
@@ -235,10 +237,10 @@ const Cart: FC<ICart> = ({
                                 disabled={checkedBookItems.length === 0}
                                 onClick={() => {
                                     if (!!idCart) {
-                                        (checkedBookItems.length > 0 ? setIsOpenedModal(true) : alert('Выберите товары.'))
+                                        (checkedBookItems.length > 0 ? setIsOpenedModal(true) : toast.warning('Выберите товары'))
                                     } else {
-                                        alert('Сначала войдите в профиль или зарегистрируйтесь');
                                         navigate(EPath.auth);
+                                        toast.warning('Сначала войдите в профиль или зарегистрируйтесь', { duration: 2500 });
                                     }
                                 }}
                             />
