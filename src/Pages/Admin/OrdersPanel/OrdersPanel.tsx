@@ -39,9 +39,21 @@ const OrdersPanel: FC<IOrdersPanel> = ({
     const navigate = useNavigate();
 
     const sortedOrders = [...orders].sort((a: IOrder, b: IOrder) => {
-        if (!sortColumn) return 0;
-
         let compareValue = 0;
+
+        if (!sortColumn) {
+            const [dateA, timeA] = a.date.split(", ");
+            const [dayA, monthA, yearA] = dateA.split(".");
+            const dateObjA = new Date(`${yearA}-${monthA}-${dayA}T${timeA}`);
+
+            const [dateB, timeB] = b.date.split(", ");
+            const [dayB, monthB, yearB] = dateB.split(".");
+            const dateObjB = new Date(`${yearB}-${monthB}-${dayB}T${timeB}`);
+
+            compareValue = dateObjA.getTime() - dateObjB.getTime();
+            return -compareValue;
+        }
+
         if (sortColumn === "date") {
             const [dateA, timeA] = a.date.split(", ");
             const [dayA, monthA, yearA] = dateA.split(".");
@@ -58,8 +70,6 @@ const OrdersPanel: FC<IOrdersPanel> = ({
             compareValue = a.payment.localeCompare(b.payment);
         } else if (sortColumn === "status") {
             compareValue = a.status.localeCompare(b.status);
-        } else if (sortColumn === "user") {
-            compareValue = a.user.surname.localeCompare(b.user.surname);
         }
         return sortDirection === "asc" ? compareValue : -compareValue;
     });
@@ -84,13 +94,13 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                 await deleteOrder(id);
                 await deleteCartState(stateId);
             })
+            setOrders(orders.filter((order: IOrder) => !ordersId.includes(order.id)));
             toast.info("Выбранные заказы удалены");
         } catch (error) {
             toast.error(`Ошибка при удалении заказов: ${error}`);
         } finally {
             setCurrentPage(1);
             setOpenedInfo("");
-            setOrders(orders.filter((order: IOrder) => !ordersId.includes(order.id)));
             setCheckedItems([]);
             setTimeout(() => {
                 setIsLoading(false);
@@ -124,12 +134,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                                 classNameLabel={styles.checkboxLabel}
                             />
                             <span>№</span>
-                            <span
-                                onClick={() => handleSort("user")}
-                                className={clsx(styles.sortField, sortColumn === "user" && styles.sortedField)}
-                            >
-                                Получатель
-                            </span>
+                            <span>Получатель</span>
                             <span
                                 onClick={() => handleSort("totalCost")}
                                 className={clsx(styles.sortField, sortColumn === "totalCost" && styles.sortedField)}
