@@ -50,7 +50,7 @@ const Main: FC<IMain> = ({
                     />
                     <div className={styles.shopContent}>
                         <ShopContent
-                            initialBooks={initialBooks}
+                            initialBooks={initialBooks.filter((book: IBook) => book.count > 0)}
                             currentBooks={currentBooks}
                             setCurrentBooks={setCurrentBooks}
                             productsInCart={productsInCart}

@@ -12,7 +12,7 @@ import { EPath } from './AppPathes.ts';
 import OrderForm from './Pages/Admin/OrdersPanel/OrderForm/OrderForm.tsx';
 import BooksForm from './Pages/Admin/BooksPanel/BookForm/BookForm.tsx';
 import Orders from './Pages/Orders/Orders.tsx';
-import { Toaster } from 'sonner';
+import { toast, Toaster } from 'sonner';
 
 const App = () => {
     const [currentUser, setCurrentUser] = useState<IFullProfile>({ ...initialUser });
@@ -43,6 +43,7 @@ const App = () => {
             setInitialBooks(currBooks);
         } catch (error) {
             console.error('Ошибка загрузки книг или авторов:', error);
+            toast.error('Ошибка загрузки книг или авторов');
         }
     };
 
@@ -53,6 +54,7 @@ const App = () => {
             return usersData;
         } catch (error) {
             console.error('Ошибка загрузки пользователей:', error);
+            toast.error('Ошибка загрузки пользователей');
             return [];
         }
     };
@@ -95,6 +97,7 @@ const App = () => {
             setCurrentOrdersCount(ordersCountData[0].count);
         } catch (error) {
             console.error('Ошибка загрузки заказов:', error);
+            toast.error('Ошибка загрузки заказов');
         }
     };
 
@@ -123,6 +126,7 @@ const App = () => {
             await loadOrders(usersData);
         } catch (error) {
             console.error('Ошибка при загрузке данных администратора:', error);
+            toast.error('Ошибка при загрузке данных администратора');
         } finally {
             setTimeout(() => {
                 setIsLoading(false);

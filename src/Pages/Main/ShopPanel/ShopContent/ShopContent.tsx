@@ -9,6 +9,8 @@ import { ICartBook } from "../../../Cart/types.ts";
 import Loader from "../../../../assets/components/Loader/Loader.tsx";
 import { addBookToCart } from "../../../../server/api.js";
 import { toast } from "sonner";
+import Badge from "../../../../assets/components/Badge/Badge.tsx";
+import { EBadgeType } from "../../../../assets/components/Badge/enums.ts";
 
 const ShopContent: FC<IShopContent> = ({
     currentBooks,
@@ -133,6 +135,14 @@ const ShopContent: FC<IShopContent> = ({
                                     >
                                         {isBookInCart ? "Оформить" : "Купить"}
                                     </button>
+                                    {book.count < 3 &&
+                                        <Badge
+                                            type={EBadgeType.pink}
+                                            className={styles.badge}
+                                        >
+                                            Осталось мало
+                                        </Badge>
+                                    }
                                 </div>
                             )
                         })

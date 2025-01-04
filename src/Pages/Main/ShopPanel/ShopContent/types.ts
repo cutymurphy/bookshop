@@ -6,6 +6,7 @@ export interface IBook {
     idAuthor?: string,
     author?: string,
     idAdmin: string,
+    count: number,
     dateModified: string,
     name: string,
     price: number,
