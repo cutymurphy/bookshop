@@ -9,18 +9,21 @@ import PencilIcon from "../../assets/components/Icons/PencilIcon.tsx";
 import { defaultPickupAddress, EStatusType } from "../Cart/CartModal/enums.ts";
 import { ICartBook } from "../Cart/types.ts";
 import ButtonAdmin from "../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
-import { deleteOrder } from "../../server/api.js";
+import { deleteCartState, deleteOrder } from "../../server/api.js";
 import Loader from "../../assets/components/Loader/Loader.tsx";
 import Modal from "../../assets/components/Modal/Modal.tsx";
 import { toast } from "sonner";
+import { pluralizeWord } from "../Admin/Statistics/utils.ts";
 
 const Orders: FC<IOrders> = ({
+    allOrders,
     orders,
     setOrders,
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const [orderId, setOrderId] = useState<string>("");
+    const [orderNumber, setOrderNumber] = useState<number>(0);
 
     const sortedOrders = orders.sort((a: IOrder, b: IOrder) => {
         const [dateA, timeA] = a.date.split(", ");
@@ -34,13 +37,14 @@ const Orders: FC<IOrders> = ({
         return dateObjB.getTime() - dateObjA.getTime();
     });
 
-    const handleDeleteOrder = async (id: string) => {
+    const handleDeleteOrder = async (id: string, number: number) => {
         setIsLoading(true);
         try {
+            const stateId = orders.find((order: IOrder) => order.id === id)?.idCartState;
             await deleteOrder(id);
-            setOrders(orders.filter((order: IOrder) => id !== order.id));
-            toast.info(`Заказ ${id.slice(-4)} удален`);
-            /* TO-DO: сделать нормальные номера заказов (да, и там где поиск по номеру заказа, тоже подкорректировать) */
+            await deleteCartState(stateId);
+            setOrders(allOrders.filter((order: IOrder) => id !== order.id));
+            toast.info(`Заказ №${number} удален`);
         } catch (error) {
             toast.error(`Ошибка при удалении заказа: ${error}`)
         } finally {
@@ -53,6 +57,7 @@ const Orders: FC<IOrders> = ({
     useEffect(() => {
         if (!isModalOpen) {
             setOrderId("");
+            setOrderNumber(0);
         }
     }, [isModalOpen]);
 
@@ -68,11 +73,11 @@ const Orders: FC<IOrders> = ({
             <div className={styles.loadContainer}><Loader /></div>
         ) : (
             <div className={styles.ordersWrapper}>
-                <span className={styles.total}>Всего найдено: {orders.length} заказов</span>
-                {sortedOrders.map(({ id, date, address, totalCost, payment, status, dateModified, books, message }: IOrder) => (
+                <span className={styles.total}>Всего найдено: {orders.length} {pluralizeWord(orders.length)}</span>
+                {sortedOrders.map(({ id, number, date, address, totalCost, payment, status, dateModified, books, message }: IOrder) => (
                     <div className={styles.order} key={id}>
                         <div className={styles.orderTitle}>
-                            <span className={styles.title}>Заказ №{id.slice(-4)}</span>
+                            <span className={styles.title}>Заказ №{number}</span>
                             <Badge type={getBadgeType(status)}>{status}</Badge>
                         </div>
                         {dateModified &&
@@ -126,6 +131,7 @@ const Orders: FC<IOrders> = ({
                                 type={"gray"}
                                 onClick={() => {
                                     setOrderId(id);
+                                    setOrderNumber(number);
                                     setIsOpenModal(true);
                                 }}
                             />
@@ -138,6 +144,7 @@ const Orders: FC<IOrders> = ({
                                 type={"gray"}
                                 onClick={() => {
                                     setOrderId(id);
+                                    setOrderNumber(number);
                                     setIsOpenModal(true);
                                 }}
                             />
@@ -147,7 +154,7 @@ const Orders: FC<IOrders> = ({
                 <Modal
                     isOpen={isModalOpen}
                     setIsOpen={setIsOpenModal}
-                    okFunction={() => !!orderId ? handleDeleteOrder(orderId) : () => { }}
+                    okFunction={() => !!orderId && !!orderNumber ? handleDeleteOrder(orderId, orderNumber) : () => { }}
                     innerText="Вы действительно хотите удалить этот заказ?"
                 />
             </div>

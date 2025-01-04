@@ -14,6 +14,7 @@ const Admin: FC<IAdmin> = ({
     isLoading,
     orders,
     setOrders,
+    ordersCount,
     setIsLoading,
     books,
     setBooks,
@@ -111,6 +112,7 @@ const Admin: FC<IAdmin> = ({
                             title: "Статистика",
                             content: <Statisctics
                                 orders={orders}
+                                ordersCount={ordersCount}
                             />
                         },
                     ]}

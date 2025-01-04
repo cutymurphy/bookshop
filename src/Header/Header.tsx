@@ -27,7 +27,6 @@ const Header: FC<IHeader> = ({
         productsInCart.forEach((product: ICartBook) => count += product.count);
         return count;
     }
-
     return (
         <header className={styles.header} id="header">
             <div className={styles.headInfo}>
@@ -48,7 +47,7 @@ const Header: FC<IHeader> = ({
                             <img className={styles.iconImage} src={userIcon} />
                         </Link>
                     </div>
-                    {/* TO-DO: необходимо добавить вкладку с заказами для юзера */}
+                    {/* TO-DO: добавить число заказов */}
                     <div><a href={tgLink}><img className={styles.iconImage} src={tgIcon} /></a></div>
                     <div className={styles.cart}>
                         <Link to={EPath.cart}>

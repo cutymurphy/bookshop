@@ -2,9 +2,11 @@ import { FC } from "react";
 import React from "react";
 import styles from "./Statistics.module.scss"
 import { IStatistics } from "./types";
+import { pluralizeWord } from "./utils.ts";
 
 const Statistics: FC<IStatistics> = ({
     orders,
+    ordersCount,
 }) => {
     const orderCountByDate = orders.reduce((acc, order) => {
         const date = order.date.split(", ")[0];
@@ -17,29 +19,26 @@ const Statistics: FC<IStatistics> = ({
         const [dayB, monthB, yearB] = dateB.split(".").map(Number);
         return new Date(yearB, monthB - 1, dayB).getTime() - new Date(yearA, monthA - 1, dayA).getTime();
     });
-    
-    const pluralizeWord = (number: number): string => {
-        if (number % 10 === 1 && number % 100 !== 11) {
-            return 'заказ';
-        } else if (number % 10 >= 2 && number % 10 <= 4 && (number % 100 < 10 || number % 100 >= 20)) {
-            return 'заказа';
-        } else {
-            return 'заказов';
-        }
-    }
 
     return (
         <div className={styles.statisticsWrapper}>
-            <span className={styles.statisticsTitle}>Статистика заказов по датам:</span>
-            <ul className={styles.statisticsList}>
-                {orderStatistics.map(([date, count]) => (
-                    <li className={styles.point} key={date}>
-                        <span>— </span>
-                        <span className={styles.pointDate}>{date}:</span>
-                        <span>{count} {pluralizeWord(count)}</span>
-                    </li>
-                ))}
-            </ul>
+            {/* TO-DO: сделать так, чтобы отмененный заказ не удалялся (для статистики) */}
+            <div className={styles.statisticsRecord}>
+                <span className={styles.statisticsTitle}>Общее количество сделанных заказов на сервисе:</span>
+                <span>{ordersCount} {pluralizeWord(ordersCount)}</span>
+            </div>
+            <div className={styles.statisticsRecord}>
+                <span className={styles.statisticsTitle}>Статистика заказов по датам:</span>
+                <ul className={styles.statisticsList}>
+                    {orderStatistics.map(([date, count]) => (
+                        <li className={styles.point} key={date}>
+                            <span>— </span>
+                            <span className={styles.pointDate}>{date}:</span>
+                            <span>{count} {pluralizeWord(count)}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     )
 }

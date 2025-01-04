@@ -12,4 +12,6 @@ export interface ICart {
     user: IFullProfile,
     orders: IOrder[],
     setOrders: (order: IOrder[]) => void,
+    ordersCount: number,
+    setOrdersCount: (count: number) => void,
 }

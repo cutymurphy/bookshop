@@ -5,7 +5,7 @@ import { Auth, Cart, Main } from './Pages/index.ts';
 import { Route, Routes } from 'react-router-dom';
 import { ICartBook } from './Pages/Cart/types.ts';
 import { IBook } from './Pages/Main/ShopPanel/ShopContent/types.ts';
-import { fetchBooks, fetchAuthors, getUserById, getCartBooksById, fetchUsers, fetchOrders, getCartStateBooksById } from './server/api.js';
+import { fetchBooks, fetchAuthors, getUserById, getCartBooksById, fetchUsers, fetchOrders, getCartStateBooksById, fetchOrdersCount } from './server/api.js';
 import { IAuthor, IFullProfile, initialUser, IOrder } from './types.ts';
 import Admin from './Pages/Admin/Admin.tsx';
 import { EPath } from './AppPathes.ts';
@@ -20,6 +20,7 @@ const App = () => {
     const [currentAuthors, setCurrentAuthors] = useState<IAuthor[]>([]);
     const [currentUsers, setCurrentUsers] = useState<IFullProfile[]>([]);
     const [currentOrders, setCurrentOrders] = useState<IOrder[]>([]);
+    const [currentOrdersCount, setCurrentOrdersCount] = useState<number>(0);
     const [searchInput, setSearchInput] = useState<string>('');
     const [productsInCart, setProductsInCart] = useState<ICartBook[]>([]);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState<boolean>(false);
@@ -59,6 +60,7 @@ const App = () => {
     const loadOrders = async (users) => {
         try {
             const ordersData = await fetchOrders();
+            const ordersCountData = await fetchOrdersCount();
 
             const orders = await Promise.all(ordersData.map(async (order) => {
 
@@ -90,6 +92,7 @@ const App = () => {
                 return (orderInfo);
             }));
             setCurrentOrders(orders);
+            setCurrentOrdersCount(ordersCountData[0].count);
         } catch (error) {
             console.error('Ошибка загрузки заказов:', error);
         }
@@ -182,6 +185,8 @@ const App = () => {
                             user={currentUser}
                             orders={currentOrders}
                             setOrders={setCurrentOrders}
+                            ordersCount={currentOrdersCount}
+                            setOrdersCount={setCurrentOrdersCount}
                         />
                     }
                 />
@@ -189,6 +194,7 @@ const App = () => {
                     path={EPath.orders}
                     element={
                         <Orders
+                            allOrders={currentOrders}
                             orders={currentOrders.filter((order: IOrder) => order.idUser === currentUser.idUser)}
                             setOrders={setCurrentOrders}
                             setIsLoading={setIsLoading}
@@ -214,6 +220,7 @@ const App = () => {
                                 isLoading={isLoading}
                                 orders={currentOrders}
                                 setOrders={setCurrentOrders}
+                                ordersCount={currentOrdersCount}
                                 setIsLoading={setIsLoading}
                                 books={initialBooks}
                                 setBooks={setInitialBooks}

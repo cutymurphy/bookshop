@@ -1,6 +1,12 @@
 .statisticsWrapper {
     display: flex;
     flex-direction: column;
+    gap: 40px;
+}
+
+.statisticsRecord {
+    display: flex;
+    flex-direction: column;
     gap: 28px;
     font-size: 18px;
     color: var(--black);

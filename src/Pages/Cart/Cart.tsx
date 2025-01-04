@@ -22,6 +22,8 @@ const Cart: FC<ICart> = ({
     user,
     orders,
     setOrders,
+    ordersCount,
+    setOrdersCount,
 }) => {
     const { idCart } = user;
     const imagePaths = [pictureCat1, pictureCat2, pictureCat3, pictureCat4];
@@ -255,6 +257,8 @@ const Cart: FC<ICart> = ({
                                 user={user}
                                 setOrders={setOrders}
                                 orders={orders}
+                                ordersCount={ordersCount}
+                                setOrdersCount={setOrdersCount}
                             />
                         </div>
                     </div>

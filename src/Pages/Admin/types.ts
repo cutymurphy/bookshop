@@ -5,6 +5,7 @@ export interface IAdmin {
     isLoading: boolean,
     orders: IOrder[],
     setOrders: (order: IOrder[]) => void,
+    ordersCount: number,
     setIsLoading: (loading: boolean) => void,
     books: IBook[],
     setBooks: (orders: IBook[]) => void,

@@ -397,15 +397,15 @@ app.delete('/api/cartStates/:id', (req, res) => {
 /* --------- CRUD for orders --------- */
 
 app.post('/api/order', (req, res) => {
-    const { id, idCartState, idUser, date, address, totalCost, payment, status } = req.body;
+    const { id, number, idCartState, idUser, date, address, totalCost, payment, status } = req.body;
     const newId = !!id ? id : uuidv4();
 
     const query = `
-        INSERT INTO bookshop.order (id, idCartState, idUser, idAdmin, date, address, totalCost, payment, status) 
-        VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?);
+        INSERT INTO bookshop.order (id, number, idCartState, idUser, idAdmin, date, address, totalCost, payment, status) 
+        VALUES (?, ?, ?, ?, NULL, ?, ?, ?, ?, ?);
     `;
 
-    db.query(query, [newId, idCartState, idUser, date, address, totalCost, payment, status], (err, results) => {
+    db.query(query, [newId, number, idCartState, idUser, date, address, totalCost, payment, status], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send(`Ошибка при добавлении нового заказа`);
@@ -469,6 +469,36 @@ app.delete('/api/order/:id', (req, res) => {
         }
 
         res.status(200).json(id);
+    });
+});
+
+
+/* --------- CRUD for order count --------- */
+
+app.get('/api/orderCount', (req, res) => {
+    db.query('SELECT * FROM bookshop.order_count', (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при получении данных о количстве заказов');
+        }
+        res.json(results);
+    });
+});
+
+app.put('/api/orderCount/:number', (req, res) => {
+    const { number } = req.params;
+    
+    const query = `
+        UPDATE bookshop.order_count
+        SET count = ?;
+    `;
+
+    db.query(query, [number], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при обновлении общего числа заказов');
+        }
+        res.status(200).json(number);
     });
 });
 

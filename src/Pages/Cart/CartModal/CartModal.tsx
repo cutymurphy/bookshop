@@ -10,7 +10,7 @@ import Button from "../../../assets/components/Button/Button.tsx";
 import DropDown from "../../../assets/components/DropDown/DropDown.tsx";
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 import { IListOption } from "../../../assets/components/DropDown/types.ts";
-import { addCartState, addOrder, deleteBookFromCart } from "../../../server/api.js";
+import { addCartState, addOrder, deleteBookFromCart, editOrdersCount } from "../../../server/api.js";
 import { v4 as uuidv4 } from 'uuid';
 import { ICartBook } from "../types.ts";
 import { IOrder } from "../../../types.ts";
@@ -27,6 +27,8 @@ const CartModal: FC<ICartModal> = ({
     user,
     setOrders,
     orders,
+    ordersCount,
+    setOrdersCount,
     className,
 }) => {
     const [activeOrderType, setActiveOrderType] = useState<EOrderType>(EOrderType.delivery);
@@ -54,6 +56,7 @@ const CartModal: FC<ICartModal> = ({
         setIsLoading(true);
         try {
             let booksArr: ICartBook[] = [];
+            const newCount = ordersCount + 1;
             const deleteAndAddPromises = checkedBookItems.map(async (bookId: string) => {
                 const currentBook = productsInCart.find((book: ICartBook) => book.book.id === bookId);
                 if (!!currentBook?.book) booksArr.push(currentBook);
@@ -62,9 +65,11 @@ const CartModal: FC<ICartModal> = ({
                 await addCartState(stateId, bookId, currentBookCount);
             });
             await Promise.all(deleteAndAddPromises);
-            await addOrder(orderId, stateId, user.idUser, orderDate, orderAddress, getCartCost(booksArr), activePayType, orderStatus);
+            await addOrder(orderId, newCount, stateId, user.idUser, orderDate, orderAddress, getCartCost(booksArr), activePayType, orderStatus);
+            await editOrdersCount(newCount);
             const currentOrder: IOrder = {
                 id: orderId,
+                number: newCount,
                 idCartState: stateId,
                 date: orderDate,
                 address: orderAddress,
@@ -81,6 +86,7 @@ const CartModal: FC<ICartModal> = ({
                 books: booksArr,
             }
             setOrders([...orders, currentOrder]);
+            setOrdersCount(newCount);
             toast.success('Заказ создан');
         } catch (error) {
             toast.error("Ошибка при обработке состояния корзины и добавлении заказа:", error);

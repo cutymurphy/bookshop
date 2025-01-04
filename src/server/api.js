@@ -382,14 +382,14 @@ export const deleteCartState = async (id) => {
     }
 };
 
-export const addOrder = async (id, idCartState, idUser, date, address, totalCost, payment, status) => {
+export const addOrder = async (id, number, idCartState, idUser, date, address, totalCost, payment, status) => {
     try {
         const response = await fetch(`${API_BASE_URL}/order`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ id, idCartState, idUser, date, address, totalCost, payment, status }),
+            body: JSON.stringify({ id, number, idCartState, idUser, date, address, totalCost, payment, status }),
         });
 
         if (!response.ok) {
@@ -440,6 +440,39 @@ export const deleteOrder = async (id) => {
         return await response.json();
     } catch (error) {
         console.error('Ошибка при удалении заказа', error);
+        throw error;
+    }
+};
+
+export const fetchOrdersCount = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/orderCount`);
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении числа заказов', error);
+        throw error;
+    }
+};
+
+export const editOrdersCount = async (number) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/orderCount/${number}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при обновлении числа заказов', error);
         throw error;
     }
 };

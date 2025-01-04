@@ -56,7 +56,7 @@ const OrderForm: FC<IOrderForm> = ({
                     }
                 };
             }))
-            toast.success("Информация о заказе отредактирована");
+            toast.success(`Информация о заказе №${orderInfo?.number} отредактирована`);
         } catch (error) {
             toast.error("Ошибка при редактировании заказа:", error);
         } finally {
@@ -103,7 +103,7 @@ const OrderForm: FC<IOrderForm> = ({
                     />
                 </div>
                 <div className={styles.formTitle}>
-                    <span className={styles.title}>Редактирование заказа №{id}</span>
+                    <span className={styles.title}>Редактирование заказа №{orderInfo.number}</span>
                     <Badge type={getBadgeType(initialOrderInfo?.status || EStatusType.placed)}>{initialOrderInfo?.status || EStatusType.placed}</Badge>
                 </div>
                 {orderInfo.dateModified &&
