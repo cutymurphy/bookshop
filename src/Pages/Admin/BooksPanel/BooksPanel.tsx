@@ -102,14 +102,16 @@ const BooksPanel: FC<IBooksPanel> = ({
 
     return (
         <div className={styles.books}>
-            <Input
-                className={styles.input}
-                inputClassName={styles.inputWrapper}
-                iconRight={<MagnifierIcon />}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Введите название книги"
-            />
+            {books.length > 0 &&
+                <Input
+                    className={styles.input}
+                    inputClassName={styles.inputWrapper}
+                    iconRight={<MagnifierIcon />}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Введите название книги"
+                />
+            }
             {filteredBooks.length > 0 ?
                 <>
                     <div className={styles.booksTable}>

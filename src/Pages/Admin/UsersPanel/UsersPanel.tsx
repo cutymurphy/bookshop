@@ -47,6 +47,7 @@ const UsersPanel: FC<IUsersPanel> = ({
     };
 
     const handleDeleteUsers = (usersId: string[]) => {
+        /* TO-DO: пофиксить удаление юзера, если у него есть заказы */
         setIsLoading(true);
         try {
             usersId.forEach(async (id: string) => {

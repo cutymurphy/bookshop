@@ -110,15 +110,17 @@ const OrdersPanel: FC<IOrdersPanel> = ({
 
     return (
         <div className={styles.orders}>
-            <Input
-                type='number'
-                className={styles.input}
-                inputClassName={styles.inputWrapper}
-                iconRight={<MagnifierIcon />}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Введите номер заказа"
-            />
+            {orders.length > 0 &&
+                <Input
+                    type='number'
+                    className={styles.input}
+                    inputClassName={styles.inputWrapper}
+                    iconRight={<MagnifierIcon />}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Введите номер заказа"
+                />
+            }
             {filteredOrders.length > 0 ?
                 <>
                     <div className={styles.ordersTable}>
