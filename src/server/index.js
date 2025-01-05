@@ -23,15 +23,15 @@ app.get('/api/book', (req, res) => {
 });
 
 app.post('/api/book', (req, res) => {
-    const { id, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = req.body;
+    const { id, idAdmin, count, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = req.body;
     const newId = !!id ? id : uuidv4();
 
     const query = `
-        INSERT INTO bookshop.book (id, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        INSERT INTO bookshop.book (id, idAdmin, count, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
-    db.query(query, [newId, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType], (err, results) => {
+    db.query(query, [newId, idAdmin, count, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send(`Ошибка при добавлении новой книгиы`);
@@ -43,12 +43,13 @@ app.post('/api/book', (req, res) => {
 
 app.put('/api/book/:id', (req, res) => {
     const { id } = req.params;
-    const { idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = req.body;
+    const { idAdmin, count, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = req.body;
     
     const query = `
         UPDATE bookshop.book
         SET 
             idAdmin = ?, 
+            count = ?, 
             dateModified = ?, 
             name = ?, 
             price = ?,
@@ -62,7 +63,7 @@ app.put('/api/book/:id', (req, res) => {
         WHERE id = ?;
     `;
 
-    db.query(query, [idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType, id], (err, results) => {
+    db.query(query, [idAdmin, count, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType, id], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send('Ошибка при обновлении книги');

@@ -4,6 +4,7 @@ import { IErrors } from "./types";
 export const initialBook: IBook = {
     id: "",
     idAdmin: "",
+    count: 1,
     dateModified: "",
     name: "",
     price: 0,
@@ -20,6 +21,7 @@ export const initialErrors: IErrors = {
     imgLink: "",
     pagesCount: "",
     weight: "",
+    count: "",
 }
 
 export const trimBookInfo = (bookInfo: IBook): IBook => {

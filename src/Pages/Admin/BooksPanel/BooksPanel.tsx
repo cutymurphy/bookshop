@@ -34,8 +34,7 @@ const BooksPanel: FC<IBooksPanel> = ({
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
-    const [sortColumn, setSortColumn] = useState<string | null>(null);
-    // const [sortColumn, setSortColumn] = useState<string>("dateModified");
+    const [sortColumn, setSortColumn] = useState<string | null>("count");
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
     const navigate = useNavigate();
 
@@ -43,7 +42,9 @@ const BooksPanel: FC<IBooksPanel> = ({
         if (!sortColumn) return 0;
 
         let compareValue = 0;
-        if (sortColumn === "dateModified") {
+        if (sortColumn === "count") {
+            compareValue = a.count - b.count;
+        } else if (sortColumn === "dateModified") {
             const [dateA, timeA] = a.dateModified.split(", ");
             const [dayA, monthA, yearA] = dateA.split(".");
             const dateObjA = new Date(`${yearA}-${monthA}-${dayA}T${timeA}`);
@@ -156,7 +157,7 @@ const BooksPanel: FC<IBooksPanel> = ({
                         </div>
                         {filteredBooks
                             .slice(currentPage * booksPerPage - booksPerPage, currentPage * booksPerPage)
-                            .map(({ id, author, idAdmin, name, price, category, genre, pagesCount, weight, imgLink, coverType }: IBook, index: number) => {
+                            .map(({ id, author, count, idAdmin, name, price, category, genre, pagesCount, weight, imgLink, coverType }: IBook, index: number) => {
                                 const admin = users.find((user: IFullProfile) => user.idUser === idAdmin);
 
                                 return (
@@ -181,9 +182,12 @@ const BooksPanel: FC<IBooksPanel> = ({
                                                 className={styles.checkbox}
                                                 classNameLabel={styles.checkboxLabel}
                                             />
-                                            <span style={{ paddingTop: "10px" }}>{books.findIndex((book: IBook) => book.id === id) + 1}</span>
+                                            <span style={{ paddingTop: "10px" }}>{filteredBooks.findIndex((book: IBook) => book.id === id) + 1}</span>
                                             <img
-                                                className={styles.productImage}
+                                                className={clsx(
+                                                    styles.productImage,
+                                                    count === 0 && styles["productImage-clear"],
+                                                )}
                                                 src={imgLink}
                                                 alt={name}
                                             />
@@ -221,6 +225,9 @@ const BooksPanel: FC<IBooksPanel> = ({
                                             )}
                                         >
                                             <div className={styles.rowInfoColInfo}>
+                                                <span>Количество:
+                                                    <span className={styles.bolder}>{count !== 0 ? count : "Нет в наличии"}</span>
+                                                </span>
                                                 <span>Категория:
                                                     <span className={styles.bolder}>{category}</span>
                                                 </span>

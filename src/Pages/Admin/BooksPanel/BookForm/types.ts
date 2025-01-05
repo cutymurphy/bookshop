@@ -19,4 +19,5 @@ export interface IErrors {
     pagesCount: string,
     imgLink: string,
     weight: string,
+    count: string,
 }

@@ -34,7 +34,7 @@ const BooksForm: FC<IBookForm> = ({
     const [bookInfo, setBookInfo] = useState<IBook>({ ...initialBook });
     const [errors, setErrors] = useState<IErrors>({ ...initialErrors });
 
-    const { idAuthor, idAdmin, dateModified, name, price, category, genre, pagesCount, weight, imgLink, coverType } = bookInfo;
+    const { idAuthor, count, idAdmin, dateModified, name, price, category, genre, pagesCount, weight, imgLink, coverType } = bookInfo;
     const prevAdmin = users.find((user: IFullProfile) => user.idUser === idAdmin);
     const isBookChanged = JSON.stringify(initialBookInfo) !== JSON.stringify(bookInfo);
 
@@ -55,6 +55,11 @@ const BooksForm: FC<IBookForm> = ({
 
         if (genre === "") {
             newErrors.genre = "Жанр не может быть пустым";
+            isValid = false;
+        }
+
+        if (!!count && count < 0) {
+            newErrors.count = "Количество не может быть отрицательным";
             isValid = false;
         }
 
@@ -102,8 +107,8 @@ const BooksForm: FC<IBookForm> = ({
             if (isValid) {
                 setIsLoading(true);
                 if (!!id) {
-                    const { id, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = trimmedBookInfo;
-                    await editBook(id, currentAdmin.idUser, modifyDate, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType);
+                    const { id, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType, count } = trimmedBookInfo;
+                    await editBook(id, currentAdmin.idUser, count, modifyDate, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType);
                     setBooks(books.map((book: IBook) => {
                         if (book.id !== trimmedBookInfo?.id) {
                             return book;
@@ -116,8 +121,8 @@ const BooksForm: FC<IBookForm> = ({
                     }));
                     toast.success("Информация о книге отредактирована");
                 } else {
-                    const { name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = trimmedBookInfo;
-                    await addBook(newId, currentAdmin.idUser, modifyDate, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType);
+                    const { name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType, count } = trimmedBookInfo;
+                    await addBook(newId, currentAdmin.idUser, count, modifyDate, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType);
                     setBooks([...books, {
                         ...trimmedBookInfo,
                         id: newId,
@@ -224,6 +229,18 @@ const BooksForm: FC<IBookForm> = ({
                                 setErrors({ ...errors, price: "" });
                             }}
                             errorMessage={errors.price}
+                        />
+                        <Input
+                            label="Книг доступно"
+                            placeholder="Укажите количество доступных к заказу книг"
+                            type={"number"}
+                            requiredField
+                            value={count.toString()}
+                            onChange={(e) => {
+                                setBookInfo({ ...bookInfo, count: Number(e.target.value) });
+                                setErrors({ ...errors, count: "" });
+                            }}
+                            errorMessage={errors.count}
                         />
                         <Input
                             label="Ссылка на изображение"

@@ -13,14 +13,14 @@ export const fetchBooks = async () => {
     }
 };
 
-export const addBook = async (id, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType) => {
+export const addBook = async (id, idAdmin, count, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType) => {
     try {
         const response = await fetch(`${API_BASE_URL}/book`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ id, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType }),
+            body: JSON.stringify({ id, idAdmin, count, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType }),
         });
 
         if (!response.ok) {
@@ -34,14 +34,14 @@ export const addBook = async (id, idAdmin, dateModified, name, price, category, 
     }
 };
 
-export const editBook = async (id, idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType) => {
+export const editBook = async (id, idAdmin, count, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType) => {
     try {
         const response = await fetch(`${API_BASE_URL}/book/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ idAdmin, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType }),
+            body: JSON.stringify({ idAdmin, count, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType }),
         });
 
         if (!response.ok) {
