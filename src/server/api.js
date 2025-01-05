@@ -239,6 +239,19 @@ export const deleteUser = async (id) => {
 
 /* --------- CRUD for cart functions --------- */
 
+export const fetchCartBooks = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/cartBook`);
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении корзин:', error);
+        throw error;
+    }
+};
+
 export const getCartBooksById = async (idCart) => {
     try {
         const response = await fetch(`${API_BASE_URL}/cartBook/${idCart}`, {
@@ -338,6 +351,19 @@ export const addCartState = async (id, idBook, bookCount) => {
         return await response.json();
     } catch (error) {
         console.error('Ошибка при добавлении нового состояния', error);
+        throw error;
+    }
+};
+
+export const fetchCartStates = async () => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/cartStates`);
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при получении состояний корзин:', error);
         throw error;
     }
 };

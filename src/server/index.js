@@ -253,6 +253,16 @@ app.delete('/api/user/:id', (req, res) => {
 
 /* --------- CRUD for cart --------- */
 
+app.get('/api/cartBook', (req, res) => {
+    db.query('SELECT * FROM bookshop.cart_book', (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при получении всех книг из всех корзин');
+        }
+        res.json(results);
+    });
+});
+
 app.get('/api/cartBook/:idCart', (req, res) => {
     const { idCart } = req.params;
 
@@ -372,6 +382,16 @@ app.get('/api/cartStates/:id', (req, res) => {
             idBook,
             bookCount,
         })));
+    });
+});
+
+app.get('/api/cartStates', (req, res) => {
+    db.query('SELECT * FROM bookshop.cart_states', (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при получении всех состояний корзин');
+        }
+        res.json(results);
     });
 });
 

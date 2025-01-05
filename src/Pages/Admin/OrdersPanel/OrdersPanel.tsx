@@ -5,7 +5,7 @@ import styles from "./OrdersPanel.module.scss";
 import clsx from "clsx";
 import { IOrder } from "../../../types";
 import ArrowDownOutlineIcon from "../../../assets/components/Icons/ArrowDownOutlineIcon.tsx";
-import { defaultPickupAddress } from "../../Cart/CartModal/enums.ts";
+import { defaultPickupAddress, EStatusType } from "../../Cart/CartModal/enums.ts";
 import Badge from "../../../assets/components/Badge/Badge.tsx";
 import { ICartBook } from "../../Cart/types.ts";
 import Pagination from "../../../assets/components/Pagination/Pagination.tsx";
@@ -179,16 +179,18 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                                         className={clsx(styles.ordersRow, styles.mainRow)}
                                         onClick={() => { openedInfo === id ? setOpenedInfo("") : setOpenedInfo(id) }}
                                     >
-                                        <Checkbox
-                                            id={id}
-                                            onChange={() => checkedItems.includes(id) ?
-                                                setCheckedItems(checkedItems.filter((item: string) => item !== id)) :
-                                                setCheckedItems([...checkedItems, id])
-                                            }
-                                            checked={checkedItems.includes(id)}
-                                            className={styles.checkbox}
-                                            classNameLabel={styles.checkboxLabel}
-                                        />
+                                        {(status === EStatusType.cancelled || status === EStatusType.closed || status === EStatusType.delivered) &&
+                                            <Checkbox
+                                                id={id}
+                                                onChange={() => checkedItems.includes(id) ?
+                                                    setCheckedItems(checkedItems.filter((item: string) => item !== id)) :
+                                                    setCheckedItems([...checkedItems, id])
+                                                }
+                                                checked={checkedItems.includes(id)}
+                                                className={styles.checkbox}
+                                                classNameLabel={styles.checkboxLabel}
+                                            />
+                                        }
                                         <span>{number}</span>
                                         <span className={styles.rowPadding}>{`${user.name} ${user.surname}`}</span>
                                         <span className={styles.rowPadding}>{totalCost}</span>

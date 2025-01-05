@@ -11,6 +11,7 @@ const Modal: FC<IModal> = ({
     setIsOpen,
     okFunction,
     innerText = "Вы действительно хотите удалить записи?",
+    activeBtns = true,
 }) => {
     const modalRef = useRef<HTMLDivElement>(null);
 
@@ -44,21 +45,23 @@ const Modal: FC<IModal> = ({
                             color="var(--gray)"
                         />
                     </div>
-                    <div className={styles.btns}>
-                        <ButtonAdmin
-                            text="Да"
-                            onClick={() => {
-                                okFunction();
-                                setIsOpen(false);
-                            }}
-                            fill={"outline"}
-                        />
-                        <ButtonAdmin
-                            text="Отмена"
-                            onClick={() => setIsOpen(false)}
-                            type={"gray"}
-                        />
-                    </div>
+                    {activeBtns &&
+                        <div className={styles.btns}>
+                            <ButtonAdmin
+                                text="Да"
+                                onClick={() => {
+                                    okFunction();
+                                    setIsOpen(false);
+                                }}
+                                fill={"outline"}
+                            />
+                            <ButtonAdmin
+                                text="Отмена"
+                                onClick={() => setIsOpen(false)}
+                                type={"gray"}
+                            />
+                        </div>
+                    }
                 </div>
             </div>
         ) : null

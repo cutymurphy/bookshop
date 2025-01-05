@@ -10,7 +10,7 @@ import { EPaginationPage } from "../../../assets/components/Pagination/enum.ts";
 import Checkbox from "../../../assets/components/Checkbox/Checkbox.tsx";
 import TrashBinIcon from "../../../assets/components/Icons/TrashBinIcon.tsx";
 import ButtonAdmin from "../../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
-import { deleteBook } from "../../../server/api.js";
+import { deleteBook, fetchCartBooks, fetchCartStates } from "../../../server/api.js";
 import PencilIcon from "../../../assets/components/Icons/PencilIcon.tsx";
 import { useNavigate } from "react-router-dom";
 import { EPath } from "../../../AppPathes.ts";
@@ -34,6 +34,8 @@ const BooksPanel: FC<IBooksPanel> = ({
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [booksPerPage, setBooksPerPage] = useState<number>(10);
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
+    const [isModalActiveBtns, setIsModalActiveBtns] = useState<boolean>(true);
+    const [modalText, setModalText] = useState<string>("");
     const [sortColumn, setSortColumn] = useState<string | null>("count");
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
     const navigate = useNavigate();
@@ -79,9 +81,29 @@ const BooksPanel: FC<IBooksPanel> = ({
         }
     };
 
+    const handleDelete = async (booksIds: string[]) => {
+        try {
+            const cartBooks = await fetchCartBooks();
+            const cartStates = await fetchCartStates();
+            const books_1 = cartBooks.map(record => record.idBook);
+            const books_2 = cartStates.map(record => record.idBook);
+            const books = Array.from(new Set([...books_1, ...books_2]));
+            const even = booksIds.some(id => books.includes(id));
+            if (even) {
+                setIsModalActiveBtns(false);
+                setModalText("Некоторые выбранные книги лежат в корзинах у пользователей или оформлены в заказе. Удаление невозможно.")
+            } else {
+                setIsModalActiveBtns(true);
+                setModalText(`Вы действительно хотите удалить ${checkedItems.length} ${pluralizeWord(checkedItems.length)}?`);
+            }
+        } catch (error) {
+            toast.error("Возникла ошибка при попытке удаления выбранных книг");
+        } finally {
+            setIsOpenModal(true);
+        }
+    };
+
     const handleDeleteBooks = (booksId: string[]) => {
-        /* TO-DO: пофиксить удаление, если книга состоит в каких-то таблицах (и другое похожее глянуть);
-        как я поняла, короче, если книга состоит уже в каком-то заказе */
         setIsLoading(true);
         try {
             booksId.forEach(async (id: string) => {
@@ -99,7 +121,7 @@ const BooksPanel: FC<IBooksPanel> = ({
                 setIsLoading(false);
             }, 2000);
         }
-    }
+    };
 
     return (
         <div className={styles.books}>
@@ -275,17 +297,18 @@ const BooksPanel: FC<IBooksPanel> = ({
                 />
                 <ButtonAdmin
                     className={styles.deleteBtn}
-                    onClick={() => checkedItems.length === 0 ? toast.warning("Выберите книги") : setIsOpenModal(true)}
+                    onClick={() => checkedItems.length === 0 ? toast.warning("Выберите книги") : handleDelete(checkedItems)}
                     disabled={checkedItems.length === 0}
                     rightIcon={<TrashBinIcon />}
                     text="Удалить"
                 />
             </div>
             <Modal
+                innerText={modalText}
+                activeBtns={isModalActiveBtns}
                 isOpen={isModalOpen}
                 setIsOpen={setIsOpenModal}
                 okFunction={() => handleDeleteBooks(checkedItems)}
-                innerText={`Вы действительно хотите удалить ${checkedItems.length} ${pluralizeWord(checkedItems.length)}?`}
             />
         </div>
     )

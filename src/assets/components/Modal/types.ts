@@ -3,4 +3,5 @@ export interface IModal {
     setIsOpen: (isOpen: boolean) => void,
     okFunction: () => void,
     innerText?: string,
+    activeBtns?: boolean,
 }
