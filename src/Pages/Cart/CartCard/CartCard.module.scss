@@ -72,7 +72,16 @@
 
     .btn:hover {
         cursor: pointer;
-        background-color: rgb(194, 159, 255);
+        background-color: var(--btn-hover);
+    }
+
+    .btn-disabled {
+        background-color: var(--main-color-transparent-3);
+        
+        &:hover {
+            background-color: var(--main-color-transparent-3);
+            cursor: not-allowed;
+        }
     }
 
     input {

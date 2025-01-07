@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { EPath } from "../../../AppPathes.ts";
 import clsx from "clsx";
 import deleteIcon from '../../../assets/pictures/delete_1214428.png';
+import { toast } from "sonner";
 
 const CartCard: FC<ICartCard> = ({
     cartBook,
@@ -18,6 +19,7 @@ const CartCard: FC<ICartCard> = ({
 }) => {
     const { book } = cartBook;
     const { id, imgLink, name, price } = book;
+    const isExtremeBooksNumber = cartBook.count === cartBook.book.count;
 
     return (
         <div className={styles.productCard}>
@@ -56,7 +58,7 @@ const CartCard: FC<ICartCard> = ({
                     !isAvailable && styles["inputCount-unavailable"],
                 )}>
                     <button
-                        className={clsx(styles.btn, styles.btnMinus)}
+                        className={styles.btn}
                         onClick={() => manipulateBookInCart(cartBook, "minus")}
                     >
                         -
@@ -68,8 +70,14 @@ const CartCard: FC<ICartCard> = ({
                         readOnly
                     />
                     <button
-                        className={clsx(styles.btn, styles.btnPlus)}
-                        onClick={() => manipulateBookInCart(cartBook, "plus")}
+                        className={clsx(
+                            styles.btn,
+                            isExtremeBooksNumber && styles["btn-disabled"],
+                        )}
+                        onClick={() => !isExtremeBooksNumber ?
+                            manipulateBookInCart(cartBook, "plus") :
+                            toast.warning("Выбрано максимальное количество доступных книг")
+                        }
                     >
                         +
                     </button>

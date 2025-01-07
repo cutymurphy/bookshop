@@ -10,12 +10,14 @@
   --white: rgb(255, 255, 255);
   --main-color: rgb(168, 118, 255);
   --main-color-light: rgb(208, 181, 255);
+  --main-color-light-2: rgb(194, 159, 255);
 
   --boarder-hover-color: rgb(116, 35, 255);
   --icon-hover-color: rgb(116, 35, 255);
   --default-head-menu-color: rgb(116, 35, 255);
   --main-color-transparent: rgba(168, 118, 255, 0.5);
   --main-color-transparent-2: rgba(168, 118, 255, 0.2);
+  --main-color-transparent-3: rgba(168, 118, 255, 0.3);
   --boarder-system-color: rgb(219, 219, 219);
   --sales-color: rgb(174, 20, 20);
   --errors-color: rgb(200, 0, 0);
@@ -31,6 +33,7 @@
   --border-light: var(--main-color-light);
   --scrollbar-thumb: var(--main-color);
   --scrollbar-track: var(--disabled-gray-2);
+  --btn-hover: var(--main-color-light-2);
 
   --badge-red-bg: var(--warning-color);
   --badge-blue-bg: rgb(132, 167, 255);
