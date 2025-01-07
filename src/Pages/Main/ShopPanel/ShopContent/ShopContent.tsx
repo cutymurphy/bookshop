@@ -52,17 +52,17 @@ const ShopContent: FC<IShopContent> = ({
     useEffect(() => {
         setIsLoading(true);
         const inputValue = searchInput.trim().toLocaleLowerCase();
-        const filteredBooks = initialBooks
+        setCurrentBooks(initialBooks
+            .filter((book: IBook) => book.count > 0)
             .filter((book: IBook) => inputValue === "" || book.name.toLocaleLowerCase().includes(inputValue))
             .filter((book: IBook) => categories.length === 0 || categories.includes(book.category))
             .filter((book: IBook) => genres.length === 0 || genres.includes(book.genre))
-            .filter((book: IBook) => coverTypes.length === 0 || (!!book.coverType && coverTypes.includes(book.coverType)));
-        setCurrentBooks(filteredBooks);
+            .filter((book: IBook) => coverTypes.length === 0 || (!!book.coverType && coverTypes.includes(book.coverType))));
         setCurrentPage(1);
         setTimeout(() => {
             setIsLoading(false);
         }, 500);
-    }, [pickedFilters, searchInput])
+    }, [initialBooks, pickedFilters, searchInput])
 
     useEffect(() => {
         const currCategories = new Set<string>();

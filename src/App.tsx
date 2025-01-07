@@ -169,7 +169,6 @@ const App = () => {
                     element={
                         <Main
                             currentUser={currentUser}
-                            setCurrentUser={setCurrentUser}
                             initialBooks={initialBooks}
                             productsInCart={productsInCart}
                             setProductsInCart={setProductsInCart}
@@ -191,6 +190,8 @@ const App = () => {
                             setOrders={setCurrentOrders}
                             ordersCount={currentOrdersCount}
                             setOrdersCount={setCurrentOrdersCount}
+                            allBooks={initialBooks}
+                            setBooks={setInitialBooks}
                         />
                     }
                 />

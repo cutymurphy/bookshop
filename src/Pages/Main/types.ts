@@ -5,7 +5,6 @@ import { EFiltersNames, IFilter } from "./ShopPanel/ShopFilters/types.ts";
 
 export interface IMain {
     currentUser: IFullProfile,
-    setCurrentUser: (user: IFullProfile) => void,
     initialBooks: IBook[],
     productsInCart: ICartBook[],
     setProductsInCart: (books: ICartBook[]) => void,

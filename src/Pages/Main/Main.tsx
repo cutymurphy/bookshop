@@ -12,7 +12,6 @@ import Loader from "../../assets/components/Loader/Loader.tsx";
 
 const Main: FC<IMain> = ({
     currentUser,
-    setCurrentUser,
     initialBooks,
     productsInCart,
     setProductsInCart,
@@ -28,7 +27,7 @@ const Main: FC<IMain> = ({
     const [currentBooks, setCurrentBooks] = useState<IBook[]>([]);
 
     useEffect(() => {
-        setCurrentBooks(initialBooks);
+        setCurrentBooks(initialBooks.filter((book: IBook) => book.count > 0));
     }, [initialBooks])
 
     return (
@@ -50,7 +49,7 @@ const Main: FC<IMain> = ({
                     />
                     <div className={styles.shopContent}>
                         <ShopContent
-                            initialBooks={initialBooks.filter((book: IBook) => book.count > 0)}
+                            initialBooks={initialBooks}
                             currentBooks={currentBooks}
                             setCurrentBooks={setCurrentBooks}
                             productsInCart={productsInCart}
