@@ -77,6 +77,30 @@ app.put('/api/book/:id', (req, res) => {
     });
 });
 
+app.put('/api/bookCount/:idBook', (req, res) => {
+    const { idBook } = req.params;
+    const { bookCount } = req.body;
+
+    const query = `
+        UPDATE bookshop.book
+        SET count = ? 
+        WHERE id = ?;
+    `;
+
+    db.query(query, [bookCount, idBook], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при обновлении количества книг');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Книга не найдена');
+        }
+
+        res.status(200).json({ message: `Количество книги ${idBook} успешно обновлено` });
+    });
+});
+
 app.delete('/api/book/:id', (req, res) => {
     const { id } = req.params;
 

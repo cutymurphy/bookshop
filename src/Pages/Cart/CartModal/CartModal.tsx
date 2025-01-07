@@ -10,7 +10,7 @@ import Button from "../../../assets/components/Button/Button.tsx";
 import DropDown from "../../../assets/components/DropDown/DropDown.tsx";
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 import { IListOption } from "../../../assets/components/DropDown/types.ts";
-import { addCartState, addOrder, deleteBookFromCart, editOrdersCount } from "../../../server/api.js";
+import { addCartState, addOrder, deleteBookFromCart, editOrdersCount, updateBookCount } from "../../../server/api.js";
 import { v4 as uuidv4 } from 'uuid';
 import { ICartBook } from "../types.ts";
 import { IOrder } from "../../../types.ts";
@@ -30,6 +30,8 @@ const CartModal: FC<ICartModal> = ({
     ordersCount,
     setOrdersCount,
     className,
+    allBooks,
+    setBooks,
 }) => {
     const [activeOrderType, setActiveOrderType] = useState<EOrderType>(EOrderType.delivery);
     const [address, setAddress] = useState<string>("");
@@ -56,17 +58,27 @@ const CartModal: FC<ICartModal> = ({
         setIsLoading(true);
         try {
             let booksArr: ICartBook[] = [];
+            const updatedBooks = [...allBooks];
             const newCount = ordersCount + 1;
-            const deleteAndAddPromises = checkedBookItems.map(async (bookId: string) => {
-                const currentBook = productsInCart.find((book: ICartBook) => book.book.id === bookId);
-                if (!!currentBook?.book) booksArr.push(currentBook);
-                const currentBookCount = currentBook?.count || 1;
-                await deleteBookFromCart(user.idCart, bookId);
-                await addCartState(stateId, bookId, currentBookCount);
-            });
-            await Promise.all(deleteAndAddPromises);
+            
+            for (let i = 0; i < allBooks.length; i++) {
+                const book = allBooks[i];
+                const id = book.id;
+                if (checkedBookItems.includes(id)) {
+                    const currentBook = productsInCart.find((book: ICartBook) => book.book.id === id);
+                    if (!!currentBook?.book) booksArr.push(currentBook);
+                    const currentBookCount = currentBook?.count || 1;
+                    await updateBookCount(id, book.count - currentBookCount);
+                    await deleteBookFromCart(user.idCart, id);
+                    await addCartState(stateId, id, currentBookCount);
+                    updatedBooks[i] = { ...book, count: book.count - currentBookCount };
+                }
+            }
+            setBooks(updatedBooks);
+
             await addOrder(orderId, newCount, stateId, user.idUser, orderDate, orderAddress, getCartCost(booksArr), activePayType, orderStatus);
             await editOrdersCount(newCount);
+
             const currentOrder: IOrder = {
                 id: orderId,
                 number: newCount,
@@ -84,9 +96,11 @@ const CartModal: FC<ICartModal> = ({
                 },
                 admin: undefined,
                 books: booksArr,
-            }
+            };
+
             setOrders([...orders, currentOrder]);
             setOrdersCount(newCount);
+
             toast.success('Заказ создан');
         } catch (error) {
             toast.error("Ошибка при обработке состояния корзины и добавлении заказа:", error);
@@ -97,6 +111,7 @@ const CartModal: FC<ICartModal> = ({
             setAddress("");
             setActivePayType("");
             setIsOpen(false);
+
             setTimeout(() => {
                 setIsLoading(false);
             }, 500);

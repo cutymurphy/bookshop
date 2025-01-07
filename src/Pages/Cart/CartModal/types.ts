@@ -1,4 +1,5 @@
 import { IFullProfile, IOrder } from "../../../types";
+import { IBook } from "../../Main/ShopPanel/ShopContent/types";
 import { ICartBook } from "../types";
 
 export interface ICartModal {
@@ -15,4 +16,6 @@ export interface ICartModal {
     setOrders: (order: IOrder[]) => void,
     ordersCount: number,
     setOrdersCount: (count: number) => void,
+    allBooks: IBook[],
+    setBooks: (books: IBook[]) => void,
 }

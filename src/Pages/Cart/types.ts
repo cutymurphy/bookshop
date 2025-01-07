@@ -14,4 +14,6 @@ export interface ICart {
     setOrders: (order: IOrder[]) => void,
     ordersCount: number,
     setOrdersCount: (count: number) => void,
+    allBooks: IBook[],
+    setBooks: (books: IBook[]) => void,
 }

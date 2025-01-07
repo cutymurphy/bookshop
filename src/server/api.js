@@ -55,6 +55,27 @@ export const editBook = async (id, idAdmin, count, dateModified, name, price, ca
     }
 };
 
+export const updateBookCount = async (idBook, bookCount) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/bookCount/${idBook}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ bookCount }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при обновлении количества книг', error);
+        throw error;
+    }
+};
+
 export const deleteBook = async (id) => {
     try {
         const response = await fetch(`${API_BASE_URL}/book/${id}`, {
