@@ -5,7 +5,7 @@ import styles from "./BookForm.module.scss";
 import { IBookForm, IErrors } from "./types.ts";
 import { IBook, TCover } from "../../../Main/ShopPanel/ShopContent/types.ts";
 import Loader from "../../../../assets/components/Loader/Loader.tsx";
-import { addBook, editBook } from "../../../../server/api.js";
+import { addBook, editBook, fetchCartBooks, updateCartBookCount } from "../../../../server/api.js";
 import { EPath } from "../../../../AppPathes.ts";
 import { v4 as uuidv4 } from 'uuid';
 import ButtonAdmin from "../../../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
@@ -18,6 +18,7 @@ import Input from "../../../../assets/components/Input/Input.tsx";
 import { ETabTitle } from "../../enums.ts";
 import { initialBook, initialErrors, trimBookInfo } from "./utils.ts";
 import { toast } from "sonner";
+import { ICartBook } from "../../../Cart/types.ts";
 
 const BooksForm: FC<IBookForm> = ({
     books,
@@ -27,6 +28,8 @@ const BooksForm: FC<IBookForm> = ({
     currentAdmin,
     isLoading,
     setIsLoading,
+    productsInCart,
+    setProductsInCart,
 }) => {
     const { id = "" } = useParams<string>();
     const navigate = useNavigate();
@@ -109,6 +112,23 @@ const BooksForm: FC<IBookForm> = ({
                 if (!!id) {
                     const { id, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType, count } = trimmedBookInfo;
                     await editBook(id, currentAdmin.idUser, count, modifyDate, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType);
+                    const carts = await fetchCartBooks();
+                    const cartBooks = carts.filter(cart => cart.idBook === id);
+
+                    for (const { idCart, idBook, bookCount } of cartBooks) {
+                        if (bookCount > count) {
+                            const newCount = count === 0 ? 1 : count;
+                            await updateCartBookCount(idCart, idBook, newCount);
+
+                            if (idCart === currentAdmin.idCart) {
+                                setProductsInCart(productsInCart.map((cartBook: ICartBook) =>
+                                    cartBook.book.id === idBook ?
+                                        { ...cartBook, count: newCount } :
+                                        cartBook
+                                ));
+                            }
+                        }
+                    }
                     setBooks(books.map((book: IBook) => {
                         if (book.id !== trimmedBookInfo?.id) {
                             return book;

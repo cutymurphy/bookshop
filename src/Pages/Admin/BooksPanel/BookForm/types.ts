@@ -1,4 +1,5 @@
 import { IAuthor, IFullProfile } from "../../../../types";
+import { ICartBook } from "../../../Cart/types";
 import { IBook } from "../../../Main/ShopPanel/ShopContent/types";
 
 export interface IBookForm {
@@ -9,6 +10,8 @@ export interface IBookForm {
     currentAdmin: IFullProfile,
     isLoading: boolean,
     setIsLoading: (isLoading: boolean) => void,
+    productsInCart: ICartBook[],
+    setProductsInCart: (books: ICartBook[]) => void,
 }
 
 export interface IErrors {

@@ -265,6 +265,8 @@ const App = () => {
                                 setBooks={setInitialBooks}
                                 isLoading={isLoading}
                                 setIsLoading={setIsLoading}
+                                productsInCart={productsInCart}
+                                setProductsInCart={setProductsInCart}
                             />
                         }
                     />
@@ -281,6 +283,8 @@ const App = () => {
                                 setBooks={setInitialBooks}
                                 isLoading={isLoading}
                                 setIsLoading={setIsLoading}
+                                productsInCart={productsInCart}
+                                setProductsInCart={setProductsInCart}
                             />
                         }
                     />

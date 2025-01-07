@@ -10,7 +10,7 @@ import Button from "../../../assets/components/Button/Button.tsx";
 import DropDown from "../../../assets/components/DropDown/DropDown.tsx";
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 import { IListOption } from "../../../assets/components/DropDown/types.ts";
-import { addCartState, addOrder, deleteBookFromCart, editOrdersCount, updateBookCount } from "../../../server/api.js";
+import { addCartState, addOrder, deleteBookFromCart, editOrdersCount, fetchCartBooks, updateBookCount, updateCartBookCount } from "../../../server/api.js";
 import { v4 as uuidv4 } from 'uuid';
 import { ICartBook } from "../types.ts";
 import { IOrder } from "../../../types.ts";
@@ -60,7 +60,8 @@ const CartModal: FC<ICartModal> = ({
             let booksArr: ICartBook[] = [];
             const updatedBooks = [...allBooks];
             const newCount = ordersCount + 1;
-            
+            const carts = await fetchCartBooks();
+
             for (let i = 0; i < allBooks.length; i++) {
                 const book = allBooks[i];
                 const id = book.id;
@@ -68,10 +69,17 @@ const CartModal: FC<ICartModal> = ({
                     const currentBook = productsInCart.find((book: ICartBook) => book.book.id === id);
                     if (!!currentBook?.book) booksArr.push(currentBook);
                     const currentBookCount = currentBook?.count || 1;
-                    await updateBookCount(id, book.count - currentBookCount);
+                    const newCount = book.count - currentBookCount;
+                    updatedBooks[i] = { ...book, count: newCount };
+                    const cartBooks = carts.filter(cart => cart.idBook === id);
+                    await updateBookCount(id, newCount);
                     await deleteBookFromCart(user.idCart, id);
                     await addCartState(stateId, id, currentBookCount);
-                    updatedBooks[i] = { ...book, count: book.count - currentBookCount };
+                    for (const { idCart, idBook, bookCount } of cartBooks) {
+                        if (bookCount > newCount && idCart !== user.idCart) {
+                            await updateCartBookCount(idCart, idBook, newCount === 0 ? 1 : newCount);
+                        }
+                    }
                 }
             }
             setBooks(updatedBooks);

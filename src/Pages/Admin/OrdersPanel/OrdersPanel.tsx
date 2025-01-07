@@ -130,16 +130,18 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                 <>
                     <div className={styles.ordersTable}>
                         <div className={clsx(styles.ordersRow, styles.headerRow)}>
-                            <Checkbox
-                                id="commonCheckbox-orders"
-                                onChange={() => checkedItems.length === ordersToDelete.length ?
-                                    setCheckedItems([]) :
-                                    setCheckedItems(ordersToDelete.map((id: string) => id))
-                                }
-                                checked={checkedItems.length === ordersToDelete.length}
-                                className={styles.checkbox}
-                                classNameLabel={styles.checkboxLabel}
-                            />
+                            {ordersToDelete.length > 0 &&
+                                <Checkbox
+                                    id="commonCheckbox-orders"
+                                    onChange={() => checkedItems.length === ordersToDelete.length ?
+                                        setCheckedItems([]) :
+                                        setCheckedItems(ordersToDelete.map((id: string) => id))
+                                    }
+                                    checked={checkedItems.length === ordersToDelete.length}
+                                    className={styles.checkbox}
+                                    classNameLabel={styles.checkboxLabel}
+                                />
+                            }
                             <span>№</span>
                             <span>Получатель</span>
                             <span

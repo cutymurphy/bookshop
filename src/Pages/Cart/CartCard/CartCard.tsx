@@ -19,7 +19,7 @@ const CartCard: FC<ICartCard> = ({
 }) => {
     const { book } = cartBook;
     const { id, imgLink, name, price } = book;
-    const isExtremeBooksNumber = cartBook.count === cartBook.book.count;
+    const isExtremeBooksNumber = cartBook.count >= cartBook.book.count;
 
     return (
         <div className={styles.productCard}>
