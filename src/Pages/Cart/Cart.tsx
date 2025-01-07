@@ -195,48 +195,50 @@ const Cart: FC<ICart> = ({
                             </div>
                         </>
                     }
-                    <div className={styles.summaryWrapper}>
-                        <div className={styles.mainTitle}>Итого</div>
-                        <div className={styles.cartSummary}>
-                            <div className={styles.textSummary}>
-                                <div className={styles.mainText}>
-                                    {String(getCartCount()) + " " + pluralizeWord(getCartCount()) + " на сумму:"}
+                    {availableBooks.length > 0 &&
+                        <div className={styles.summaryWrapper}>
+                            <div className={styles.mainTitle}>Итого</div>
+                            <div className={styles.cartSummary}>
+                                <div className={styles.textSummary}>
+                                    <div className={styles.mainText}>
+                                        {String(getCartCount()) + " " + pluralizeWord(getCartCount()) + " на сумму:"}
+                                    </div>
+                                    <div className={styles.costText}>
+                                        {String(getCartCost()) + " ₽"}
+                                    </div>
                                 </div>
-                                <div className={styles.costText}>
-                                    {String(getCartCost()) + " ₽"}
-                                </div>
+                                <Button
+                                    text="Оформить заказ"
+                                    className={styles.checkoutBtn}
+                                    disabled={checkedBookItems.length === 0}
+                                    onClick={() => {
+                                        if (!!idCart) {
+                                            (checkedBookItems.length > 0 ? setIsOpenedModal(true) : toast.warning('Выберите товары'))
+                                        } else {
+                                            navigate(EPath.auth);
+                                            toast.warning('Сначала войдите в профиль или зарегистрируйтесь', { duration: 2500 });
+                                        }
+                                    }}
+                                />
+                                <CartModal
+                                    isOpen={isOpenedModal}
+                                    setIsOpen={setIsOpenedModal}
+                                    setIsLoading={setIsLoading}
+                                    checkedBookItems={checkedBookItems}
+                                    setCheckedBookItems={setCheckedBookItems}
+                                    productsInCart={productsInCart}
+                                    setProductsInCart={setProductsInCart}
+                                    user={user}
+                                    setOrders={setOrders}
+                                    orders={orders}
+                                    ordersCount={ordersCount}
+                                    setOrdersCount={setOrdersCount}
+                                    allBooks={allBooks}
+                                    setBooks={setBooks}
+                                />
                             </div>
-                            <Button
-                                text="Оформить заказ"
-                                className={styles.checkoutBtn}
-                                disabled={checkedBookItems.length === 0}
-                                onClick={() => {
-                                    if (!!idCart) {
-                                        (checkedBookItems.length > 0 ? setIsOpenedModal(true) : toast.warning('Выберите товары'))
-                                    } else {
-                                        navigate(EPath.auth);
-                                        toast.warning('Сначала войдите в профиль или зарегистрируйтесь', { duration: 2500 });
-                                    }
-                                }}
-                            />
-                            <CartModal
-                                isOpen={isOpenedModal}
-                                setIsOpen={setIsOpenedModal}
-                                setIsLoading={setIsLoading}
-                                checkedBookItems={checkedBookItems}
-                                setCheckedBookItems={setCheckedBookItems}
-                                productsInCart={productsInCart}
-                                setProductsInCart={setProductsInCart}
-                                user={user}
-                                setOrders={setOrders}
-                                orders={orders}
-                                ordersCount={ordersCount}
-                                setOrdersCount={setOrdersCount}
-                                allBooks={allBooks}
-                                setBooks={setBooks}
-                            />
                         </div>
-                    </div>
+                    }
                 </div>
                 {productsInCart.length === 0 &&
                     <div className={styles.emptyCartPanel}>

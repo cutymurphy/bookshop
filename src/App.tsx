@@ -47,6 +47,16 @@ const App = () => {
         }
     };
 
+    const loadOrdersCount = async () => {
+        try {
+            const ordersCountData = await fetchOrdersCount();
+            setCurrentOrdersCount(ordersCountData[0].count);
+        } catch (error) {
+            console.error('Ошибка загрузки числа заказов:', error);
+            toast.error('Ошибка загрузки числа заказов');
+        }
+    };
+
     const loadUsers = async () => {
         try {
             const usersData = await fetchUsers();
@@ -62,10 +72,7 @@ const App = () => {
     const loadOrders = async (users) => {
         try {
             const ordersData = await fetchOrders();
-            const ordersCountData = await fetchOrdersCount();
-
             const orders = await Promise.all(ordersData.map(async (order) => {
-
                 const booksData = await getCartStateBooksById(order.idCartState);
                 const orderBooks = booksData.map((book) => {
                     const bookInfo = initialBooks.find((currBook) => book.idBook === currBook.id);
@@ -94,7 +101,6 @@ const App = () => {
                 return (orderInfo);
             }));
             setCurrentOrders(orders);
-            setCurrentOrdersCount(ordersCountData[0].count);
         } catch (error) {
             console.error('Ошибка загрузки заказов:', error);
             toast.error('Ошибка загрузки заказов');
@@ -149,6 +155,7 @@ const App = () => {
     useEffect(() => {
         const loadData = async () => {
             await loadBooksAndAuthors();
+            await loadOrdersCount();
             setIsLoading(false);
         };
         loadData();
