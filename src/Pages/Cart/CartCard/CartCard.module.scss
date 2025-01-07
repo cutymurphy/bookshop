@@ -1,0 +1,578 @@
+.productCard {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+    position: relative;
+}
+
+.productImage {
+    border: 3px solid var(--boarder-system-color);
+    width: auto;
+}
+
+.productImage:hover {
+    cursor: pointer;
+    border: 3px solid var(--boarder-hover-color);
+    transition: 0.5s;
+}
+
+.productImage-unavailable {
+    opacity: 30%;
+}
+
+.productImage:active {
+    cursor: grabbing;
+    border: 3px solid black;
+    transition: 0.1s;
+}
+
+.productName {
+    font-family: var(--ptsans-font);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    line-height: 1.5em;
+
+    &-unavailable {
+        opacity: 30%;
+    }
+}
+
+.productName:hover {
+    box-sizing: border-box;
+}
+
+.productName a {
+    text-decoration: none;
+    color: black;
+}
+
+.productName a:hover {
+    color: rgb(136, 0, 255);
+    transition: 0.3s;
+}
+
+.inputCount {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid var(--main-color);
+
+    .btn {
+        border: none;
+        color: white;
+        font-weight: bold;
+        background-color: var(--main-color);
+        font-family: Inter, sans-serif;
+        width: 20px;
+        text-align: center;
+    }
+
+    .btn:hover {
+        cursor: pointer;
+        background-color: rgb(194, 159, 255);
+    }
+
+    input {
+        border: none;
+        text-align: center;
+        font-family: Inter, sans-serif;
+    }
+}
+
+.inputCount input:focus {
+    outline: 0;
+}
+
+.inputCount-unavailable {
+    // opacity: 0;
+    opacity: 30%;
+    pointer-events: none;
+}
+
+.productPrice,
+.product-new-price {
+    width: 15%;
+    position: absolute;
+    right: 10%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.productPrice {
+    color: black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+    &-unavailable {
+        opacity: 30%;
+    }
+}
+
+.product-new-price {
+    color: #ff2b3d;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.product-new-price span {
+    color: gray;
+    text-decoration: line-through;
+    text-decoration-color: #ff2b3d;
+}
+
+.deleteWrapper {
+    position: absolute;
+    right: 0;
+    width: 5%;
+
+    button {
+        border: none;
+        background: none;
+    }
+}
+
+.iconImageDelete {
+    padding: 5px;
+}
+
+.iconImageDelete:hover {
+    cursor: pointer;
+    background-color: var(--boarder-system-color);
+    border-radius: 20%;
+    transition: 0.5s;
+}
+
+@media screen and (min-width: 1440px) {
+    .productCard {
+        height: 300px;
+    }
+
+    .productCard .imgWrapper {
+        width: 200px;
+        height: 250px;
+
+        &-margin {
+            margin-left: 35px;
+        }
+    }
+
+    .productImage {
+        max-width: 180px;
+        height: 100%;
+    }
+
+    .productName {
+        width: 350px;
+        height: 250px;
+        font-size: 20px;
+        margin-left: 30px;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .productName a {
+        position: absolute;
+        text-align: start;
+        width: 90%;
+        left: 0;
+    }
+
+    .wrapperCountPrice {
+        height: 100px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .inputCount {
+        right: 30%;
+
+        button,
+        input {
+            font-size: 16px;
+        }
+
+        input {
+            width: 80px;
+            height: 1.5em;
+        }
+    }
+
+    .productPrice,
+    .product-new-price {
+        font-size: 22px;
+    }
+
+    .product-new-price span {
+        font-size: 18px;
+    }
+
+    .iconImageDelete {
+        height: 40px;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1439.98px) {
+    .productCard {
+        height: 300px;
+    }
+
+    .productCard .imgWrapper {
+        width: 200px;
+        height: 250px;
+    }
+
+    .productImage {
+        max-width: 180px;
+        height: 100%;
+    }
+
+    .productName {
+        width: 250px;
+        height: 250px;
+        font-size: 20px;
+        margin-left: 30px;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .productName a {
+        position: absolute;
+        text-align: start;
+        width: 90%;
+        left: 0;
+    }
+
+    .wrapperCountPrice {
+        height: 100px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .inputCount {
+        right: 30%;
+
+        button,
+        input {
+            font-size: 16px;
+        }
+
+        input {
+            width: 80px;
+            height: 1.5em;
+        }
+    }
+
+    .productPrice,
+    .product-new-price {
+        font-size: 22px;
+    }
+
+    .product-new-price span {
+        font-size: 18px;
+    }
+
+    .iconImageDelete {
+        height: 40px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023.98px) {
+    .productCard {
+        height: 250px;
+    }
+
+    .productCard .imgWrapper {
+        width: 170px;
+        height: 200px;
+    }
+
+    .productImage {
+        max-width: 150px;
+        height: 100%;
+    }
+
+    .productName {
+        width: 200px;
+        height: 200px;
+        font-size: 16px;
+        margin-left: 15px;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .productName a {
+        position: absolute;
+        text-align: start;
+        width: 90%;
+        left: 0;
+    }
+
+    .wrapperCountPrice {
+        height: 100px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .inputCount {
+        right: 25%;
+
+        button,
+        input {
+            font-size: 12px;
+        }
+
+        input {
+            width: 50px;
+            height: 1.5em;
+        }
+    }
+
+    .productPrice,
+    .product-new-price {
+        font-size: 16px;
+    }
+
+    .product-new-price span {
+        font-size: 14px;
+    }
+
+    .iconImageDelete {
+        height: 30px;
+    }
+}
+
+@media screen and (min-width: 425px) and (max-width: 767.98px) {
+    .productCard {
+        position: unset;
+        justify-content: space-between;
+        height: 170px;
+        width: 95%;
+    }
+
+    .productCard .imgWrapper {
+        width: 100px;
+        height: 140px;
+    }
+
+    .productImage {
+        max-width: 90px;
+        height: 100%;
+    }
+
+    .productName {
+        width: 100%;
+        height: 140px;
+        font-size: 12px;
+        margin-left: 20px;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .productName a {
+        position: absolute;
+        text-align: start;
+        width: 90%;
+        left: 0;
+    }
+
+    .wrapperCountPrice {
+        height: 140px;
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-evenly;
+    }
+
+    .inputCount {
+        position: unset;
+
+        button,
+        input {
+            font-size: 10px;
+        }
+
+        input {
+            width: 60px;
+        }
+    }
+
+    .productPrice,
+    .product-new-price {
+        width: 100px;
+        position: unset;
+        font-size: 13px;
+    }
+
+    .product-new-price span {
+        font-size: 11px;
+    }
+
+    .deleteWrapper {
+        position: unset;
+        margin-left: 40px;
+    }
+
+    .iconImageDelete {
+        height: 20px;
+    }
+}
+
+@media screen and (min-width: 375px) and (max-width: 424.98px) {
+    .productCard {
+        position: unset;
+        justify-content: space-between;
+        height: 170px;
+        width: 95%;
+    }
+
+    .productCard .imgWrapper {
+        width: 100px;
+        height: 140px;
+    }
+
+    .productImage {
+        max-width: 90px;
+        height: 100%;
+    }
+
+    .productName {
+        width: 100%;
+        height: 140px;
+        font-size: 13px;
+        margin-left: 10px;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .productName a {
+        position: absolute;
+        text-align: start;
+        width: 90%;
+        left: 0;
+    }
+
+    .wrapperCountPrice {
+        height: 140px;
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-evenly;
+    }
+
+    .inputCount {
+        position: unset;
+
+        button,
+        input {
+            font-size: 10px;
+        }
+
+        input {
+            width: 60px;
+        }
+    }
+
+    .productPrice,
+    .product-new-price {
+        width: 100px;
+        position: unset;
+        font-size: 14px;
+    }
+
+    .product-new-price span {
+        font-size: 11px;
+    }
+
+    .deleteWrapper {
+        position: unset;
+        margin-left: 20px;
+    }
+
+    .iconImageDelete {
+        height: 20px;
+    }
+}
+
+@media screen and (max-width: 374.98px) {
+    .productCard {
+        position: unset;
+        justify-content: space-between;
+        height: 170px;
+        width: 95%;
+    }
+
+    .productCard .imgWrapper {
+        width: 100px;
+        height: 140px;
+    }
+
+    .productImage {
+        max-width: 90px;
+        height: 100%;
+    }
+
+    .productName {
+        width: 100%;
+        height: 140px;
+        font-size: 10px;
+        margin: 0 5px 0 10px;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .productName a {
+        position: absolute;
+        text-align: start;
+        width: 90%;
+        left: 0;
+    }
+
+    .wrapperCountPrice {
+        height: 100px;
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: space-evenly;
+    }
+
+    .inputCount {
+        position: unset;
+
+        button,
+        input {
+            font-size: 8px;
+        }
+
+        input {
+            width: 50px;
+        }
+    }
+
+    .productPrice,
+    .product-new-price {
+        width: 80px;
+        position: unset;
+        font-size: 12px;
+    }
+
+    .product-new-price span {
+        font-size: 9px;
+    }
+
+    .deleteWrapper {
+        position: unset;
+        margin-right: 20px;
+    }
+
+    .iconImageDelete {
+        height: 20px;
+    }
+}

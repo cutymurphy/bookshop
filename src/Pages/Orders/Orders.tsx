@@ -75,6 +75,7 @@ const Orders: FC<IOrders> = ({
             <div className={styles.ordersWrapper}>
                 <span className={styles.total}>Всего найдено: {orders.length} {pluralizeWord(orders.length)}</span>
                 {sortedOrders.map(({ id, number, date, address, totalCost, payment, status, dateModified, books, message }: IOrder) => (
+                    /* TO-DO: сделать qr-код для готовых к выдаче заказов */
                     <div className={styles.order} key={id}>
                         <div className={styles.orderTitle}>
                             <span className={styles.title}>Заказ №{number}</span>

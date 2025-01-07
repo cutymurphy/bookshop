@@ -1,10 +1,9 @@
 import React, { FC, useState } from "react";
-import styles from './Cart.module.scss'
+import styles from './Cart.module.scss';
 import { ICart, ICartBook } from "./types";
 import { Link, useNavigate } from "react-router-dom";
 import { EPath } from "../../AppPathes.ts";
 import clsx from "clsx";
-import deleteIcon from '../../assets/pictures/delete_1214428.png';
 import pictureCat1 from '../../assets/pictures-cats/158a44159274f86d8111cbf2e652d253.jpg';
 import pictureCat2 from '../../assets/pictures-cats/6c4480a89e9596d59b67a0f916593005.jpg';
 import pictureCat3 from '../../assets/pictures-cats/9981190e67c51e5499059b66b20807e9.jpg';
@@ -15,6 +14,7 @@ import Checkbox from "../../assets/components/Checkbox/Checkbox.tsx";
 import CartModal from "./CartModal/CartModal.tsx";
 import Button from "../../assets/components/Button/Button.tsx";
 import { toast } from "sonner";
+import CartCard from "./CartCard/CartCard.tsx";
 
 const Cart: FC<ICart> = ({
     productsInCart,
@@ -35,9 +35,12 @@ const Cart: FC<ICart> = ({
     const [isOpenedModal, setIsOpenedModal] = useState<boolean>(false);
     const navigate = useNavigate();
 
+    const availableBooks = productsInCart.filter((cartBook: ICartBook) => cartBook.book.count > 0);
+    const unavailableBooks = productsInCart.filter((cartBook: ICartBook) => cartBook.book.count === 0);
+
     const getCartCount = (): number => {
         let count = 0;
-        productsInCart.forEach((product: ICartBook) => {
+        availableBooks.forEach((product: ICartBook) => {
             if (checkedBookItems.includes(product.book.id)) {
                 count += product.count
             }
@@ -47,7 +50,7 @@ const Cart: FC<ICart> = ({
 
     const getCartCost = (): number => {
         let count = 0;
-        productsInCart.forEach((product: ICartBook) => {
+        availableBooks.forEach((product: ICartBook) => {
             if (checkedBookItems.includes(product.book.id)) {
                 count += product.book.price * product.count
             }
@@ -74,10 +77,10 @@ const Cart: FC<ICart> = ({
     }
 
     const setAllCheckedItem = () => {
-        if (checkedBookItems.length === productsInCart.length) {
+        if (checkedBookItems.length === availableBooks.length) {
             setCheckedBookItems([]);
         } else {
-            setCheckedBookItems(productsInCart.map((book: ICartBook) => book.book.id));
+            setCheckedBookItems(availableBooks.map((book: ICartBook) => book.book.id));
         }
     }
 
@@ -144,86 +147,54 @@ const Cart: FC<ICart> = ({
                     productsInCart.length === 0 && styles.hidden,
                 )}>
                     <div className={styles.mainTitle}>КОРЗИНА</div>
-                    <div className={styles.selectAllContainerWrapper}>
-                        <div className={styles.selectAllContainer}>
-                            <Checkbox
-                                id="selectAllCheckbox"
-                                onChange={setAllCheckedItem}
-                                checked={checkedBookItems.length === productsInCart.length}
-                            />
-                            <label
-                                className={styles.checkboxText}
-                                htmlFor="selectAllCheckbox"
-                            >
-                                Выбрать все
-                            </label>
+                    {availableBooks.length > 0 &&
+                        <div className={styles.selectAllContainerWrapper}>
+                            <div className={styles.selectAllContainer}>
+                                <Checkbox
+                                    id="selectAllCheckbox"
+                                    onChange={setAllCheckedItem}
+                                    checked={checkedBookItems.length === availableBooks.length}
+                                />
+                                <label
+                                    className={styles.checkboxText}
+                                    htmlFor="selectAllCheckbox"
+                                >
+                                    Выбрать все
+                                </label>
+                            </div>
                         </div>
-                    </div>
+                    }
                     <div className={styles.cartContent}>
                         {/* TO-DO: исправить странную сортировку книг по количеству */}
-                        {productsInCart.map((cartBook: ICartBook, index: number) => {
-                            const book = cartBook.book;
-
-                            return (
-                                <div className={styles.productCard} key={index}>
-                                    <Checkbox
-                                        id={String(index)}
-                                        onChange={() => setCheckedItem(book.id)}
-                                        checked={checkedBookItems.includes(book.id)}
-                                    />
-                                    <Link
-                                        to={EPath.main}
-                                        className={styles.imgWrapper}
-                                    >
-                                        <img
-                                            className={styles.productImage}
-                                            src={book.imgLink}
-                                            alt={book.name}
-                                        />
-                                    </Link>
-                                    <div className={styles.productName}>
-                                        <Link to={EPath.main}>{book.name}</Link>
-                                    </div>
-                                    <div className={styles.wrapperCountPrice}>
-                                        <div className={styles.inputCount}>
-                                            <button
-                                                className={clsx(styles.btn, styles.btnMinus)}
-                                                onClick={() => manipulateBookInCart(cartBook, "minus")}
-                                            >
-                                                -
-                                            </button>
-                                            <input
-                                                className={styles.cardControl}
-                                                type="number"
-                                                value={cartBook.count}
-                                                readOnly
-                                            />
-                                            <button
-                                                className={clsx(styles.btn, styles.btnPlus)}
-                                                onClick={() => manipulateBookInCart(cartBook, "plus")}
-                                            >
-                                                +
-                                            </button>
-                                        </div>
-                                        <div className={styles.productPrice}>{`${book.price} ₽`}</div>
-                                    </div>
-                                    <div className={styles.deleteWrapper}>
-                                        <button
-                                            id="delete"
-                                            className={styles.deleteBtn}
-                                            onClick={() => handleDeleteBookFromCart(cartBook)}
-                                        >
-                                            <img
-                                                src={deleteIcon}
-                                                alt="Icon image delete"
-                                                className={styles.iconImageDelete}
-                                            />
-                                        </button>
-                                    </div>
-                                </div>
-                            )
-                        })}
+                        {availableBooks.map((cartBook: ICartBook) => (
+                            <CartCard
+                                key={cartBook.book.id}
+                                cartBook={cartBook}
+                                checkedBookItems={checkedBookItems}
+                                setCheckedItem={setCheckedItem}
+                                manipulateBookInCart={manipulateBookInCart}
+                                handleDeleteBookFromCart={handleDeleteBookFromCart}
+                            />
+                        ))}
                     </div>
+                    {unavailableBooks.length > 0 &&
+                        <>
+                            <div className={styles.availableTitle}>Недоступные к заказу товары</div>
+                            <div className={styles.cartContent}>
+                                {unavailableBooks.map((cartBook: ICartBook) => (
+                                    <CartCard
+                                        key={cartBook.book.id}
+                                        cartBook={cartBook}
+                                        checkedBookItems={checkedBookItems}
+                                        setCheckedItem={setCheckedItem}
+                                        manipulateBookInCart={manipulateBookInCart}
+                                        handleDeleteBookFromCart={handleDeleteBookFromCart}
+                                        isAvailable={false}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    }
                     <div className={styles.summaryWrapper}>
                         <div className={styles.mainTitle}>Итого</div>
                         <div className={styles.cartSummary}>
