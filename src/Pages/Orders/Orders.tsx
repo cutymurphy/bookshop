@@ -9,21 +9,25 @@ import PencilIcon from "../../assets/components/Icons/PencilIcon.tsx";
 import { defaultPickupAddress, EStatusType } from "../Cart/CartModal/enums.ts";
 import { ICartBook } from "../Cart/types.ts";
 import ButtonAdmin from "../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
-import { deleteCartState, deleteOrder } from "../../server/api.js";
+import { deleteCartState, deleteOrder, getCartStateBooksById, updateBookCount } from "../../server/api.js";
 import Loader from "../../assets/components/Loader/Loader.tsx";
 import Modal from "../../assets/components/Modal/Modal.tsx";
 import { toast } from "sonner";
 import { pluralizeWord } from "../Admin/Statistics/utils.ts";
+import { IBook } from "../Main/ShopPanel/ShopContent/types.ts";
 
 const Orders: FC<IOrders> = ({
     allOrders,
     orders,
     setOrders,
+    initialBooks,
+    setInitialBooks,
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const [orderId, setOrderId] = useState<string>("");
     const [orderNumber, setOrderNumber] = useState<number>(0);
+    const [orderStatus, setOrderStatus] = useState<EStatusType | null>(null);
 
     const sortedOrders = orders.sort((a: IOrder, b: IOrder) => {
         const [dateA, timeA] = a.date.split(", ");
@@ -41,6 +45,19 @@ const Orders: FC<IOrders> = ({
         setIsLoading(true);
         try {
             const stateId = orders.find((order: IOrder) => order.id === id)?.idCartState;
+            if (!!orderStatus && orderStatus === EStatusType.placed) {
+                const updatedBooks = [...initialBooks];
+                const orderBooks = await getCartStateBooksById(stateId);
+                for (const book of orderBooks) {
+                    const bookIndex = initialBooks.findIndex((b: IBook) => b.id === book.idBook);
+                    if (bookIndex > -1) {
+                        const initialBook = initialBooks[bookIndex];
+                        updatedBooks[bookIndex] = { ...initialBook, count: initialBook.count + book.bookCount };
+                        await updateBookCount(book.idBook, initialBook.count + book.bookCount);
+                    }
+                }
+                setInitialBooks(updatedBooks);
+            }
             await deleteOrder(id);
             await deleteCartState(stateId);
             setOrders(allOrders.filter((order: IOrder) => id !== order.id));
@@ -58,6 +75,7 @@ const Orders: FC<IOrders> = ({
         if (!isModalOpen) {
             setOrderId("");
             setOrderNumber(0);
+            setOrderStatus(null);
         }
     }, [isModalOpen]);
 
@@ -124,29 +142,17 @@ const Orders: FC<IOrders> = ({
                                 </div>
                             </div>
                         </div>
-                        {status === EStatusType.placed &&
+                        {(status === EStatusType.placed || status === EStatusType.closed || status === EStatusType.cancelled || status === EStatusType.delivered) &&
                             <ButtonAdmin
                                 className={styles.btnCancel}
-                                text="Отменить заказ"
+                                text={status !== EStatusType.placed ? "Удалить заказ из списка" : "Отменить заказ"}
                                 fill={"outline"}
                                 type={"gray"}
                                 onClick={() => {
                                     setOrderId(id);
                                     setOrderNumber(number);
                                     setIsOpenModal(true);
-                                }}
-                            />
-                        }
-                        {(status === EStatusType.closed || status === EStatusType.cancelled || status === EStatusType.delivered) &&
-                            <ButtonAdmin
-                                className={styles.btnCancel}
-                                text="Удалить заказ из списка"
-                                fill={"outline"}
-                                type={"gray"}
-                                onClick={() => {
-                                    setOrderId(id);
-                                    setOrderNumber(number);
-                                    setIsOpenModal(true);
+                                    setOrderStatus(status);
                                 }}
                             />
                         }

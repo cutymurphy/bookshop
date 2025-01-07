@@ -203,6 +203,8 @@ const App = () => {
                             orders={currentOrders.filter((order: IOrder) => order.idUser === currentUser.idUser)}
                             setOrders={setCurrentOrders}
                             setIsLoading={setIsLoading}
+                            initialBooks={initialBooks}
+                            setInitialBooks={setInitialBooks}
                         />
                     }
                 />

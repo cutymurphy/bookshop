@@ -44,7 +44,7 @@ app.post('/api/book', (req, res) => {
 app.put('/api/book/:id', (req, res) => {
     const { id } = req.params;
     const { idAdmin, count, dateModified, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType } = req.body;
-    
+
     const query = `
         UPDATE bookshop.book
         SET 
@@ -463,7 +463,7 @@ app.post('/api/order', (req, res) => {
 app.put('/api/order/:id', (req, res) => {
     const { id } = req.params;
     const { idAdmin, dateModified, status, message } = req.body;
-    
+
     const query = `
         UPDATE bookshop.order
         SET 
@@ -474,7 +474,7 @@ app.put('/api/order/:id', (req, res) => {
         WHERE id = ?;
     `;
 
-    db.query(query, [idAdmin, dateModified, status, message , id], (err, results) => {
+    db.query(query, [idAdmin, dateModified, status, message, id], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send('Ошибка при обновлении заказа');
@@ -532,7 +532,7 @@ app.get('/api/orderCount', (req, res) => {
 
 app.put('/api/orderCount/:number', (req, res) => {
     const { number } = req.params;
-    
+
     const query = `
         UPDATE bookshop.order_count
         SET count = ?;
