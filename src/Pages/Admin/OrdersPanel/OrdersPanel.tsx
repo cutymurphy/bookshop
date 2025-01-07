@@ -77,6 +77,11 @@ const OrdersPanel: FC<IOrdersPanel> = ({
     const filteredOrders = !!input ?
         sortedOrders.filter((order: IOrder) => order.number === +input) : sortedOrders;
 
+    const ordersToDelete = orders
+        .filter(({ status }: IOrder) =>
+            (status === EStatusType.cancelled || status === EStatusType.closed || status === EStatusType.delivered))
+        .map(({ id }: IOrder) => id);
+
     const handleSort = (column: string) => {
         if (sortColumn === column) {
             setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -127,11 +132,11 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                         <div className={clsx(styles.ordersRow, styles.headerRow)}>
                             <Checkbox
                                 id="commonCheckbox-orders"
-                                onChange={() => checkedItems.length === orders.length ?
+                                onChange={() => checkedItems.length === ordersToDelete.length ?
                                     setCheckedItems([]) :
-                                    setCheckedItems(orders.map((order: IOrder) => order.id))
+                                    setCheckedItems(ordersToDelete.map((id: string) => id))
                                 }
-                                checked={checkedItems.length === orders.length}
+                                checked={checkedItems.length === ordersToDelete.length}
                                 className={styles.checkbox}
                                 classNameLabel={styles.checkboxLabel}
                             />
@@ -179,7 +184,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                                         className={clsx(styles.ordersRow, styles.mainRow)}
                                         onClick={() => { openedInfo === id ? setOpenedInfo("") : setOpenedInfo(id) }}
                                     >
-                                        {(status === EStatusType.cancelled || status === EStatusType.closed || status === EStatusType.delivered) &&
+                                        {ordersToDelete.includes(id) &&
                                             <Checkbox
                                                 id={id}
                                                 onChange={() => checkedItems.includes(id) ?

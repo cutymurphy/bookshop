@@ -106,6 +106,7 @@ const UsersPanel: FC<IUsersPanel> = ({
                             key={idUser}
                         >
                             <div className={styles.usersRow}>
+                                {/* TO-DO: fix если несколько админов */}
                                 {idUser !== currUserId &&
                                     <Checkbox
                                         id={idUser}
