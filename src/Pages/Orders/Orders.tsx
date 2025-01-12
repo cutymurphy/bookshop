@@ -86,12 +86,16 @@ const Orders: FC<IOrders> = ({
             <div className={styles.ordersWrapper}>
                 <span className={styles.total}>Всего найдено: {orders.length} {pluralizeWord(orders.length)}</span>
                 {sortedOrders.map(({ id, number, date, address, totalCost, payment, status, dateModified, books, message }: IOrder) => (
-                    /* TO-DO: сделать qr-код для готовых к выдаче заказов */
                     <div className={styles.order} key={id}>
                         <div className={styles.orderTitle}>
                             <span className={styles.title}>Заказ №{number}</span>
                             <Badge type={getBadgeType(status)}>{status}</Badge>
                         </div>
+                        {status === EStatusType.ready &&
+                            <div className={styles.readyWrapper}>
+                                <span>Для получения заказа назовите его номер и ваше ФИО сотруднику ПВЗ</span>
+                            </div>
+                        }
                         {dateModified &&
                             <div className={styles.modifyWrapper}>
                                 <span>Дата последней модерации заказа: {dateModified}</span>

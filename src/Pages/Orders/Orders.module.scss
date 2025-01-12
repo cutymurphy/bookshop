@@ -50,6 +50,11 @@
             color: var(--light-black);
         }
 
+        .readyWrapper span {
+            font-weight: 600;
+            color: var(--order-ready-color);
+        }
+
         .modifyWrapper {
             display: flex;
             align-items: center;
