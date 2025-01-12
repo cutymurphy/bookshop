@@ -47,7 +47,7 @@ const ShopFilters: FC<IShopFilters> = ({
                     id="back"
                     onClick={() => setIsMobileFiltersOpen(false)}
                 >
-                    <img className={styles.iconImageFilters} src={arrowIcon} />
+                    <img className={styles.iconImageFilters} src={arrowIcon} alt='Иконка кнопки "назад"' />
                     <div className={styles.filtersHeaderText}>Назад</div>
                 </button>
                 <button

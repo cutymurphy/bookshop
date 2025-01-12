@@ -32,8 +32,8 @@ const Header: FC<IHeader> = ({
             <div className={styles.headInfo}>
                 <div className={styles.logo}>
                     <Link to={EPath.main}>
-                        <img className={styles.upperLayedLogo} src={logoWithoutBookmark} />
-                        <img className={styles.bottomLayedLogo} src={logoWithBookmark} />
+                        <img className={styles.upperLayedLogo} src={logoWithoutBookmark} alt="Логотип с белой закладкой" />
+                        <img className={styles.bottomLayedLogo} src={logoWithBookmark} alt="Логотип с красной закладкой" />
                     </Link>
                 </div>
                 <HeaderForm
@@ -44,11 +44,11 @@ const Header: FC<IHeader> = ({
                         <Link to={EPath.auth}>
                             {/* TO-DO: добавить работающий userName */}
                             <div className={styles.userName}></div>
-                            <img className={styles.iconImage} src={userIcon} />
+                            <img className={styles.iconImage} src={userIcon} alt="Иконка человека" />
                         </Link>
                     </div>
                     {/* TO-DO: добавить число заказов */}
-                    <div><a href={tgLink}><img className={styles.iconImage} src={tgIcon} /></a></div>
+                    <div><a href={tgLink}><img className={styles.iconImage} src={tgIcon} alt="Иконка телеграма" /></a></div>
                     <div className={styles.cart}>
                         <Link to={EPath.cart}>
                             <div className={clsx(
@@ -57,13 +57,13 @@ const Header: FC<IHeader> = ({
                             )}>
                                 {getCartCount()}
                             </div>
-                            <img className={styles.iconImage} src={cartIcon} />
+                            <img className={styles.iconImage} src={cartIcon} alt="Иконка корзины" />
                         </Link>
                     </div>
                     {isAdmin &&
                         <div className={styles.userIconWrapper}>
                             <Link to={EPath.admin}>
-                                <img className={styles.iconImage} src={settingsIcon} />
+                                <img className={styles.iconImage} src={settingsIcon} alt="Иконка настроек" />
                             </Link>
                         </div>
                     }
@@ -73,7 +73,7 @@ const Header: FC<IHeader> = ({
                     id="filter"
                     onClick={() => setIsMobileFiltersOpen(true)}
                 >
-                    <img className={styles.iconImageMenu} src={slidersIcon} />
+                    <img className={styles.iconImageMenu} src={slidersIcon} alt="Иконка фильтров" />
                 </button>
             </div>
         </header>
