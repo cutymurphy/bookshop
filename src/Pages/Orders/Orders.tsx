@@ -18,8 +18,8 @@ import { IBook } from "../Main/ShopPanel/ShopContent/types.ts";
 
 const Orders: FC<IOrders> = ({
     allOrders,
+    setAllOrders,
     orders,
-    setOrders,
     initialBooks,
     setInitialBooks,
 }) => {
@@ -60,7 +60,7 @@ const Orders: FC<IOrders> = ({
             }
             await deleteOrder(id);
             await deleteCartState(stateId);
-            setOrders(allOrders.filter((order: IOrder) => id !== order.id));
+            setAllOrders(allOrders.filter((order: IOrder) => id !== order.id));
             toast.info(`Заказ №${number} удален`);
         } catch (error) {
             toast.error(`Ошибка при удалении заказа: ${error}`)
@@ -78,13 +78,6 @@ const Orders: FC<IOrders> = ({
             setOrderStatus(null);
         }
     }, [isModalOpen]);
-
-    useEffect(() => {
-        setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
-    }, [orders])
 
     return (
         isLoading ? (
