@@ -12,5 +12,4 @@ export interface IAdmin {
     authors: IAuthor[],
     users: IFullProfile[],
     setUsers: (users: IFullProfile[]) => void,
-    currentAdmin: IFullProfile,
 }

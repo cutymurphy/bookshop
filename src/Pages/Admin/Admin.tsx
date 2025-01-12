@@ -21,7 +21,6 @@ const Admin: FC<IAdmin> = ({
     authors,
     users,
     setUsers,
-    currentAdmin,
 }) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
@@ -99,7 +98,8 @@ const Admin: FC<IAdmin> = ({
                             content: <UsersPanel
                                 users={users}
                                 setUsers={setUsers}
-                                currentAdmin={currentAdmin}
+                                orders={orders}
+                                setOrders={setOrders}
                                 setIsLoading={setIsLoading}
                             />
                         },

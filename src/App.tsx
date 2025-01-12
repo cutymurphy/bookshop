@@ -241,7 +241,6 @@ const App = () => {
                                 authors={currentAuthors}
                                 users={currentUsers}
                                 setUsers={setCurrentUsers}
-                                currentAdmin={currentUser}
                             />
                         }
                     />

@@ -368,6 +368,21 @@ app.delete('/api/cartBook/:idCart/:idBook', (req, res) => {
     });
 });
 
+app.delete('/api/cartBook/:idCart', (req, res) => {
+    const { idCart } = req.params;
+
+    const query = `DELETE FROM bookshop.cart_book WHERE idCart = ?`;
+
+    db.query(query, [idCart], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса на удаление:', err);
+            return res.status(500).send('Ошибка при удалении корзины');
+        }
+
+        res.status(200).json({ message: 'Корзина успешно удалена' });
+    });
+});
+
 
 /* --------- CRUD for cart states --------- */
 
