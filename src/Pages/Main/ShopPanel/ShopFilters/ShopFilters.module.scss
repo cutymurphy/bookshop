@@ -6,7 +6,7 @@
     }
 
     .filtersHeaderText {
-        color: white;
+        color: var(--white);
     }
 
     .filterItem {
@@ -123,7 +123,7 @@
 
         &-open {
             display: block;
-            background-color: white;
+            background-color: var(--white);
             overflow-y: auto;
             top: 0;
 

@@ -25,9 +25,9 @@
     width: 450px;
     box-sizing: border-box;
     color: var(--main-color);
-    background-color: rgb(249, 248, 248);
+    background-color: var(--auth-wrapper-bg);
     border-radius: 5px;
-    border: 0.5px solid rgb(222, 221, 221);
+    border: 0.5px solid var(--auth-wrapper-border);
     padding: 20px 40px;
     font-family: var(--ptsans-font);
     display: flex;
@@ -130,7 +130,7 @@
     align-items: center;
     width: 450px;
     box-sizing: border-box;
-    border: 0.5px solid rgb(222, 221, 221);
+    border: 0.5px solid var(--auth-wrapper-border);
     border-radius: 5px;
     padding: 20px;
 
@@ -174,8 +174,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
-        background-color: #cc3e49;
+        color: var(--white);
+        background-color: var(--count-color);
         border-radius: 100%;
         font-family: Inter, sans-serif;
         font-size: 20px;

@@ -39,9 +39,9 @@
     bottom: 0;
     background-color: var(--white);
     z-index: 3;
-    -webkit-box-shadow: 0px -11px 15px -20px rgba(0, 0, 0, 1);
-    -moz-box-shadow: 0px -11px 15px -20px rgba(0, 0, 0, 1);
-    box-shadow: 0px -11px 15px -20px rgba(0, 0, 0, 1);
+    -webkit-box-shadow: var(--cart-box-shadow);
+    -moz-box-shadow: var(--cart-box-shadow);
+    box-shadow: var(--cart-box-shadow);
     margin-top: 20px;
 }
 
@@ -58,7 +58,9 @@
     font-weight: 500;
     margin: 40px auto 10px auto;
     padding-top: 20px;
-    box-shadow: 0px -11px 15px -20px rgb(0, 0, 0);
+    -webkit-box-shadow: var(--cart-box-shadow);
+    -moz-box-shadow: var(--cart-box-shadow);
+    box-shadow: var(--cart-box-shadow);
 }
 
 .selectAllContainerWrapper {
@@ -77,7 +79,7 @@
             transition: .3s;
             font-size: 16px;
             font-weight: 400;
-            color: black;
+            color: var(--black);
 
             &:hover {
                 color: var(--color-brand-hover);

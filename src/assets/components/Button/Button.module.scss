@@ -1,5 +1,5 @@
 .button {
-    color: #fff;
+    color: var(--white);
     font-family: var(--ptsans-font);
     font-weight: 500;
     font-size: 20px;
@@ -9,7 +9,7 @@
     transition: .3s;
 
     &.unabled {
-        background-color: gainsboro;
+        background-color: var(--disabled-gray);
         cursor: not-allowed;
     }
 

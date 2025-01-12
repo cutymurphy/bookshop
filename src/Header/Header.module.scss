@@ -6,7 +6,9 @@
     top: 0;
     z-index: 3;
     background-color: var(--main-color);
-    box-shadow: 0px 4px 21px -1px rgb(185, 186, 186)
+    -webkit-box-shadow: var(--header-box-shadow);
+    -moz-box-shadow: var(--header-box-shadow);
+    box-shadow: var(--header-box-shadow);
 }
 
 .menuFilter {
@@ -61,8 +63,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    background-color: #cc3e49;
+    color: var(--white);
+    background-color: var(--count-color);
     border-radius: 100%;
     line-height: 18px;
     font-weight: 600;
@@ -79,7 +81,7 @@
     .userName {
         position: absolute;
         text-decoration: none;
-        color: white;
+        color: var(--white);
         right: -20px;
         bottom: -16px;
         width: 100%;

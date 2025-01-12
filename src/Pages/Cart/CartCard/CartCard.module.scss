@@ -24,7 +24,7 @@
 
 .productImage:active {
     cursor: grabbing;
-    border: 3px solid black;
+    border: 3px solid var(--black);
     transition: 0.1s;
 }
 
@@ -46,12 +46,12 @@
 
 .productName a {
     text-decoration: none;
-    color: black;
+    color: var(--black);
     transition: 0.3s;
 }
 
 .productName a:hover {
-    color: rgb(136, 0, 255);
+    color: var(--main-color-dark);
 }
 
 .inputCount {
@@ -62,7 +62,7 @@
 
     .btn {
         border: none;
-        color: white;
+        color: var(--white);
         font-weight: bold;
         background-color: var(--main-color);
         font-family: Inter, sans-serif;
@@ -100,8 +100,7 @@
     pointer-events: none;
 }
 
-.productPrice,
-.product-new-price {
+.productPrice {
     width: 15%;
     position: absolute;
     right: 10%;
@@ -111,23 +110,12 @@
 }
 
 .productPrice {
-    color: black;
+    color: var(--black);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 
     &-unavailable {
         opacity: 30%;
     }
-}
-
-.product-new-price {
-    color: #ff2b3d;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-.product-new-price span {
-    color: gray;
-    text-decoration: line-through;
-    text-decoration-color: #ff2b3d;
 }
 
 .deleteWrapper {
@@ -209,13 +197,8 @@
         }
     }
 
-    .productPrice,
-    .product-new-price {
+    .productPrice {
         font-size: 22px;
-    }
-
-    .product-new-price span {
-        font-size: 18px;
     }
 
     .iconImageDelete {
@@ -276,13 +259,8 @@
         }
     }
 
-    .productPrice,
-    .product-new-price {
+    .productPrice {
         font-size: 22px;
-    }
-
-    .product-new-price span {
-        font-size: 18px;
     }
 
     .iconImageDelete {
@@ -343,13 +321,8 @@
         }
     }
 
-    .productPrice,
-    .product-new-price {
+    .productPrice {
         font-size: 16px;
-    }
-
-    .product-new-price span {
-        font-size: 14px;
     }
 
     .iconImageDelete {
@@ -412,15 +385,10 @@
         }
     }
 
-    .productPrice,
-    .product-new-price {
+    .productPrice {
         width: 100px;
         position: unset;
         font-size: 13px;
-    }
-
-    .product-new-price span {
-        font-size: 11px;
     }
 
     .deleteWrapper {
@@ -488,15 +456,10 @@
         }
     }
 
-    .productPrice,
-    .product-new-price {
+    .productPrice {
         width: 100px;
         position: unset;
         font-size: 14px;
-    }
-
-    .product-new-price span {
-        font-size: 11px;
     }
 
     .deleteWrapper {
@@ -564,15 +527,10 @@
         }
     }
 
-    .productPrice,
-    .product-new-price {
+    .productPrice {
         width: 80px;
         position: unset;
         font-size: 12px;
-    }
-
-    .product-new-price span {
-        font-size: 9px;
     }
 
     .deleteWrapper {

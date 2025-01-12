@@ -53,27 +53,27 @@
 
     .productName a {
         text-decoration: none;
-        color: black;
+        color: var(--black);
         transition: 0.3s;
     }
 
     .productName a:hover {
-        color: rgb(136, 0, 255);
+        color: var(--main-color-dark);
     }
 
     .productAuthor {
         font-family: var(--ptsans-font);
-        color: rgb(136, 0, 255);
+        color: var(--main-color-dark);
     }
 
     .productPrice {
-        color: black;
+        color: var(--black);
         font-family: Verdana, Geneva, Tahoma, sans-serif;
     }
 
     .addToCartBtn {
         background-color: var(--main-color);
-        color: #fff;
+        color: var(--white);
         font-family: var(--ptsans-font);
         font-weight: 500;
         border-radius: 5px;
@@ -93,10 +93,10 @@
         }
 
         &-pressed {
-            background-color: #cc3e49;
+            background-color: var(--count-color);
 
             &:hover {
-                background-color: #9f2a34;
+                background-color: var(--count-color-hover);
             }
         }
     }
@@ -125,13 +125,8 @@
             font-size: 18px;
         }
 
-        .productPrice,
-        .product-new-price {
+        .productPrice {
             font-size: 22px;
-        }
-
-        .product-new-price span {
-            font-size: 18px;
         }
 
         .addToCartBtn {
@@ -155,13 +150,8 @@
             font-size: 20px;
         }
 
-        .productPrice,
-        .product-new-price {
+        .productPrice {
             font-size: 22px;
-        }
-
-        .product-new-price span {
-            font-size: 18px;
         }
 
         .addToCartBtn {
@@ -187,13 +177,8 @@
             font-size: 16px;
         }
 
-        .productPrice,
-        .product-new-price {
+        .productPrice {
             font-size: 16px;
-        }
-
-        .product-new-price span {
-            font-size: 14px;
         }
 
         .addToCartBtn {
@@ -219,13 +204,8 @@
             font-size: 13px;
         }
 
-        .productPrice,
-        .product-new-price {
+        .productPrice {
             font-size: 13px;
-        }
-
-        .product-new-price span {
-            font-size: 11px;
         }
 
         .addToCartBtn {
@@ -250,13 +230,8 @@
             font-size: 13px;
         }
 
-        .productPrice,
-        .product-new-price {
+        .productPrice {
             font-size: 14px;
-        }
-
-        .product-new-price span {
-            font-size: 11px;
         }
 
         .addToCartBtn {
@@ -281,13 +256,8 @@
             font-size: 12px;
         }
 
-        .productPrice,
-        .product-new-price {
+        .productPrice {
             font-size: 14px;
-        }
-
-        .product-new-price span {
-            font-size: 11px;
         }
 
         .addToCartBtn {

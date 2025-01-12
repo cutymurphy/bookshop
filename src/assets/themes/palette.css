@@ -9,6 +9,7 @@
   --light-black: rgb(87, 87, 87);
   --white: rgb(255, 255, 255);
   --main-color: rgb(168, 118, 255);
+  --main-color-dark: rgb(136, 0, 255);
   --main-color-light: rgb(208, 181, 255);
   --main-color-light-2: rgb(194, 159, 255);
 
@@ -19,8 +20,13 @@
   --main-color-transparent-2: rgba(168, 118, 255, 0.2);
   --main-color-transparent-3: rgba(168, 118, 255, 0.3);
   --boarder-system-color: rgb(219, 219, 219);
+  --discount-panel-bg: rgb(249, 247, 255);
+  --auth-wrapper-bg: rgb(249, 248, 248);
+  --auth-wrapper-border: rgb(222, 221, 221);
   --sales-color: rgb(174, 20, 20);
   --errors-color: rgb(200, 0, 0);
+  --count-color: rgb(204, 62, 73);
+  --count-color-hover: rgb(159, 42, 52);
   --warning-color: rgb(255, 77, 77);
   --color-brand: rgb(116, 35, 255);
   --color-brand-hover: rgb(96, 31, 208);
@@ -42,6 +48,10 @@
   --badge-gray-bg: var(--gray);
   --badge-green-bg: rgb(131, 255, 187);
   --badge-pink-bg: rgb(255, 158, 174);
+
+  --header-box-shadow: 0px 4px 21px -1px rgb(185, 186, 186);
+  --modal-box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.3);
+  --cart-box-shadow: 0px -11px 15px -20px rgba(0, 0, 0, 1);
 
   --rad: 20px;
   --dur: 0.3s;

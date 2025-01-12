@@ -2,7 +2,7 @@
     margin: 20px 0;
     display: grid;
     grid-template-columns: 1fr 10px 1fr;
-    background-color: rgb(249, 247, 255);
+    background-color: var(--discount-panel-bg);
 
     .discountCard .discountImage {
         width: 100%
