@@ -5,8 +5,8 @@ import { Auth, Cart, Main } from './Pages/index.ts';
 import { Route, Routes } from 'react-router-dom';
 import { ICartBook } from './Pages/Cart/types.ts';
 import { IBook } from './Pages/Main/ShopPanel/ShopContent/types.ts';
-import { fetchBooks, fetchAuthors, getUserById, getCartBooksById, fetchUsers, fetchOrders, getCartStateBooksById, fetchOrdersCount } from './server/api.js';
-import { IAuthor, IFullProfile, initialUser, IOrder } from './types.ts';
+import { fetchBooks, fetchAuthors, getUserById, getCartBooksById, fetchUsers, fetchOrders, getCartStateBooksById, fetchAllOrders } from './server/api.js';
+import { IAuthor, IFullProfile, initialUser, IOrder, IRemoteOrder } from './types.ts';
 import Admin from './Pages/Admin/Admin.tsx';
 import { EPath } from './AppPathes.ts';
 import OrderForm from './Pages/Admin/OrdersPanel/OrderForm/OrderForm.tsx';
@@ -20,7 +20,7 @@ const App = () => {
     const [currentAuthors, setCurrentAuthors] = useState<IAuthor[]>([]);
     const [currentUsers, setCurrentUsers] = useState<IFullProfile[]>([]);
     const [currentOrders, setCurrentOrders] = useState<IOrder[]>([]);
-    const [currentOrdersCount, setCurrentOrdersCount] = useState<number>(0);
+    const [allOrders, setAllOrders] = useState<IRemoteOrder[]>([]);
     const [searchInput, setSearchInput] = useState<string>('');
     const [productsInCart, setProductsInCart] = useState<ICartBook[]>([]);
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState<boolean>(false);
@@ -49,8 +49,8 @@ const App = () => {
 
     const loadOrdersCount = async () => {
         try {
-            const ordersCountData = await fetchOrdersCount();
-            setCurrentOrdersCount(ordersCountData[0].count);
+            const ordersData = await fetchAllOrders();
+            setAllOrders(ordersData);
         } catch (error) {
             console.error('Ошибка загрузки числа заказов:', error);
             toast.error('Ошибка загрузки числа заказов');
@@ -195,8 +195,8 @@ const App = () => {
                             user={currentUser}
                             orders={currentOrders}
                             setOrders={setCurrentOrders}
-                            ordersCount={currentOrdersCount}
-                            setOrdersCount={setCurrentOrdersCount}
+                            allOrders={allOrders}
+                            setAllOrders={setAllOrders}
                             allBooks={initialBooks}
                             setBooks={setInitialBooks}
                         />
@@ -234,7 +234,7 @@ const App = () => {
                                 isLoading={isLoading}
                                 orders={currentOrders}
                                 setOrders={setCurrentOrders}
-                                ordersCount={currentOrdersCount}
+                                allOrders={allOrders}
                                 setIsLoading={setIsLoading}
                                 books={initialBooks}
                                 setBooks={setInitialBooks}

@@ -1,11 +1,11 @@
-import { IAuthor, IFullProfile, IOrder } from "../../types";
+import { IAuthor, IFullProfile, IOrder, IRemoteOrder } from "../../types";
 import { IBook } from "../Main/ShopPanel/ShopContent/types";
 
 export interface IAdmin {
     isLoading: boolean,
     orders: IOrder[],
     setOrders: (order: IOrder[]) => void,
-    ordersCount: number,
+    allOrders: IRemoteOrder[],
     setIsLoading: (loading: boolean) => void,
     books: IBook[],
     setBooks: (orders: IBook[]) => void,

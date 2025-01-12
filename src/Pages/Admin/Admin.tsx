@@ -8,13 +8,13 @@ import BooksPanel from "./BooksPanel/BooksPanel.tsx";
 import { useSearchParams } from "react-router-dom";
 import { ETabTitle } from "./enums.ts";
 import UsersPanel from "./UsersPanel/UsersPanel.tsx";
-import Statisctics from "./Statistics/Statistics.tsx";
+import Statistics from "./Statistics/Statistics.tsx";
 
 const Admin: FC<IAdmin> = ({
     isLoading,
     orders,
     setOrders,
-    ordersCount,
+    allOrders,
     setIsLoading,
     books,
     setBooks,
@@ -110,9 +110,8 @@ const Admin: FC<IAdmin> = ({
                         // },
                         {
                             title: "Статистика",
-                            content: <Statisctics
-                                orders={orders}
-                                ordersCount={ordersCount}
+                            content: <Statistics
+                                orders={allOrders}
                             />
                         },
                     ]}

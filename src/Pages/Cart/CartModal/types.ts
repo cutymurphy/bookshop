@@ -1,4 +1,4 @@
-import { IFullProfile, IOrder } from "../../../types";
+import { IFullProfile, IOrder, IRemoteOrder } from "../../../types";
 import { IBook } from "../../Main/ShopPanel/ShopContent/types";
 import { ICartBook } from "../types";
 
@@ -14,8 +14,8 @@ export interface ICartModal {
     user: IFullProfile,
     orders: IOrder[],
     setOrders: (order: IOrder[]) => void,
-    ordersCount: number,
-    setOrdersCount: (count: number) => void,
+    allOrders: IRemoteOrder[],
+    setAllOrders: (orders: IRemoteOrder[]) => void,
     allBooks: IBook[],
     setBooks: (books: IBook[]) => void,
 }

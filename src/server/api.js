@@ -511,26 +511,27 @@ export const deleteOrder = async (id) => {
     }
 };
 
-export const fetchOrdersCount = async () => {
+export const fetchAllOrders = async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/orderCount`);
+        const response = await fetch(`${API_BASE_URL}/allOrders`);
         if (!response.ok) {
             throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
         }
         return await response.json();
     } catch (error) {
-        console.error('Ошибка при получении числа заказов', error);
+        console.error('Ошибка при получении всех заказов', error);
         throw error;
     }
 };
 
-export const editOrdersCount = async (number) => {
+export const addOrderInAll = async (id, date) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/orderCount/${number}`, {
-            method: 'PUT',
+        const response = await fetch(`${API_BASE_URL}/allOrders`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ id, date }),
         });
 
         if (!response.ok) {
@@ -539,7 +540,7 @@ export const editOrdersCount = async (number) => {
 
         return await response.json();
     } catch (error) {
-        console.error('Ошибка при обновлении числа заказов', error);
+        console.error('Ошибка при добавлении заказа', error);
         throw error;
     }
 };

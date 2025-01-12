@@ -10,7 +10,7 @@ import Button from "../../../assets/components/Button/Button.tsx";
 import DropDown from "../../../assets/components/DropDown/DropDown.tsx";
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 import { IListOption } from "../../../assets/components/DropDown/types.ts";
-import { addCartState, addOrder, deleteBookFromCart, editOrdersCount, fetchCartBooks, updateBookCount, updateCartBookCount } from "../../../server/api.js";
+import { addCartState, addOrder, deleteBookFromCart, addOrderInAll, fetchCartBooks, updateBookCount, updateCartBookCount } from "../../../server/api.js";
 import { v4 as uuidv4 } from 'uuid';
 import { ICartBook } from "../types.ts";
 import { IOrder } from "../../../types.ts";
@@ -27,8 +27,8 @@ const CartModal: FC<ICartModal> = ({
     user,
     setOrders,
     orders,
-    ordersCount,
-    setOrdersCount,
+    allOrders,
+    setAllOrders,
     className,
     allBooks,
     setBooks,
@@ -59,7 +59,7 @@ const CartModal: FC<ICartModal> = ({
         try {
             let booksArr: ICartBook[] = [];
             const updatedBooks = [...allBooks];
-            const newCount = ordersCount + 1;
+            const newCount = allOrders.length + 1;
             const carts = await fetchCartBooks();
 
             for (let i = 0; i < allBooks.length; i++) {
@@ -85,7 +85,7 @@ const CartModal: FC<ICartModal> = ({
             setBooks(updatedBooks);
 
             await addOrder(orderId, newCount, stateId, user.idUser, orderDate, orderAddress, getCartCost(booksArr), activePayType, orderStatus);
-            await editOrdersCount(newCount);
+            await addOrderInAll(orderId, orderDate);
 
             const currentOrder: IOrder = {
                 id: orderId,
@@ -107,19 +107,18 @@ const CartModal: FC<ICartModal> = ({
             };
 
             setOrders([...orders, currentOrder]);
-            setOrdersCount(newCount);
-
+            setAllOrders([...allOrders, { id: orderId, date: orderDate }]);
+            setProductsInCart(productsInCart.filter((book: ICartBook) => !checkedBookItems.includes(book.book.id)));
+            
             toast.success('Заказ создан');
         } catch (error) {
             toast.error("Ошибка при обработке состояния корзины и добавлении заказа:", error);
         } finally {
             setCheckedBookItems([]);
-            setProductsInCart(productsInCart.filter((book: ICartBook) => !checkedBookItems.includes(book.book.id)));
             setActiveOrderType(EOrderType.delivery);
             setAddress("");
             setActivePayType("");
             setIsOpen(false);
-
             setTimeout(() => {
                 setIsLoading(false);
             }, 500);

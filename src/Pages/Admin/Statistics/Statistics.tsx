@@ -6,7 +6,6 @@ import { pluralizeWord } from "./utils.ts";
 
 const Statistics: FC<IStatistics> = ({
     orders,
-    ordersCount,
 }) => {
     const orderCountByDate = orders.reduce((acc, order) => {
         const date = order.date.split(", ")[0];
@@ -22,10 +21,9 @@ const Statistics: FC<IStatistics> = ({
 
     return (
         <div className={styles.statisticsWrapper}>
-            {/* TO-DO: сделать так, чтобы отмененный заказ не удалялся (для статистики) */}
             <div className={styles.statisticsRecord}>
                 <span className={styles.statisticsTitle}>Общее количество сделанных заказов на сервисе:</span>
-                <span>{ordersCount} {pluralizeWord(ordersCount)}</span>
+                <span>{orders.length} {pluralizeWord(orders.length)}</span>
             </div>
             <div className={styles.statisticsRecord}>
                 <span className={styles.statisticsTitle}>Статистика заказов по датам:</span>

@@ -22,8 +22,8 @@ const Cart: FC<ICart> = ({
     user,
     orders,
     setOrders,
-    ordersCount,
-    setOrdersCount,
+    allOrders,
+    setAllOrders,
     allBooks,
     setBooks,
 }) => {
@@ -231,8 +231,8 @@ const Cart: FC<ICart> = ({
                                     user={user}
                                     setOrders={setOrders}
                                     orders={orders}
-                                    ordersCount={ordersCount}
-                                    setOrdersCount={setOrdersCount}
+                                    allOrders={allOrders}
+                                    setAllOrders={setAllOrders}
                                     allBooks={allBooks}
                                     setBooks={setBooks}
                                 />

@@ -1,6 +1,5 @@
-import { IOrder } from "../../../types";
+import { IRemoteOrder } from "../../../types";
 
 export interface IStatistics {
-    orders: IOrder[],
-    ordersCount: number,
+    orders: IRemoteOrder[],
 }

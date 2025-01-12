@@ -61,3 +61,8 @@ export interface IOrder {
     books: ICartBook[],
     message?: string,
 }
+
+export interface IRemoteOrder {
+    id: string,
+    date: string,
+}

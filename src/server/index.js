@@ -535,30 +535,31 @@ app.delete('/api/order/:id', (req, res) => {
 
 /* --------- CRUD for order count --------- */
 
-app.get('/api/orderCount', (req, res) => {
-    db.query('SELECT * FROM bookshop.order_count', (err, results) => {
+app.get('/api/allOrders', (req, res) => {
+    db.query('SELECT * FROM bookshop.all_orders', (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
-            return res.status(500).send('Ошибка при получении данных о количстве заказов');
+            return res.status(500).send('Ошибка при получении данных о всех сделанных заказах');
         }
         res.json(results);
     });
 });
 
-app.put('/api/orderCount/:number', (req, res) => {
-    const { number } = req.params;
+app.post('/api/allOrders', (req, res) => {
+    const { id, date } = req.body;
 
     const query = `
-        UPDATE bookshop.order_count
-        SET count = ?;
+        INSERT INTO bookshop.all_orders (id, date) 
+        VALUES (?, ?);
     `;
 
-    db.query(query, [number], (err, results) => {
+    db.query(query, [id, date], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
-            return res.status(500).send('Ошибка при обновлении общего числа заказов');
+            return res.status(500).send(`Ошибка при добавлении заказа`);
         }
-        res.status(200).json(number);
+
+        res.status(201).json(id);
     });
 });
 
