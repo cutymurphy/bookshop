@@ -20,9 +20,10 @@ const Header: FC<IHeader> = ({
     setIsMobileFiltersOpen,
     setSearchInput,
     isAdmin,
+    userName,
 }) => {
     const tgLink = "https://t.me/Ssushkova";
-
+    
     const getCartCount = (): number => {
         let count = 0;
         productsInCart.forEach((product: ICartBook) => count += product.count);
@@ -41,7 +42,6 @@ const Header: FC<IHeader> = ({
                     setSearchInput={setSearchInput}
                 />
                 <div className={styles.icons}>
-                    {/* TO-DO: добавить работающий userName */}
                     <div className={styles.userIconWrapper}>
                         <Link to={EPath.auth}>
                             <div className={clsx(
@@ -50,9 +50,9 @@ const Header: FC<IHeader> = ({
                             )}>
                                 {userOrdersCount}
                             </div>
-                            {/* <div className={styles.userName}></div> */}
                             <img className={styles.iconImage} src={userIcon} alt="Иконка человека" />
                         </Link>
+                        {userName !== "" && <div className={styles.userName}>{userName}</div>}
                     </div>
                     <div><a href={tgLink}><img className={styles.iconImage} src={tgIcon} alt="Иконка телеграма" /></a></div>
                     <div className={styles.cart}>

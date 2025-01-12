@@ -172,6 +172,7 @@ const App = () => {
                 setIsMobileFiltersOpen={setIsMobileFiltersOpen}
                 setSearchInput={setSearchInput}
                 isAdmin={currentUser.isAdmin}
+                userName={currentUser.name}
             />
             <Routes>
                 <Route

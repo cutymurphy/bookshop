@@ -6,4 +6,5 @@ export interface IHeader {
     setIsMobileFiltersOpen: (isOpen: boolean) => void,
     setSearchInput: (input: string) => void,
     isAdmin: boolean, 
+    userName: string, 
 }

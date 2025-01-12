@@ -77,12 +77,12 @@
     position: relative;
 
     .userName {
+        position: absolute;
         text-decoration: none;
         color: white;
-        position: absolute;
-        right: 0;
-        bottom: -15px;
-        width: 45px;
+        right: -20px;
+        bottom: -16px;
+        width: 100%;
         text-align: center;
         white-space: nowrap;
         overflow: hidden;
