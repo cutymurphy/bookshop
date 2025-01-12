@@ -10,12 +10,12 @@
 .productImage {
     border: 3px solid var(--boarder-system-color);
     width: auto;
+    transition: 0.5s;
 }
 
 .productImage:hover {
     cursor: pointer;
     border: 3px solid var(--boarder-hover-color);
-    transition: 0.5s;
 }
 
 .productImage-unavailable {
@@ -47,11 +47,11 @@
 .productName a {
     text-decoration: none;
     color: black;
+    transition: 0.3s;
 }
 
 .productName a:hover {
     color: rgb(136, 0, 255);
-    transition: 0.3s;
 }
 
 .inputCount {
@@ -143,13 +143,13 @@
 
 .iconImageDelete {
     padding: 5px;
+    border-radius: 20%;
+    transition: 0.4s;
 }
 
 .iconImageDelete:hover {
     cursor: pointer;
     background-color: var(--boarder-system-color);
-    border-radius: 20%;
-    transition: 0.5s;
 }
 
 @media screen and (min-width: 1440px) {

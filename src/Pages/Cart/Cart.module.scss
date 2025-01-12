@@ -131,12 +131,12 @@
         .catalogLink {
             text-decoration: none;
             color: var(--main-color);
+            transition: 0.3s;
         }
 
         .catalogLink:hover {
             cursor: pointer;
             color: var(--boarder-hover-color);
-            transition: 0.3s;
         }
     }
 }

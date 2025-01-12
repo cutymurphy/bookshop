@@ -23,7 +23,6 @@
     &:hover {
         cursor: pointer;
         opacity: 0;
-        transition: 0.5s;
     }
 
     &:active {
@@ -37,11 +36,14 @@
     align-items: center;
 }
 
-.iconImage:hover {
-    cursor: pointer;
-    background-color: var(--icon-hover-color);
+.iconImage {
     border-radius: 20%;
-    transition: 0.5s;
+    transition: 0.4s;
+
+    &:hover {
+        cursor: pointer;
+        background-color: var(--icon-hover-color);
+    }
 }
 
 .iconImage:active {
