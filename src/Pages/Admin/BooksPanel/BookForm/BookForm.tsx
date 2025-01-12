@@ -19,6 +19,7 @@ import { ETabTitle } from "../../enums.ts";
 import { initialBook, initialErrors, trimBookInfo } from "./utils.ts";
 import { toast } from "sonner";
 import { ICartBook } from "../../../Cart/types.ts";
+import { deepCompare } from "../../utils.ts";
 
 const BooksForm: FC<IBookForm> = ({
     books,
@@ -39,39 +40,49 @@ const BooksForm: FC<IBookForm> = ({
 
     const { idAuthor, count, idAdmin, dateModified, name, price, category, genre, pagesCount, weight, imgLink, coverType } = bookInfo;
     const prevAdmin = users.find((user: IFullProfile) => user.idUser === idAdmin);
-    const isBookChanged = JSON.stringify(initialBookInfo) !== JSON.stringify(bookInfo);
+    const isBookChanged = !deepCompare(initialBookInfo, bookInfo);
 
     const validate = (book: IBook): boolean => {
         const { name, price, category, genre, pagesCount, imgLink, weight } = book;
         const newErrors = { ...initialErrors };
         let isValid = true;
 
-        if (name === "") {
+        if (name.trim() === "") {
             newErrors.name = "Имя не может быть пустым";
             isValid = false;
-        }
-
-        if (category === "") {
-            newErrors.category = "Категория не может быть пустой";
+        } else if (name.trim().length < 2 || name.trim().length > 255) {
+            newErrors.name = "Длина имени: 2-255 символов";
             isValid = false;
         }
 
-        if (genre === "") {
+        if (category.trim() === "") {
+            newErrors.category = "Категория не может быть пустой";
+            isValid = false;
+        } else if (category.trim().length < 2 || category.trim().length > 50) {
+            newErrors.category = "Длина категории: 2-50 символов";
+            isValid = false;
+        }
+
+        if (genre.trim() === "") {
             newErrors.genre = "Жанр не может быть пустым";
+            isValid = false;
+        } else if (genre.trim().length < 2 || genre.trim().length > 50) {
+            newErrors.genre = "Длина жанра: 2-50 символов";
             isValid = false;
         }
 
         if (!!count && count < 0) {
             newErrors.count = "Количество не может быть отрицательным";
             isValid = false;
+        } else if (count % 1 !== 0) {
+            newErrors.count = "Количество не может быть нецелым";
+            isValid = false;
         }
 
         if (price === 0 || price.toString() === "") {
             newErrors.price = "Укажите цену";
             isValid = false;
-        }
-
-        if (price < 0) {
+        } else if (price < 0) {
             newErrors.price = "Цена не может быть отрицательной";
             isValid = false;
         }
@@ -81,7 +92,7 @@ const BooksForm: FC<IBookForm> = ({
             isValid = false;
         }
 
-        if (imgLink === "") {
+        if (imgLink.trim() === "") {
             newErrors.imgLink = "Укажите ссылку на изображение";
             isValid = false;
         }
@@ -89,9 +100,7 @@ const BooksForm: FC<IBookForm> = ({
         if (!!pagesCount && pagesCount % 1 !== 0) {
             newErrors.pagesCount = "Укажите целое число страниц";
             isValid = false;
-        }
-
-        if (!!pagesCount && pagesCount < 0) {
+        } else if (!!pagesCount && pagesCount < 0) {
             newErrors.pagesCount = "Кол-во страниц не может быть отрицательным";
             isValid = false;
         }
@@ -310,6 +319,7 @@ const BooksForm: FC<IBookForm> = ({
                             }}
                             errorMessage={errors.pagesCount}
                         />
+                        {/* TO-DO: баг с тем, что при отмене вес, цена и кол-во не стираются */}
                         <Input
                             label="Вес (г.)"
                             placeholder="Укажите вес книги"
@@ -341,8 +351,10 @@ const BooksForm: FC<IBookForm> = ({
                     {isBookChanged &&
                         <ButtonAdmin
                             text='Отменить'
-                            /* TO-DO: fix */
-                            onClick={() => setBookInfo({ ...initialBookInfo })}
+                            onClick={() => {
+                                setBookInfo({ ...initialBookInfo });
+                                setErrors({ ...initialErrors });
+                            }}
                             type={"gray"}
                         />
                     }

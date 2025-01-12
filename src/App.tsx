@@ -172,7 +172,7 @@ const App = () => {
                 setIsMobileFiltersOpen={setIsMobileFiltersOpen}
                 setSearchInput={setSearchInput}
                 isAdmin={currentUser.isAdmin}
-                userName={currentUser.name}
+                userName={!!currentUser.idUser ? currentUser.name : ""}
             />
             <Routes>
                 <Route

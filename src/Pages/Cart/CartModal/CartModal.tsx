@@ -37,7 +37,7 @@ const CartModal: FC<ICartModal> = ({
     const [address, setAddress] = useState<string>("");
     const [activePayType, setActivePayType] = useState<string>("");
 
-    const isOrderDisabled = activeOrderType === EOrderType.delivery && (!address.trim() || !activePayType) ||
+    const isOrderDisabled = activeOrderType === EOrderType.delivery && (address.trim().length < 2 || address.trim().length > 255 || !activePayType) ||
         activeOrderType === EOrderType.pickup && !activePayType;
 
     const getCartCost = (productsInCart: ICartBook[]): number => {
@@ -159,7 +159,6 @@ const CartModal: FC<ICartModal> = ({
                         <div className={styles.form}>
                             {activeOrderType === EOrderType.delivery ?
                                 <>
-                                    {/* TO-DO: сделать ограничения по вводимым символам */}
                                     <Input
                                         label="Адрес доставки"
                                         placeholder="Улица, дом, квартира..."
@@ -205,7 +204,13 @@ const CartModal: FC<ICartModal> = ({
                                 text="Оформить заказ"
                                 className={styles.orderBtn}
                                 disabled={isOrderDisabled}
-                                onClick={() => !isOrderDisabled && handleAddCartState()}
+                                onClick={() => isOrderDisabled ?
+                                    (activeOrderType === EOrderType.delivery ?
+                                        toast.warning('Сначала введите адрес (2-255 символов) и укажите способ оплаты') :
+                                        toast.warning('Сначала укажите способ оплаты'))
+                                    :
+                                    handleAddCartState()
+                                }
                             />
                         </div>
                     </div>

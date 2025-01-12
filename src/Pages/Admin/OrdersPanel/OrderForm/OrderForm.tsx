@@ -18,6 +18,7 @@ import { editOrder } from '../../../../server/api.js';
 import { ICartBook } from '../../../Cart/types.ts';
 import { ETabTitle } from '../../enums.ts';
 import { toast } from 'sonner';
+import { deepCompare } from '../../utils.ts';
 
 const OrderForm: FC<IOrderForm> = ({
     currentAdmin,
@@ -30,9 +31,18 @@ const OrderForm: FC<IOrderForm> = ({
     const navigate = useNavigate();
     const [initialOrderInfo, setInitialOrderInfo] = useState<IOrder | null>(null);
     const [orderInfo, setOrderInfo] = useState<IOrder | null>(null);
+    const [messageError, setMessageError] = useState<string>("");
 
-    /* TO-DO: подкорректировать */
-    const isOrderChanged = JSON.stringify(initialOrderInfo) !== JSON.stringify(orderInfo);
+    const isOrderChanged = !deepCompare(initialOrderInfo, orderInfo);
+
+    const handleValidateOrder = () => {
+        const message = orderInfo?.message?.trim();
+        if (!!message && message?.length > 4 && message?.length < 256) {
+            handleChangeOrder();
+        } else {
+            setMessageError("Длина сообщения: 5-255 символов");
+        }
+    }
 
     const handleChangeOrder = async () => {
         setIsLoading(true);
@@ -119,7 +129,6 @@ const OrderForm: FC<IOrderForm> = ({
                             value: value,
                         }))}
                         valuesToSelect={[orderInfo.status]}
-                        // isAbsolute
                         label="Выберите статус"
                         requiredField
                         listClassName={styles.dropdownList}
@@ -129,13 +138,17 @@ const OrderForm: FC<IOrderForm> = ({
                         label="Комментарий к заказу"
                         placeholder="Товары недоступны... Доставка задерживается..."
                         value={orderInfo.message}
-                        onChange={(e) => setOrderInfo({ ...orderInfo, message: e.target.value })}
+                        onChange={(e) => {
+                            setMessageError("");
+                            setOrderInfo({ ...orderInfo, message: e.target.value });
+                        }}
+                        errorMessage={messageError}
                     />
                 </div>
                 <div className={styles.btnsWrapper}>
                     <ButtonAdmin
                         text='Сохранить'
-                        onClick={() => isOrderChanged ? handleChangeOrder() : toast.warning("Нет изменений для сохранения")}
+                        onClick={() => isOrderChanged ? handleValidateOrder() : toast.warning("Нет изменений для сохранения")}
                         type={"purple"}
                         fill={"outline"}
                         disabled={!isOrderChanged}
@@ -143,7 +156,10 @@ const OrderForm: FC<IOrderForm> = ({
                     {isOrderChanged &&
                         <ButtonAdmin
                             text='Отменить'
-                            onClick={() => setOrderInfo(initialOrderInfo)}
+                            onClick={() => {
+                                setOrderInfo(initialOrderInfo);
+                                setMessageError("");
+                            }}
                             type={"gray"}
                         />
                     }

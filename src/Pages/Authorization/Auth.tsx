@@ -41,15 +41,24 @@ const Auth: FC<IAuth> = ({
         if (currentUser.name.trim() === "") {
             newErrors.name = "Имя не может быть пустым";
             isValid = false;
+        } else if (currentUser.name.trim().length < 2 || currentUser.name.trim().length > 50) {
+            newErrors.name = "Длина имени: 2-50 символов";
+            isValid = false;
         }
 
         if (currentUser.surname.trim() === "") {
             newErrors.surname = "Фамилия не может быть пустой";
             isValid = false;
+        } else if (currentUser.surname.trim().length < 2 || currentUser.surname.trim().length > 50) {
+            newErrors.surname = "Длина фамилии: 2-50 символов";
+            isValid = false;
         }
 
         if (currentUser.email.trim() === "") {
             newErrors.email = "Почта не может быть пустой";
+            isValid = false;
+        } else if (currentUser.email.trim().length > 256) {
+            newErrors.email = "Максимальная длина email - 256 символов";
             isValid = false;
         } else if (!/\S+@\S+\.\S+/.test(currentUser.email.trim())) {
             newErrors.email = "Неверный формат email";
@@ -67,8 +76,8 @@ const Auth: FC<IAuth> = ({
         if (currentUser.password.trim() === "") {
             newErrors.password = "Пароль не может быть пустым";
             isValid = false;
-        } else if (currentUser.password.length < 6) {
-            newErrors.password = "Пароль должен содержать не менее 6 символов";
+        } else if (currentUser.password.trim().length < 6 || currentUser.password.trim().length > 64) {
+            newErrors.password = "Пароль должен содержать не менее 6 и не более 64 символов";
             isValid = false;
         }
 
