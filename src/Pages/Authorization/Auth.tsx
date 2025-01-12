@@ -18,6 +18,7 @@ const Auth: FC<IAuth> = ({
     setCurrentUser,
     currentCart,
     setCurrentCart,
+    userOrdersCount,
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
@@ -310,7 +311,11 @@ const Auth: FC<IAuth> = ({
                     <span className={styles.text}>В нашем <Link className={clsx(styles.name, styles.link)} to={EPath.main}>каталоге</Link> Вы точно найдете книгу по душе!</span>
                     <span className={clsx(styles.text, styles.orders)}>
                         <Link className={clsx(styles.name, styles.link)} to={EPath.orders}>Ваши заказы</Link>
-                        <Ordercon />
+                        {userOrdersCount > 0 ?
+                            <div className={styles.count}>{userOrdersCount}</div>
+                            :
+                            <Ordercon />
+                        }
                     </span>
                     <button
                         className={styles.btnLogOut}

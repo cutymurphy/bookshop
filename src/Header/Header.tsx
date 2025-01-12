@@ -15,6 +15,7 @@ import clsx from "clsx";
 import { ICartBook } from "../Pages/Cart/types.ts";
 
 const Header: FC<IHeader> = ({
+    userOrdersCount,
     productsInCart,
     setIsMobileFiltersOpen,
     setSearchInput,
@@ -40,20 +41,25 @@ const Header: FC<IHeader> = ({
                     setSearchInput={setSearchInput}
                 />
                 <div className={styles.icons}>
+                    {/* TO-DO: добавить работающий userName */}
                     <div className={styles.userIconWrapper}>
                         <Link to={EPath.auth}>
-                            {/* TO-DO: добавить работающий userName */}
-                            <div className={styles.userName}></div>
+                            <div className={clsx(
+                                styles.count,
+                                userOrdersCount === 0 && styles.countDisabled,
+                            )}>
+                                {userOrdersCount}
+                            </div>
+                            {/* <div className={styles.userName}></div> */}
                             <img className={styles.iconImage} src={userIcon} alt="Иконка человека" />
                         </Link>
                     </div>
-                    {/* TO-DO: добавить число заказов */}
                     <div><a href={tgLink}><img className={styles.iconImage} src={tgIcon} alt="Иконка телеграма" /></a></div>
                     <div className={styles.cart}>
                         <Link to={EPath.cart}>
                             <div className={clsx(
-                                styles.cartCount,
-                                productsInCart.length === 0 && styles.cartCountDisabled,
+                                styles.count,
+                                productsInCart.length === 0 && styles.countDisabled,
                             )}>
                                 {getCartCount()}
                             </div>

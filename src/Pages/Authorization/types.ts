@@ -6,6 +6,7 @@ export interface IAuth {
     setCurrentUser: (user: IFullProfile) => void,
     currentCart: ICartBook[],
     setCurrentCart: (cart: ICartBook[]) => void,
+    userOrdersCount: number,
 }
 
 export interface IErrors {

@@ -93,7 +93,7 @@
         .checkboxText {
             cursor: pointer;
             transition: .3s;
-            
+
             &:hover {
                 color: var(--color-brand-hover);
             }
@@ -167,13 +167,28 @@
             text-decoration: underline;
         }
     }
+
+    .count {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        background-color: #cc3e49;
+        border-radius: 100%;
+        font-family: Inter, sans-serif;
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: 600;
+    }
 }
 
 .orders {
     margin-top: 30px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
 }
 
 .btnLogOut {
@@ -192,8 +207,8 @@
         font-weight: 500;
 
         i {
-            transition: .3s;  
-            color: var(--main-color); 
+            transition: .3s;
+            color: var(--main-color);
         }
     }
 

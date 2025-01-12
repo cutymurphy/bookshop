@@ -26,6 +26,8 @@ const App = () => {
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
+    const userOrders = currentOrders.filter((order: IOrder) => order.idUser === currentUser.idUser);
+
     const loadBooksAndAuthors = async () => {
         try {
             const authorsData = await fetchAuthors();
@@ -165,6 +167,7 @@ const App = () => {
         <div className={styles.wrapper}>
             <Toaster richColors duration={1500} gap={10} position="bottom-right" />
             <Header
+                userOrdersCount={userOrders.length}
                 productsInCart={productsInCart}
                 setIsMobileFiltersOpen={setIsMobileFiltersOpen}
                 setSearchInput={setSearchInput}
@@ -208,7 +211,7 @@ const App = () => {
                         <Orders
                             allOrders={currentOrders}
                             setAllOrders={setCurrentOrders}
-                            orders={currentOrders.filter((order: IOrder) => order.idUser === currentUser.idUser)}
+                            orders={userOrders}
                             initialBooks={initialBooks}
                             setInitialBooks={setInitialBooks}
                         />
@@ -222,6 +225,7 @@ const App = () => {
                             setCurrentUser={setCurrentUser}
                             currentCart={productsInCart}
                             setCurrentCart={setProductsInCart}
+                            userOrdersCount={userOrders.length}
                         />
                     }
                 />
