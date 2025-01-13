@@ -19,6 +19,7 @@ import MagnifierIcon from "../../../assets/components/Icons/MagnifierIcon.tsx";
 import { useNavigate } from "react-router-dom";
 import { EPath } from "../../../AppPathes.ts";
 import PlusIcon from "../../../assets/components/Icons/PlusIcon.tsx";
+import PencilIcon from "../../../assets/components/Icons/PencilIcon.tsx";
 
 const AuthorsPanel: FC<IAuthorsPanel> = ({
     authors,
@@ -32,15 +33,24 @@ const AuthorsPanel: FC<IAuthorsPanel> = ({
     const [isModalOpen, setIsOpenModal] = useState<boolean>(false);
     const [isModalActiveBtns, setIsModalActiveBtns] = useState<boolean>(true);
     const [modalText, setModalText] = useState<string>("");
-    const [sortColumn, setSortColumn] = useState<TSortColumn | null>(null);
+    const [sortColumn, setSortColumn] = useState<TSortColumn>("dateModified");
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
     const [input, setInput] = useState<string>("");
     const navigate = useNavigate();
 
     const sortedAuthors = [...authors].sort((a: IAuthor, b: IAuthor) => {
-        if (!sortColumn) return 0;
         let compareValue = 0;
-        if (sortColumn === "surname") {
+        if (sortColumn === "dateModified") {
+            const [dateA, timeA] = a.dateModified.split(", ");
+            const [dayA, monthA, yearA] = dateA.split(".");
+            const dateObjA = new Date(`${yearA}-${monthA}-${dayA}T${timeA}`);
+
+            const [dateB, timeB] = b.dateModified.split(", ");
+            const [dayB, monthB, yearB] = dateB.split(".");
+            const dateObjB = new Date(`${yearB}-${monthB}-${dayB}T${timeB}`);
+
+            compareValue = dateObjA.getTime() - dateObjB.getTime();
+        } else if (sortColumn === "surname") {
             compareValue = a.surname.localeCompare(b.surname);
         } else if (sortColumn === "name") {
             compareValue = a.name.localeCompare(b.name);
@@ -176,6 +186,17 @@ const AuthorsPanel: FC<IAuthorsPanel> = ({
                                         <span className={styles.rowPadding}>{surname}</span>
                                         <span className={styles.rowPadding}>{!!email ? email : "—"}</span>
                                         <span className={styles.rowPadding}>{!!phone ? phone : "—"}</span>
+                                        <div className={styles.iconsWrapper}>
+                                            <span
+                                                className={clsx(styles.rowIcon, styles.pencilIcon)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    navigate(`${EPath.adminAuthor}/${id}`);
+                                                }}
+                                            >
+                                                <PencilIcon />
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             ))}

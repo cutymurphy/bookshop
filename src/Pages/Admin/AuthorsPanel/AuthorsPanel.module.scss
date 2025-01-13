@@ -55,6 +55,35 @@
         .rowPadding {
             padding-right: 30px;
         }
+
+        .iconsWrapper {
+            position: absolute;
+            left: 103%;
+            top: 8px;
+
+            .rowIcon {
+                cursor: pointer;
+                display: flex;
+                height: fit-content;
+                width: fit-content;
+                transition: 0.3s;
+
+                svg path {
+                    transition: 0.3s;
+                }
+
+                &:hover {
+                    svg path {
+                        fill: var(--icon-hover-color);
+                    }
+                }
+            }
+
+            .pencilIcon svg {
+                height: 15px;
+                width: auto;
+            }
+        }
     }
 
     .headerRow {
