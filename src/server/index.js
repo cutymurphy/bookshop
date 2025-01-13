@@ -124,15 +124,14 @@ app.delete('/api/book/:id', (req, res) => {
 /* --------- CRUD for authors --------- */
 
 app.post('/api/author', async (req, res) => {
-    const { name, surname, email, phone } = req.body;
-    const id = uuidv4();
+    const { id, name, surname, email, phone, idAdmin, dateModified } = req.body;
 
     const query = `
-        INSERT INTO bookshop.author (id, name, surname, email, phone) 
-        VALUES (?, ?, ?, ?, ?);
+        INSERT INTO bookshop.author (id, name, surname, email, phone, idAdmin, dateModified) 
+        VALUES (?, ?, ?, ?, ?, ?, ?);
     `;
 
-    db.query(query, [id, name, surname, email, phone], (err, results) => {
+    db.query(query, [id, name, surname, email, phone, idAdmin, dateModified], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send('Ошибка при добавлении нового автора');
@@ -144,7 +143,7 @@ app.post('/api/author', async (req, res) => {
 
 app.put('/api/author/:id', (req, res) => {
     const { id } = req.params;
-    const { name, surname, email, phone } = req.body;
+    const { name, surname, email, phone, idAdmin, dateModified } = req.body;
 
     const query = `
         UPDATE bookshop.author
@@ -153,10 +152,12 @@ app.put('/api/author/:id', (req, res) => {
             surname = ?, 
             email = ?, 
             phone = ?,
+            idAdmin = ?,
+            dateModified = ?
         WHERE id = ?;
     `;
 
-    db.query(query, [name, surname, email, phone, id], (err, results) => {
+    db.query(query, [name, surname, email, phone, idAdmin, dateModified, id], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send('Ошибка при обновлении автора');

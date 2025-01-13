@@ -7,6 +7,8 @@ export interface IAuthor {
     surname: string,
     email?: string,
     phone?: string,
+    idAdmin: string,
+    dateModified: string,
 }
 
 export interface IProfile {

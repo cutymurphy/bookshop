@@ -8,4 +8,4 @@ export interface IAuthorsPanel {
     setIsLoading: (loading: boolean) => void,
 }
 
-export type TSortColumn = "name" | "surname";
+export type TSortColumn = "name" | "surname" | "dateModified";

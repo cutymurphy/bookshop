@@ -109,14 +109,14 @@ export const fetchAuthors = async () => {
     }
 };
 
-export const addAuthor = async (name, surname, email, phone) => {
+export const addAuthor = async (id, name, surname, email, phone, idAdmin, dateModified) => {
     try {
         const response = await fetch(`${API_BASE_URL}/author`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, surname, email, phone }),
+            body: JSON.stringify({ id, name, surname, email, phone, idAdmin, dateModified }),
         });
 
         if (!response.ok) {
@@ -130,14 +130,14 @@ export const addAuthor = async (name, surname, email, phone) => {
     }
 };
 
-export const editAuthor = async (id, name, surname, email, phone) => {
+export const editAuthor = async (id, name, surname, email, phone, idAdmin, dateModified) => {
     try {
         const response = await fetch(`${API_BASE_URL}/author/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, surname, email, phone }),
+            body: JSON.stringify({ name, surname, email, phone, idAdmin, dateModified }),
         });
 
         if (!response.ok) {
