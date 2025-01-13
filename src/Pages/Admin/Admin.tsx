@@ -9,6 +9,7 @@ import { useSearchParams } from "react-router-dom";
 import { ETabTitle } from "./enums.ts";
 import UsersPanel from "./UsersPanel/UsersPanel.tsx";
 import Statistics from "./Statistics/Statistics.tsx";
+import AuthorsPanel from "./AuthorsPanel/AuthorsPanel.tsx";
 
 const Admin: FC<IAdmin> = ({
     isLoading,
@@ -19,6 +20,7 @@ const Admin: FC<IAdmin> = ({
     books,
     setBooks,
     authors,
+    setAuthors,
     users,
     setUsers,
 }) => {
@@ -36,9 +38,12 @@ const Admin: FC<IAdmin> = ({
                 setSearchParams({ tab: ETabTitle.books });
                 break;
             case 2:
-                setSearchParams({ tab: ETabTitle.users });
+                setSearchParams({ tab: ETabTitle.authors });
                 break;
             case 3:
+                setSearchParams({ tab: ETabTitle.users });
+                break;
+            case 4:
                 setSearchParams({ tab: ETabTitle.statistics });
                 break;
             default:
@@ -56,11 +61,14 @@ const Admin: FC<IAdmin> = ({
             case ETabTitle.books:
                 setActiveTabIndex(1);
                 break;
-            case ETabTitle.users:
+            case ETabTitle.authors:
                 setActiveTabIndex(2);
                 break;
-            case ETabTitle.statistics:
+            case ETabTitle.users:
                 setActiveTabIndex(3);
+                break;
+            case ETabTitle.statistics:
+                setActiveTabIndex(4);
                 break;
             default:
                 setActiveTabIndex(0);
@@ -94,6 +102,15 @@ const Admin: FC<IAdmin> = ({
                             />
                         },
                         {
+                            title: "Авторы",
+                            content: <AuthorsPanel
+                                authors={authors}
+                                setAuthors={setAuthors}
+                                books={books}
+                                setIsLoading={setIsLoading}
+                            />
+                        },
+                        {
                             title: "Пользователи",
                             content: <UsersPanel
                                 users={users}
@@ -103,11 +120,6 @@ const Admin: FC<IAdmin> = ({
                                 setIsLoading={setIsLoading}
                             />
                         },
-                        // {
-                        //     title: "Авторы",
-                        //     content: <div>Авторы</div>,
-                        //     disabled: true,
-                        // },
                         {
                             title: "Статистика",
                             content: <Statistics

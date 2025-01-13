@@ -123,6 +123,53 @@ app.delete('/api/book/:id', (req, res) => {
 
 /* --------- CRUD for authors --------- */
 
+app.post('/api/author', async (req, res) => {
+    const { name, surname, email, phone } = req.body;
+    const id = uuidv4();
+
+    const query = `
+        INSERT INTO bookshop.author (id, name, surname, email, phone) 
+        VALUES (?, ?, ?, ?, ?);
+    `;
+
+    db.query(query, [id, name, surname, email, phone], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при добавлении нового автора');
+        }
+
+        res.status(201).json(id);
+    });
+});
+
+app.put('/api/author/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, surname, email, phone } = req.body;
+
+    const query = `
+        UPDATE bookshop.author
+        SET
+            name = ?, 
+            surname = ?, 
+            email = ?, 
+            phone = ?,
+        WHERE id = ?;
+    `;
+
+    db.query(query, [name, surname, email, phone, id], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса:', err);
+            return res.status(500).send('Ошибка при обновлении автора');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Автор не найден');
+        }
+
+        res.status(200).json(id);
+    });
+});
+
 app.get('/api/authors', (req, res) => {
     db.query('SELECT * FROM bookshop.author', (err, results) => {
         if (err) {
@@ -130,6 +177,25 @@ app.get('/api/authors', (req, res) => {
             return res.status(500).send('Ошибка при получении данных об авторах');
         }
         res.json(results);
+    });
+});
+
+app.delete('/api/author/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = `DELETE FROM bookshop.author WHERE id = ?`;
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error('Ошибка при выполнении запроса на удаление:', err);
+            return res.status(500).send('Ошибка при удалении автора');
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).send('Запись для удаления не найдена');
+        }
+
+        res.status(200).json(id);
     });
 });
 

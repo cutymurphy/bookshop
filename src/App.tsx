@@ -245,6 +245,7 @@ const App = () => {
                                 books={initialBooks}
                                 setBooks={setInitialBooks}
                                 authors={currentAuthors}
+                                setAuthors={setCurrentAuthors}
                                 users={currentUsers}
                                 setUsers={setCurrentUsers}
                             />

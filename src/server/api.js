@@ -109,6 +109,68 @@ export const fetchAuthors = async () => {
     }
 };
 
+export const addAuthor = async (name, surname, email, phone) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/author`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, surname, email, phone }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при добавлении нового автора', error);
+        throw error;
+    }
+};
+
+export const editAuthor = async (id, name, surname, email, phone) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/author/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, surname, email, phone }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при обновлении автора', error);
+        throw error;
+    }
+};
+
+export const deleteAuthor = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/author/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка при удалении автора', error);
+        throw error;
+    }
+};
+
 export const fetchUsers = async () => {
     try {
         const response = await fetch(`${API_BASE_URL}/user`);

@@ -1,0 +1,114 @@
+.authors {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+}
+
+.input {
+    margin-top: -16px;
+    margin-bottom: 20px;
+}
+
+.inputWrapper {
+    border: 1px solid transparent;
+
+    &:focus-within {
+        border: 1px solid var(--boarder-system-color);
+    }
+}
+
+.authorsTable {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+
+    .authorsRow {
+        display: grid;
+        grid-template-columns: 10% 20% 20% 32% 18%;
+        padding: 8px 0 16px 0;
+        position: relative;
+
+        span {
+            font-family: var(--ptsans-font);
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .checkbox {
+            position: absolute;
+            right: 102%;
+            top: 8px;
+
+            .checkboxLabel:before {
+                border: 1px solid var(--boarder-system-color);
+            }
+
+            &:hover {
+                .checkboxLabel:before {
+                    border: 1px solid var(--main-color);
+                }
+            }
+        }
+
+        .rowPadding {
+            padding-right: 30px;
+        }
+    }
+
+    .headerRow {
+        cursor: default;
+
+        span {
+            font-weight: 600;
+            font-size: 18px;
+            transition: .3s;
+        }
+
+        .sortField {
+            cursor: pointer;
+
+            &:hover {
+                color: var(--icon-hover-color);
+            }
+        }
+
+        .sortedField {
+            color: var(--icon-hover-color);
+        }
+    }
+
+    .rowWrapper {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid var(--disabled-gray-2);
+        transition: .3s;
+
+        &:last-child {
+            border-bottom: unset;
+        }
+    }
+
+    .borderPurple {
+        border-bottom: 1px solid var(--border-light);
+    }
+}
+
+.paginator {
+    margin: 0;
+}
+
+.btns {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    top: -75px;
+    display: flex;
+    gap: 28px;
+}
+
+.zeroResult {
+    font-size: 18px;
+    color: var(--light-black);
+}
