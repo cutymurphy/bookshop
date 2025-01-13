@@ -2,9 +2,10 @@
 
 .loadContainer {
     z-index: 9999;
-    position: absolute;
-    width: 100%;
-    height: 300px;
+    position: fixed;
+    width: calc(1300px - 260px);
+    right: 65px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: end;

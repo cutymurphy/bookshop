@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from './Cart.module.scss';
 import { ICart, ICartBook } from "./types";
 import { Link, useNavigate } from "react-router-dom";
@@ -33,6 +33,8 @@ const Cart: FC<ICart> = ({
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [checkedBookItems, setCheckedBookItems] = useState<string[]>([]);
     const [isOpenedModal, setIsOpenedModal] = useState<boolean>(false);
+    const [scrollPosition, setScrollPosition] = useState<number>(0);
+
     const navigate = useNavigate();
 
     const availableBooks = productsInCart.filter((cartBook: ICartBook) => cartBook.book.count > 0);
@@ -85,6 +87,7 @@ const Cart: FC<ICart> = ({
     }
 
     const manipulateBookInCart = async (bookInCart: ICartBook, operation: "plus" | "minus") => {
+        setScrollPosition(window.scrollY);
         setIsLoading(true);
         const newCount = operation === "plus" ? bookInCart.count + 1 : bookInCart.count - 1;
 
@@ -119,6 +122,7 @@ const Cart: FC<ICart> = ({
     };
 
     const handleDeleteBookFromCart = async (bookToDelete: ICartBook) => {
+        setScrollPosition(window.scrollY);
         setIsLoading(true);
         try {
             setProductsInCart(productsInCart.filter((book: ICartBook) =>
@@ -136,6 +140,12 @@ const Cart: FC<ICart> = ({
             }, !!idCart ? 500 : 200);
         }
     };
+
+    useEffect(() => {
+        if (!isLoading) {
+            window.scrollTo(0, scrollPosition);
+        }
+    }, [isLoading]);
 
     return (
         isLoading ? (
