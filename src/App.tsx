@@ -35,10 +35,11 @@ const App = () => {
 
             const booksData = await fetchBooks();
             const currBooks = booksData.map((book) => {
-                const author = authorsData.find(({ id }: IAuthor) => id === book.idAuthor)?.name || null;
+                const author = authorsData.find(({ id }: IAuthor) => id === book.idAuthor);
+                const authorName = !!author ? `${author.name} ${author.surname}` : null;
                 const newBook: IBook = {
                     ...book,
-                    author,
+                    author: authorName,
                 }
                 return newBook;
             });

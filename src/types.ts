@@ -4,8 +4,9 @@ import { IBook } from "./Pages/Main/ShopPanel/ShopContent/types"
 export interface IAuthor {
     id: string,
     name: string,
-    email: string | null,
-    phone: string | null,
+    surname: string,
+    email?: string,
+    phone?: string,
 }
 
 export interface IProfile {

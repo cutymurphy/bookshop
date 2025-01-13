@@ -38,6 +38,8 @@ const BooksForm: FC<IBookForm> = ({
     const [bookInfo, setBookInfo] = useState<IBook>({ ...initialBook });
     const [errors, setErrors] = useState<IErrors>({ ...initialErrors });
 
+    const sortedAuthors = [...authors].sort((a: IAuthor, b: IAuthor) => a.surname.localeCompare(b.surname));
+
     const { idAuthor, count, idAdmin, dateModified, name, price, category, genre, pagesCount, weight, imgLink, coverType } = bookInfo;
     const prevAdmin = users.find((user: IFullProfile) => user.idUser === idAdmin);
     const isBookChanged = !deepCompare(initialBookInfo, bookInfo);
@@ -283,12 +285,11 @@ const BooksForm: FC<IBookForm> = ({
                             errorMessage={errors.imgLink}
                         />
                         <DropDown
-                            /* TO-DO: отсортировать по имени список авторов */
                             label="Автор"
                             placeholder="Укажите автора книги"
-                            listOfOptions={authors.map((author: IAuthor) => ({
-                                label: author.name,
-                                value: author.id,
+                            listOfOptions={sortedAuthors.map(({ id, name, surname }: IAuthor) => ({
+                                label: `${surname} ${name}`,
+                                value: id,
                             }))}
                             valuesToSelect={idAuthor ? [idAuthor] : []}
                             clearOption
