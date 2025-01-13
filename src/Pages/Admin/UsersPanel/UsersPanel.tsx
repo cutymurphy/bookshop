@@ -132,7 +132,7 @@ const UsersPanel: FC<IUsersPanel> = ({
                                         classNameLabel={styles.checkboxLabel}
                                     />
                                 }
-                                <span>{index + 1}</span>
+                                <span>{sortedUsers.findIndex((user: IFullProfile) => user.idUser === idUser) + 1}</span>
                                 <span>{isAdmin ? "Да" : "Нет"}</span>
                                 <span className={clsx(
                                     styles.rowPadding,

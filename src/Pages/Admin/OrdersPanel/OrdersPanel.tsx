@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import { IOrdersPanel } from "./types";
 import styles from "./OrdersPanel.module.scss";
@@ -111,6 +111,10 @@ const OrdersPanel: FC<IOrdersPanel> = ({
             }, 2000);
         }
     }
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [input]);
 
     return (
         <div className={styles.orders}>

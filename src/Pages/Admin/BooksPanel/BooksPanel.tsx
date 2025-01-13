@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import { IBooksPanel } from "./types";
 import styles from "./BooksPanel.module.scss";
@@ -122,6 +122,10 @@ const BooksPanel: FC<IBooksPanel> = ({
             }, 2000);
         }
     };
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [input]);
 
     return (
         <div className={styles.books}>
