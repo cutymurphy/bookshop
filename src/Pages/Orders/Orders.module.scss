@@ -115,7 +115,7 @@
                         width: calc(50% - 6px);
                         display: flex;
                         gap: 16px;
-                        height: fit-content;
+                        height: auto;
 
                         .productImage {
                             max-width: 80px;
