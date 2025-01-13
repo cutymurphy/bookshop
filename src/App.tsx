@@ -10,9 +10,10 @@ import { IAuthor, IFullProfile, initialUser, IOrder, IRemoteOrder } from './type
 import Admin from './Pages/Admin/Admin.tsx';
 import { EPath } from './AppPathes.ts';
 import OrderForm from './Pages/Admin/OrdersPanel/OrderForm/OrderForm.tsx';
-import BooksForm from './Pages/Admin/BooksPanel/BookForm/BookForm.tsx';
+import BookForm from './Pages/Admin/BooksPanel/BookForm/BookForm.tsx';
 import Orders from './Pages/Orders/Orders.tsx';
 import { toast, Toaster } from 'sonner';
+import AuthorForm from './Pages/Admin/AuthorsPanel/AuthorForm/AuthorForm.tsx';
 
 const App = () => {
     const [currentUser, setCurrentUser] = useState<IFullProfile>({ ...initialUser });
@@ -270,7 +271,7 @@ const App = () => {
                     <Route
                         path={`${EPath.adminBook}/:id`}
                         element={
-                            <BooksForm
+                            <BookForm
                                 currentAdmin={currentUser}
                                 books={initialBooks}
                                 authors={currentAuthors}
@@ -288,7 +289,7 @@ const App = () => {
                     <Route
                         path={EPath.adminBook}
                         element={
-                            <BooksForm
+                            <BookForm
                                 currentAdmin={currentUser}
                                 books={initialBooks}
                                 authors={currentAuthors}
@@ -298,6 +299,40 @@ const App = () => {
                                 setIsLoading={setIsLoading}
                                 productsInCart={productsInCart}
                                 setProductsInCart={setProductsInCart}
+                            />
+                        }
+                    />
+                }
+                {currentUser.isAdmin &&
+                    <Route
+                        path={`${EPath.adminAuthor}/:id`}
+                        element={
+                            <AuthorForm
+                                authors={currentAuthors}
+                                setAuthors={setCurrentAuthors}
+                                books={initialBooks}
+                                setBooks={setInitialBooks}
+                                users={currentUsers}
+                                currentAdmin={currentUser}
+                                isLoading={isLoading}
+                                setIsLoading={setIsLoading}
+                            />
+                        }
+                    />
+                }
+                {currentUser.isAdmin &&
+                    <Route
+                        path={EPath.adminAuthor}
+                        element={
+                            <AuthorForm
+                                authors={currentAuthors}
+                                setAuthors={setCurrentAuthors}
+                                books={initialBooks}
+                                setBooks={setInitialBooks}
+                                users={currentUsers}
+                                currentAdmin={currentUser}
+                                isLoading={isLoading}
+                                setIsLoading={setIsLoading}
                             />
                         }
                     />
