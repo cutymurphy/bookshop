@@ -3,11 +3,10 @@ import { FC } from "react";
 import { IOrdersPanel } from "./types";
 import styles from "./OrdersPanel.module.scss";
 import clsx from "clsx";
-import { IOrder } from "../../../types";
+import { ICartStateBook, IOrder } from "../../../types";
 import ArrowDownOutlineIcon from "../../../assets/components/Icons/ArrowDownOutlineIcon.tsx";
 import { defaultPickupAddress, EStatusType } from "../../Cart/CartModal/enums.ts";
 import Badge from "../../../assets/components/Badge/Badge.tsx";
-import { ICartBook } from "../../Cart/types.ts";
 import Pagination from "../../../assets/components/Pagination/Pagination.tsx";
 import { EPaginationPage } from "../../../assets/components/Pagination/enum.ts";
 import Checkbox from "../../../assets/components/Checkbox/Checkbox.tsx";
@@ -261,7 +260,7 @@ const OrdersPanel: FC<IOrdersPanel> = ({
                                             }
                                         </div>
                                         <div className={styles.rowInfoColBooks}>
-                                            {books.map(({ book, count }: ICartBook) => {
+                                            {books.map(({ book, count }: ICartStateBook) => {
                                                 const { id, name, imgLink, author } = book;
 
                                                 return (

@@ -4,10 +4,9 @@ import styles from "./Orders.module.scss";
 import React from "react";
 import Badge from "../../assets/components/Badge/Badge.tsx";
 import { getBadgeType } from "../Admin/OrdersPanel/utils.ts";
-import { IOrder } from "../../types";
+import { ICartStateBook, IOrder } from "../../types";
 import PencilIcon from "../../assets/components/Icons/PencilIcon.tsx";
 import { defaultPickupAddress, EStatusType } from "../Cart/CartModal/enums.ts";
-import { ICartBook } from "../Cart/types.ts";
 import ButtonAdmin from "../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
 import { deleteCartState, deleteOrder, getCartStateBooksById, updateBookCount } from "../../server/api.js";
 import Loader from "../../assets/components/Loader/Loader.tsx";
@@ -116,7 +115,7 @@ const Orders: FC<IOrders> = ({
                             <div className={styles.books}>
                                 <span className={styles.booksTitle}>Книги в заказе:</span>
                                 <div className={styles.booksWrapper}>
-                                    {books.map(({ book, count }: ICartBook) => {
+                                    {books.map(({ book, count }: ICartStateBook) => {
                                         const { id, name, imgLink, author } = book;
 
                                         return (

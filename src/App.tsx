@@ -117,9 +117,10 @@ const App = () => {
             const userCart = await getCartBooksById(user.idCart);
             setCurrentUser({ ...user, isAdmin: !!user.isAdmin });
             if (userCart.length > 0) {
-                setProductsInCart(userCart.map(({ idBook, count }) => ({
+                setProductsInCart(userCart.map(({ idBook, count, date }) => ({
                     count: Number(count),
                     book: initialBooks.find((b: IBook) => b.id === idBook) || null,
+                    date,
                 })));
             };
         } else {

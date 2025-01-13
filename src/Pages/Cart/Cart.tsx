@@ -37,8 +37,20 @@ const Cart: FC<ICart> = ({
 
     const navigate = useNavigate();
 
-    const availableBooks = productsInCart.filter((cartBook: ICartBook) => cartBook.book.count > 0);
-    const unavailableBooks = productsInCart.filter((cartBook: ICartBook) => cartBook.book.count === 0);
+    const sortedBooks = productsInCart.sort((a: ICartBook, b: ICartBook) => {
+        const [dateA, timeA] = a.date.split(", ");
+        const [dayA, monthA, yearA] = dateA.split(".");
+        const dateObjA = new Date(`${yearA}-${monthA}-${dayA}T${timeA}`);
+
+        const [dateB, timeB] = b.date.split(", ");
+        const [dayB, monthB, yearB] = dateB.split(".");
+        const dateObjB = new Date(`${yearB}-${monthB}-${dayB}T${timeB}`);
+
+        return dateObjB.getTime() - dateObjA.getTime();
+    });
+
+    const availableBooks = sortedBooks.filter((cartBook: ICartBook) => cartBook.book.count > 0);
+    const unavailableBooks = sortedBooks.filter((cartBook: ICartBook) => cartBook.book.count === 0);
 
     const getCartCount = (): number => {
         let count = 0;
@@ -108,6 +120,7 @@ const Cart: FC<ICart> = ({
                     if (item.book.id === bookInCart.book.id) {
                         return {
                             book: item.book,
+                            date: item.date,
                             count: newCount,
                         }
                     }
@@ -175,7 +188,6 @@ const Cart: FC<ICart> = ({
                         </div>
                     }
                     <div className={styles.cartContent}>
-                        {/* TO-DO: исправить странную сортировку книг по количеству */}
                         {availableBooks.map((cartBook: ICartBook) => (
                             <CartCard
                                 key={cartBook.book.id}

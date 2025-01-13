@@ -1,5 +1,5 @@
 import { EStatusType } from "./Pages/Cart/CartModal/enums"
-import { ICartBook } from "./Pages/Cart/types"
+import { IBook } from "./Pages/Main/ShopPanel/ShopContent/types"
 
 export interface IAuthor {
     id: string,
@@ -58,8 +58,13 @@ export interface IOrder {
     user: IShortProfile,
     admin?: IShortProfile,
     dateModified?: string,
-    books: ICartBook[],
+    books: ICartStateBook[],
     message?: string,
+}
+
+export interface ICartStateBook {
+    book: IBook,
+    count: number,
 }
 
 export interface IRemoteOrder {

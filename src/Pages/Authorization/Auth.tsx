@@ -132,8 +132,8 @@ const Auth: FC<IAuth> = ({
                     await addUser(user);
                     const newUser: IFullProfile = await getUserByEmail(user.email);
                     if (currentCart.length > 0) {
-                        const addBookToCartPromises = currentCart.map(async (book: ICartBook) => {
-                            await addBookToCart(newUser.idCart, book.book.id, book.count);
+                        const addBookToCartPromises = currentCart.map(async ({ book, count, date }: ICartBook) => {
+                            await addBookToCart(newUser.idCart, book.id, count, date);
                         });
                         await Promise.all(addBookToCartPromises);
                     }
@@ -156,11 +156,11 @@ const Auth: FC<IAuth> = ({
                 if (!!userByEmailAndPassword) {
                     if (currentCart.length > 0) {
                         const userCart = await getCartBooksById(userByEmailAndPassword.idCart);
-                        const addBookToCartPromises = currentCart.map(async (book: ICartBook) => {
-                            if (!userCart || userCart.lenght === 0 || !userCart.find(cartBook => cartBook.idBook === book.book.id)) {
-                                await addBookToCart(userByEmailAndPassword.idCart, book.book.id, book.count);
+                        const addBookToCartPromises = currentCart.map(async ({ book, count, date }: ICartBook) => {
+                            if (!userCart || userCart.lenght === 0 || !userCart.find(cartBook => cartBook.idBook === book.id)) {
+                                await addBookToCart(userByEmailAndPassword.idCart, book.id, count, date);
                             } else {
-                                await updateCartBookCount(userByEmailAndPassword.idCart, book.book.id, book.count)
+                                await updateCartBookCount(userByEmailAndPassword.idCart, book.id, book.count)
                             }
                         });
                         await Promise.all(addBookToCartPromises);

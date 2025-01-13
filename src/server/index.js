@@ -300,22 +300,23 @@ app.get('/api/cartBook/:idCart', (req, res) => {
         if (results.length === 0 || !results) {
             return res.json("");
         }
-        res.json(results.map(({ bookCount, idBook }) => ({
+        res.json(results.map(({ bookCount, idBook, date }) => ({
             count: bookCount,
             idBook,
+            date,
         })));
     });
 });
 
 app.post('/api/cartBook', (req, res) => {
-    const { idCart, idBook, bookCount } = req.body;
+    const { idCart, idBook, bookCount, date } = req.body;
 
     const query = `
-        INSERT INTO bookshop.cart_book (idCart, idBook, bookCount) 
-        VALUES (?, ?, ?);
+        INSERT INTO bookshop.cart_book (idCart, idBook, bookCount, date) 
+        VALUES (?, ?, ?, ?);
     `;
 
-    db.query(query, [idCart, idBook, bookCount], (err, results) => {
+    db.query(query, [idCart, idBook, bookCount, date], (err, results) => {
         if (err) {
             console.error('Ошибка при выполнении запроса:', err);
             return res.status(500).send(`Ошибка при добавлении книги ${idBook} в корзину`);

@@ -13,7 +13,7 @@ import { IListOption } from "../../../assets/components/DropDown/types.ts";
 import { addCartState, addOrder, deleteBookFromCart, addOrderInAll, fetchCartBooks, updateBookCount, updateCartBookCount } from "../../../server/api.js";
 import { v4 as uuidv4 } from 'uuid';
 import { ICartBook } from "../types.ts";
-import { IOrder } from "../../../types.ts";
+import { ICartStateBook, IOrder } from "../../../types.ts";
 import { toast } from "sonner";
 
 const CartModal: FC<ICartModal> = ({
@@ -40,9 +40,9 @@ const CartModal: FC<ICartModal> = ({
     const isOrderDisabled = activeOrderType === EOrderType.delivery && (address.trim().length < 2 || address.trim().length > 255 || !activePayType) ||
         activeOrderType === EOrderType.pickup && !activePayType;
 
-    const getCartCost = (productsInCart: ICartBook[]): number => {
+    const getCartCost = (productsInCart: ICartStateBook[]): number => {
         let count = 0;
-        productsInCart.forEach((product: ICartBook) => {
+        productsInCart.forEach((product: ICartStateBook) => {
             count += product.book.price * product.count;
         });
         return Math.round(count * 100) / 100;
@@ -57,7 +57,7 @@ const CartModal: FC<ICartModal> = ({
 
         setIsLoading(true);
         try {
-            let booksArr: ICartBook[] = [];
+            let booksArr: ICartStateBook[] = [];
             const updatedBooks = [...allBooks];
             const newCount = allOrders.length + 1;
             const carts = await fetchCartBooks();
@@ -67,7 +67,7 @@ const CartModal: FC<ICartModal> = ({
                 const id = book.id;
                 if (checkedBookItems.includes(id)) {
                     const currentBook = productsInCart.find((book: ICartBook) => book.book.id === id);
-                    if (!!currentBook?.book) booksArr.push(currentBook);
+                    if (!!currentBook?.book) booksArr.push({ book: currentBook.book, count: currentBook.count });
                     const currentBookCount = currentBook?.count || 1;
                     const newCount = book.count - currentBookCount;
                     updatedBooks[i] = { ...book, count: newCount };
@@ -109,7 +109,7 @@ const CartModal: FC<ICartModal> = ({
             setOrders([...orders, currentOrder]);
             setAllOrders([...allOrders, { id: orderId, date: orderDate }]);
             setProductsInCart(productsInCart.filter((book: ICartBook) => !checkedBookItems.includes(book.book.id)));
-            
+
             toast.success('Заказ создан');
         } catch (error) {
             toast.error("Ошибка при обработке состояния корзины и добавлении заказа:", error);

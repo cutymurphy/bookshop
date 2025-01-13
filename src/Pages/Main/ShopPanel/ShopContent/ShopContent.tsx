@@ -34,14 +34,16 @@ const ShopContent: FC<IShopContent> = ({
     const coverTypes = pickedFilters.find((filter: IFilter) => filter.name === EFiltersNames.coverTypes)?.filterItems || [];
 
     const handleAddBookToCart = async (book: IBook) => {
+        const currentDate = (new Date()).toLocaleString();
         const newBook: ICartBook = {
             book,
             count: 1,
+            date: currentDate,
         }
         setIsLoading(true);
         setProductsInCart([...productsInCart, newBook]);
         if (!!cartId) {
-            await addBookToCart(cartId, book.id, 1);
+            await addBookToCart(cartId, book.id, 1, currentDate);
         }
         setTimeout(() => {
             setIsLoading(false);

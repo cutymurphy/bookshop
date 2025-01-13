@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { IOrderForm } from './types.ts';
 import styles from "./OrderForm.module.scss";
 import Loader from '../../../../assets/components/Loader/Loader.tsx';
-import { IOrder } from '../../../../types.ts';
+import { ICartStateBook, IOrder } from '../../../../types.ts';
 import PencilIcon from '../../../../assets/components/Icons/PencilIcon.tsx';
 import DropDown from '../../../../assets/components/DropDown/DropDown.tsx';
 import { defaultPickupAddress, EStatusType } from '../../../Cart/CartModal/enums.ts';
@@ -15,7 +15,6 @@ import Badge from '../../../../assets/components/Badge/Badge.tsx';
 import { getBadgeType } from '../utils.ts';
 import { IListOption } from '../../../../assets/components/DropDown/types.ts';
 import { editOrder } from '../../../../server/api.js';
-import { ICartBook } from '../../../Cart/types.ts';
 import { ETabTitle } from '../../enums.ts';
 import { toast } from 'sonner';
 import { deepCompare } from '../../utils.ts';
@@ -179,7 +178,7 @@ const OrderForm: FC<IOrderForm> = ({
                         <div className={styles.books}>
                             <span className={styles.booksTitle}>Книги в заказе:</span>
                             <div className={styles.booksWrapper}>
-                                {orderInfo.books.map(({ book, count }: ICartBook) => {
+                                {orderInfo.books.map(({ book, count }: ICartStateBook) => {
                                     const { id, name, imgLink, author } = book;
 
                                     return (

@@ -3,6 +3,7 @@ import { IBook } from "../Main/ShopPanel/ShopContent/types";
 
 export interface ICartBook {
     book: IBook,
+    date: string,
     count: number,
 }
 
