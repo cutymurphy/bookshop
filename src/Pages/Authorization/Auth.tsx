@@ -12,6 +12,7 @@ import Checkbox from "../../assets/components/Checkbox/Checkbox.tsx";
 import { ICartBook } from "../Cart/types.ts";
 import Ordercon from "../../assets/components/Icons/Ordercon.tsx";
 import { toast } from "sonner";
+import { emailPattern, phonePattern } from "../../utils.ts";
 
 const Auth: FC<IAuth> = ({
     currentUser,
@@ -60,7 +61,7 @@ const Auth: FC<IAuth> = ({
         } else if (currentUser.email.trim().length > 256) {
             newErrors.email = "Максимальная длина email - 256 символов";
             isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(currentUser.email.trim())) {
+        } else if (!emailPattern.test(currentUser.email.trim())) {
             newErrors.email = "Неверный формат email";
             isValid = false;
         }
@@ -68,7 +69,7 @@ const Auth: FC<IAuth> = ({
         if (currentUser.phone.trim() === "") {
             newErrors.phone = "Телефон не может быть пустым";
             isValid = false;
-        } else if (!/^\+?\d{10,15}$/.test(currentUser.phone.trim())) {
+        } else if (!phonePattern.test(currentUser.phone.trim())) {
             newErrors.phone = "Неверный формат телефона";
             isValid = false;
         }

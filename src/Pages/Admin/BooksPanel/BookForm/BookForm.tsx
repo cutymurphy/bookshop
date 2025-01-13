@@ -21,7 +21,7 @@ import { toast } from "sonner";
 import { ICartBook } from "../../../Cart/types.ts";
 import { deepCompare } from "../../utils.ts";
 
-const BooksForm: FC<IBookForm> = ({
+const BookForm: FC<IBookForm> = ({
     books,
     setBooks,
     authors,
@@ -365,4 +365,4 @@ const BooksForm: FC<IBookForm> = ({
     );
 }
 
-export default BooksForm;
+export default BookForm;
