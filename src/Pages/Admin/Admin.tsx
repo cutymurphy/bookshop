@@ -54,6 +54,11 @@ const Admin: FC<IAdmin> = ({
     useEffect(() => {
         const tab = searchParams.get("tab");
 
+        if (!Object.values(ETabTitle).includes(tab as ETabTitle)) {
+            setSearchParams({ tab: ETabTitle.orders });
+            return;
+        }
+
         switch (tab) {
             case ETabTitle.orders:
                 setActiveTabIndex(0);
