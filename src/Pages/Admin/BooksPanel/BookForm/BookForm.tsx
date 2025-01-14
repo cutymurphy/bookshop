@@ -97,6 +97,9 @@ const BookForm: FC<IBookForm> = ({
         if (imgLink.trim() === "") {
             newErrors.imgLink = "Укажите ссылку на изображение";
             isValid = false;
+        } else if (!!errors.imgLink) {
+            newErrors.imgLink = errors.imgLink;
+            isValid = false;
         }
 
         if (!!pagesCount && pagesCount % 1 !== 0) {
@@ -264,6 +267,17 @@ const BookForm: FC<IBookForm> = ({
                             errorMessage={errors.genre}
                         />
                         <Input
+                            label="Ссылка на изображение"
+                            placeholder="Укажите действующую ссылку"
+                            requiredField
+                            value={imgLink}
+                            onChange={(e) => {
+                                setBookInfo({ ...bookInfo, imgLink: e.target.value });
+                                setErrors({ ...errors, imgLink: "" });
+                            }}
+                            errorMessage={errors.imgLink}
+                        />
+                        <Input
                             label="Цена"
                             placeholder="Укажите цену книги"
                             type={"number"}
@@ -286,17 +300,6 @@ const BookForm: FC<IBookForm> = ({
                                 setErrors({ ...errors, count: "" });
                             }}
                             errorMessage={errors.count}
-                        />
-                        <Input
-                            label="Ссылка на изображение"
-                            placeholder="Укажите действующую ссылку"
-                            requiredField
-                            value={imgLink}
-                            onChange={(e) => {
-                                setBookInfo({ ...bookInfo, imgLink: e.target.value });
-                                setErrors({ ...errors, imgLink: "" });
-                            }}
-                            errorMessage={errors.imgLink}
                         />
                         <DropDown
                             label="Автор"
@@ -343,13 +346,18 @@ const BookForm: FC<IBookForm> = ({
                             errorMessage={errors.weight}
                         />
                     </div>
-                    {/* TO-DO: сделать что-то с тем, что фото книги нет */}
                     <div className={styles.imgWrapper}>
                         {imgLink &&
                             <img
                                 className={styles.image}
-                                src={imgLink}
+                                src={imgLink.trim()}
                                 alt={name}
+                                onError={(e) => {
+                                    e.currentTarget.style.display = "none";
+                                    if (imgLink.trim() !== "") {
+                                        setErrors({ ...errors, imgLink: "Изображение не загружено, проверьте правильность ссылки" });
+                                    }
+                                }}
                             />
                         }
                     </div>
