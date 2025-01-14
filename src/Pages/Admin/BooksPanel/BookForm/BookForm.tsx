@@ -19,7 +19,6 @@ import { ETabTitle } from "../../enums.ts";
 import { initialBook, initialErrors, trimBookInfo } from "./utils.ts";
 import { toast } from "sonner";
 import { ICartBook } from "../../../Cart/types.ts";
-import { deepCompare } from "../../utils.ts";
 
 const BookForm: FC<IBookForm> = ({
     books,
@@ -42,7 +41,8 @@ const BookForm: FC<IBookForm> = ({
 
     const { idAuthor, count, idAdmin, dateModified, name, price, category, genre, pagesCount, weight, imgLink, coverType } = bookInfo;
     const prevAdmin = users.find((user: IFullProfile) => user.idUser === idAdmin);
-    const isBookChanged = !deepCompare(initialBookInfo, bookInfo);
+
+    const isBookChanged = JSON.stringify(initialBookInfo) !== JSON.stringify(bookInfo);
 
     const validate = (book: IBook): boolean => {
         const { name, price, category, genre, pagesCount, imgLink, weight } = book;

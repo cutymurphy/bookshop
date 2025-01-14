@@ -16,7 +16,6 @@ import Input from "../../../../assets/components/Input/Input.tsx";
 import { ETabTitle } from "../../enums.ts";
 import { initialAuthor, initialErrors, trimAuthorInfo } from "./utils.ts";
 import { toast } from "sonner";
-import { deepCompare } from "../../utils.ts";
 import { emailPattern, phonePattern } from "../../../../utils.ts";
 
 const AuthorForm: FC<IAuthorForm> = ({
@@ -38,7 +37,7 @@ const AuthorForm: FC<IAuthorForm> = ({
     const { name, surname, email, phone, idAdmin, dateModified } = authorInfo;
     const prevAdmin = users.find((user: IFullProfile) => user.idUser === idAdmin);
 
-    const isAuthorChanged = !deepCompare(initialAuthorInfo, authorInfo);
+    const isAuthorChanged = JSON.stringify(initialAuthorInfo) !== JSON.stringify(authorInfo);
 
     const validate = (author: IAuthor): boolean => {
         const { name, surname, email, phone } = author;

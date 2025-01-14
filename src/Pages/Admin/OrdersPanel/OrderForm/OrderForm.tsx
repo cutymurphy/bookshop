@@ -17,7 +17,6 @@ import { IListOption } from '../../../../assets/components/DropDown/types.ts';
 import { editOrder } from '../../../../server/api.js';
 import { ETabTitle } from '../../enums.ts';
 import { toast } from 'sonner';
-import { deepCompare } from '../../utils.ts';
 
 const OrderForm: FC<IOrderForm> = ({
     currentAdmin,
@@ -32,7 +31,7 @@ const OrderForm: FC<IOrderForm> = ({
     const [orderInfo, setOrderInfo] = useState<IOrder | null>(null);
     const [messageError, setMessageError] = useState<string>("");
 
-    const isOrderChanged = !deepCompare(initialOrderInfo, orderInfo);
+    const isOrderChanged = JSON.stringify(initialOrderInfo) !== JSON.stringify(orderInfo);
 
     const handleValidateOrder = () => {
         const message = orderInfo?.message?.trim();
