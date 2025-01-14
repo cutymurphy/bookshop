@@ -4,6 +4,8 @@ import { IErrors } from "./types";
 export const initialBook: IBook = {
     id: "",
     idAdmin: "",
+    idAuthor: "",
+    coverType: "",
     count: 1,
     dateModified: "",
     name: "",
@@ -11,6 +13,8 @@ export const initialBook: IBook = {
     category: "",
     genre: "",
     imgLink: "",
+    pagesCount: 0,
+    weight: 0,
 }
 
 export const initialErrors: IErrors = {

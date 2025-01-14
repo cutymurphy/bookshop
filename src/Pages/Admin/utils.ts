@@ -16,3 +16,5 @@ export const deepCompare = (obj1: any, obj2: any): boolean => {
 
     return keys1.every(key => deepCompare(obj1[key], obj2[key]));
 };
+
+/* TO-DO: посмотреть нужна ли эта функция вообще? */

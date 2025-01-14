@@ -15,7 +15,7 @@ export interface IBook {
     pagesCount?: number,
     weight?: number,
     imgLink: string,
-    coverType?: TCover,
+    coverType?: TCover | "",
 }
 
 export type TCover = "Мягкая" | "Твердая";

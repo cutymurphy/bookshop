@@ -117,12 +117,17 @@ const BookForm: FC<IBookForm> = ({
         const trimmedBookInfo = trimBookInfo(bookInfo);
         const isValid = validate(trimmedBookInfo);
 
+        const { id, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType, count } = trimmedBookInfo;
+        const nullIdAuthor = !!idAuthor ? idAuthor : null;
+        const nullCoverType = !!coverType ? coverType : null;
+        const nullPagesCount = !!pagesCount ? pagesCount : null;
+        const nullWeight = !!weight ? weight : null;
+
         try {
             if (isValid) {
                 setIsLoading(true);
                 if (!!id) {
-                    const { id, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType, count } = trimmedBookInfo;
-                    await editBook(id, currentAdmin.idUser, count, modifyDate, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType);
+                    await editBook(id, currentAdmin.idUser, count, modifyDate, name, price, category, genre, imgLink, nullIdAuthor, nullPagesCount, nullWeight, nullCoverType);
                     const carts = await fetchCartBooks();
                     const cartBooks = carts.filter(cart => cart.idBook === id);
 
@@ -141,7 +146,7 @@ const BookForm: FC<IBookForm> = ({
                         }
                     }
                     setBooks(books.map((book: IBook) => {
-                        if (book.id !== trimmedBookInfo?.id) {
+                        if (book.id !== id) {
                             return book;
                         }
                         return {
@@ -152,8 +157,7 @@ const BookForm: FC<IBookForm> = ({
                     }));
                     toast.success("Информация о книге отредактирована");
                 } else {
-                    const { name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType, count } = trimmedBookInfo;
-                    await addBook(newId, currentAdmin.idUser, count, modifyDate, name, price, category, genre, imgLink, idAuthor, pagesCount, weight, coverType);
+                    await addBook(newId, currentAdmin.idUser, count, modifyDate, name, price, category, genre, imgLink, nullIdAuthor, nullPagesCount, nullWeight, nullCoverType);
                     setBooks([...books, {
                         ...trimmedBookInfo,
                         id: newId,
@@ -182,7 +186,14 @@ const BookForm: FC<IBookForm> = ({
         const currentBook = books.find((book: IBook) => book.id === id);
         if (!!currentBook) {
             const changedFieldsBook = Object.fromEntries(
-                Object.entries(currentBook).map(([key, value]) => [key, value === null ? undefined : value])
+                Object.entries(currentBook).map(([key, value]) => [key,
+                    key === "idAuthor" || key === "coverType" ?
+                        (value === null ? "" : value) :
+                        (key === "pagesCount" || key === "weight" ?
+                            (value === null ? 0 : value) :
+                            value
+                        )
+                ])
             ) as IBook;
             setBookInfo({ ...changedFieldsBook });
             setInitialBookInfo({ ...changedFieldsBook });
@@ -254,7 +265,7 @@ const BookForm: FC<IBookForm> = ({
                             placeholder="Укажите цену книги"
                             type={"number"}
                             requiredField
-                            value={!!price ? price.toString() : undefined}
+                            value={price.toString()}
                             onChange={(e) => {
                                 setBookInfo({ ...bookInfo, price: Number(e.target.value) });
                                 setErrors({ ...errors, price: "" });
@@ -291,11 +302,11 @@ const BookForm: FC<IBookForm> = ({
                                 label: `${surname} ${name}`,
                                 value: id,
                             }))}
-                            valuesToSelect={idAuthor ? [idAuthor] : []}
+                            valuesToSelect={!!idAuthor ? [idAuthor] : []}
                             clearOption
                             searchOption
                             listClassName={styles.dropdownList}
-                            onOptionChange={(opt: IListOption) => setBookInfo({ ...bookInfo, idAuthor: !!opt.value ? opt.value : undefined })}
+                            onOptionChange={(opt: IListOption) => setBookInfo({ ...bookInfo, idAuthor: !!opt.value ? opt.value : "" })}
                         />
                         <DropDown
                             label="Обложка"
@@ -304,29 +315,28 @@ const BookForm: FC<IBookForm> = ({
                                 { label: "Мягкая", value: "Мягкая" },
                                 { label: "Твердая", value: "Твердая" },
                             ]}
-                            valuesToSelect={coverType ? [coverType] : []}
+                            valuesToSelect={!!coverType ? [coverType] : []}
                             clearOption
                             listClassName={styles.dropdownList}
-                            onOptionChange={(opt: IListOption) => setBookInfo({ ...bookInfo, coverType: !!opt.value ? opt.value as TCover : undefined })}
+                            onOptionChange={(opt: IListOption) => setBookInfo({ ...bookInfo, coverType: !!opt.value ? opt.value as TCover : "" })}
                         />
                         <Input
                             label="Количество страниц"
                             placeholder="Укажите количество страниц книги"
                             type={"number"}
-                            value={pagesCount ? pagesCount.toString() : undefined}
+                            value={!!pagesCount ? pagesCount.toString() : ""}
                             onChange={(e) => {
-                                setBookInfo({ ...bookInfo, pagesCount: !!Number(e.target.value) ? Number(e.target.value) : undefined });
+                                setBookInfo({ ...bookInfo, pagesCount: !!Number(e.target.value) ? Number(e.target.value) : 0 });
                                 setErrors({ ...errors, pagesCount: "" });
                             }}
                             errorMessage={errors.pagesCount}
                         />
-                        {/* TO-DO: баг с тем, что при отмене вес, цена и кол-во не стираются */}
                         <Input
                             label="Вес (г.)"
                             placeholder="Укажите вес книги"
                             type={"number"}
-                            value={weight ? weight.toString() : undefined}
-                            onChange={(e) => setBookInfo({ ...bookInfo, weight: !!Number(e.target.value) ? Number(e.target.value) : undefined })}
+                            value={!!weight ? weight.toString() : ""}
+                            onChange={(e) => setBookInfo({ ...bookInfo, weight: !!Number(e.target.value) ? Number(e.target.value) : 0 })}
                             errorMessage={errors.weight}
                         />
                     </div>
