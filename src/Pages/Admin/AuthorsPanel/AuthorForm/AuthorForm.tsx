@@ -86,13 +86,16 @@ const AuthorForm: FC<IAuthorForm> = ({
         const isValid = validate(trimmedAuthorInfo);
 
         const { name, surname, email, phone } = trimmedAuthorInfo;
+
+        const nullEmail = !!email ? email : null;
+        const nullPhone = !!phone ? phone : null;
         const modifyDate = (new Date()).toLocaleString();
 
         try {
             if (isValid) {
                 setIsLoading(true);
                 if (!!id) {
-                    await editAuthor(id, name, surname, email, phone, currentAdmin.idUser, modifyDate);
+                    await editAuthor(id, name, surname, nullEmail, nullPhone, currentAdmin.idUser, modifyDate);
                     setBooks(books.map((book: IBook) =>
                         book.idAuthor !== id
                             ? book
@@ -109,7 +112,7 @@ const AuthorForm: FC<IAuthorForm> = ({
                     ));
                     toast.success("Информация об авторе отредактирована");
                 } else {
-                    await addAuthor(newId, name, surname, email, phone, currentAdmin.idUser, modifyDate);
+                    await addAuthor(newId, name, surname, nullEmail, nullPhone, currentAdmin.idUser, modifyDate);
                     setAuthors([...authors, {
                         ...trimmedAuthorInfo,
                         id: newId,
@@ -138,7 +141,7 @@ const AuthorForm: FC<IAuthorForm> = ({
         const currentAuthor = authors.find((author: IAuthor) => author.id === id);
         if (!!currentAuthor) {
             const changedFieldsAuthor = Object.fromEntries(
-                Object.entries(currentAuthor).map(([key, value]) => [key, value === null ? undefined : value])
+                Object.entries(currentAuthor).map(([key, value]) => [key, value === null ? "" : value])
             ) as IAuthor;
             setAuthorInfo({ ...changedFieldsAuthor });
             setInitialAuthorInfo({ ...changedFieldsAuthor });
@@ -223,7 +226,6 @@ const AuthorForm: FC<IAuthorForm> = ({
                         disabled={!!id ? !isAuthorChanged : false}
                     />
                     {isAuthorChanged &&
-                        /* TO-DO: при отмене поле почты и телефона не становится пустым (как в новой так и в старой форме) */
                         <ButtonAdmin
                             text='Отменить'
                             onClick={() => {

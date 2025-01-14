@@ -5,8 +5,8 @@ export const initialAuthor: IAuthor = {
     id: "",
     name: "",
     surname: "",
-    email: undefined,
-    phone: undefined,
+    email: "",
+    phone: "",
     idAdmin: "",
     dateModified: "",
 }
@@ -24,7 +24,7 @@ export const trimAuthorInfo = (authorInfo: IAuthor): IAuthor => {
         ...authorInfo,
         name: name.trim(),
         surname: surname.trim(),
-        email: !!email ? (email.trim() === "" ? undefined : email.trim()) : undefined,
-        phone: !!phone ? (phone.trim() === "" ? undefined : phone.trim()) : undefined,
+        email: !!email ? email.trim() : "",
+        phone: !!phone ? phone.trim() : "",
     };
 };
