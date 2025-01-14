@@ -36,10 +36,10 @@ const OrderForm: FC<IOrderForm> = ({
 
     const handleValidateOrder = () => {
         const message = orderInfo?.message?.trim();
-        if (!!message && message?.length > 4 && message?.length < 256) {
-            handleChangeOrder();
-        } else {
+        if (!!message && (message?.length < 5 || message?.length > 255)) {
             setMessageError("Длина сообщения: 5-255 символов");
+        } else {
+            handleChangeOrder();
         }
     }
 
@@ -78,9 +78,14 @@ const OrderForm: FC<IOrderForm> = ({
 
     useEffect(() => {
         setIsLoading(true);
-        const currentOrder = orders.find((order: IOrder) => order.id === id) || null;
-        setOrderInfo(currentOrder);
-        setInitialOrderInfo(currentOrder);
+        const currentOrder = orders.find((order: IOrder) => order.id === id);
+        if (!!currentOrder) {
+            const changedFieldsOrder = Object.fromEntries(
+                Object.entries(currentOrder).map(([key, value]) => [key, value === null ? "" : value])
+            ) as IOrder;
+            setOrderInfo({ ...changedFieldsOrder });
+            setInitialOrderInfo({ ...changedFieldsOrder });
+        }
         setTimeout(() => {
             setIsLoading(false);
         }, 1000);
