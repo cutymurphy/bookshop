@@ -122,6 +122,7 @@ const BookForm: FC<IBookForm> = ({
         const nullCoverType = !!coverType ? coverType : null;
         const nullPagesCount = !!pagesCount ? pagesCount : null;
         const nullWeight = !!weight ? weight : null;
+        const author = !!nullIdAuthor ? authors.find(({ id }: IAuthor) => id === nullIdAuthor) : undefined;
 
         try {
             if (isValid) {
@@ -151,6 +152,7 @@ const BookForm: FC<IBookForm> = ({
                         }
                         return {
                             ...trimmedBookInfo,
+                            author: !!author ? `${author.name} ${author.surname}` : undefined,
                             dateModified: modifyDate,
                             idAdmin: currentAdmin.idUser,
                         };
@@ -161,6 +163,7 @@ const BookForm: FC<IBookForm> = ({
                     setBooks([...books, {
                         ...trimmedBookInfo,
                         id: newId,
+                        author: !!author ? `${author.name} ${author.surname}` : undefined,
                         dateModified: modifyDate,
                         idAdmin: currentAdmin.idUser,
                     }]);
