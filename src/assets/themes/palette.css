@@ -2,8 +2,11 @@
   --disabled-gray: rgb(219, 219, 219);
   --disabled-gray-2: rgb(189, 189, 189);
   --light-gray: rgb(235, 235, 235);
+  --light-gray-2: rgb(241, 244, 245);
   --gray: rgb(179, 179, 179);
+  --gray-2: rgb(154, 154, 154);
   --dark-gray: rgb(130, 130, 130);
+  --dark-gray-2: rgb(100, 100, 100);
   --gray-purple: rgb(184, 173, 190);
   --black: rgb(0, 0, 0);
   --light-black: rgb(87, 87, 87);
@@ -28,6 +31,7 @@
   --count-color: rgb(204, 62, 73);
   --count-color-hover: rgb(159, 42, 52);
   --warning-color: rgb(255, 77, 77);
+  --warning-color-2: rgb(220, 118, 9);
   --color-brand: rgb(116, 35, 255);
   --color-brand-hover: rgb(96, 31, 208);
   --input-border: var(--gray);

@@ -197,7 +197,14 @@ const App = () => {
                 <Route
                     path={`${EPath.book}/:id`}
                     element={
-                        <Book />
+                        <Book
+                            cartId={currentUser.idCart}
+                            productsInCart={productsInCart}
+                            setProductsInCart={setProductsInCart}
+                            books={initialBooks}
+                            isLoading={isLoading}
+                            setIsLoading={setIsLoading}
+                        />
                     }
                 />
                 <Route
