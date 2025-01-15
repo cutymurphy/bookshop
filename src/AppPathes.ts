@@ -7,4 +7,5 @@ export enum EPath {
     adminOrder = '/admin/order',
     adminBook = '/admin/book',
     adminAuthor = '/admin/author',
+    book = '/book',
 }

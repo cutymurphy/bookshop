@@ -198,6 +198,11 @@
 
                     &Name {
                         font-weight: 500;
+                        transition: .3s;
+
+                        &:hover {
+                            color: var(--black);
+                        }
                     }
 
                     &Count {

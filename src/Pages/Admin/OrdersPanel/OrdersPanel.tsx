@@ -14,7 +14,7 @@ import TrashBinIcon from "../../../assets/components/Icons/TrashBinIcon.tsx";
 import ButtonAdmin from "../../../assets/components/ButtonAdmin/ButtonAdmin.tsx";
 import { deleteCartState, deleteOrder } from "../../../server/api.js";
 import PencilIcon from "../../../assets/components/Icons/PencilIcon.tsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EPath } from "../../../AppPathes.ts";
 import { getBadgeType, pluralizeWord } from "./utils.ts";
 import Modal from "../../../assets/components/Modal/Modal.tsx";
@@ -269,14 +269,18 @@ const OrdersPanel: FC<IOrdersPanel> = ({
 
                                                 return (
                                                     <div className={styles.bookRow} key={id}>
-                                                        <img
-                                                            className={styles.productImage}
-                                                            src={imgLink}
-                                                            alt={name}
-                                                        />
+                                                        <Link to={`${EPath.book}/${id}`}>
+                                                            <img
+                                                                className={styles.productImage}
+                                                                src={imgLink}
+                                                                alt={name}
+                                                            />
+                                                        </Link>
                                                         <div className={styles.bookInfo}>
                                                             <div className={styles.bookTitle}>
-                                                                <span className={styles.bookInfoName}>{name}</span>
+                                                                <Link to={`${EPath.book}/${id}`}>
+                                                                    <span className={styles.bookInfoName}>{name}</span>
+                                                                </Link>
                                                                 {!!author && <span>{author}</span>}
                                                             </div>
                                                             <span className={styles.bookInfoCount}>Количество: {count}</span>

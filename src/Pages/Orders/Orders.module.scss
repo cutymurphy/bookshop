@@ -118,6 +118,7 @@
                         height: auto;
 
                         .productImage {
+                            height: 100%;
                             max-width: 80px;
                         }
 
@@ -135,7 +136,13 @@
                             }
 
                             &Name {
+                                color: var(--light-black);;
                                 font-weight: 500;
+                                transition: .3s;
+
+                                &:hover {
+                                    color: var(--black);
+                                }
                             }
 
                             &Count {

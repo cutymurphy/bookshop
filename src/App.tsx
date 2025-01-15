@@ -14,6 +14,7 @@ import BookForm from './Pages/Admin/BooksPanel/BookForm/BookForm.tsx';
 import Orders from './Pages/Orders/Orders.tsx';
 import { toast, Toaster } from 'sonner';
 import AuthorForm from './Pages/Admin/AuthorsPanel/AuthorForm/AuthorForm.tsx';
+import Book from './Pages/Book/Book.tsx';
 
 const App = () => {
     const [currentUser, setCurrentUser] = useState<IFullProfile>({ ...initialUser });
@@ -191,6 +192,12 @@ const App = () => {
                             searchInput={searchInput}
                             isLoading={isLoading}
                         />
+                    }
+                />
+                <Route
+                    path={`${EPath.book}/:id`}
+                    element={
+                        <Book />
                     }
                 />
                 <Route

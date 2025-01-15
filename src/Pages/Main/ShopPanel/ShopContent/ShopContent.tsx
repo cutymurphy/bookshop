@@ -105,14 +105,13 @@ const ShopContent: FC<IShopContent> = ({
                         .slice(currentPage * booksPerPage - booksPerPage, currentPage * booksPerPage)
                         .map((book: IBook) => {
                             const isBookInCart = productsInCart.some(({ book: product }: ICartBook) => book.id === product.id);
-                            /* TO-DO: добавить детальную страницу товара  */
                             return (
                                 <div
                                     className={styles.productСard}
                                     key={book.id}
                                     id={String(book.id)}
                                 >
-                                    <Link to={EPath.main}>
+                                    <Link to={`${EPath.book}/${book.id}`}>
                                         <img
                                             className={styles.productImage}
                                             src={book.imgLink}
@@ -120,7 +119,7 @@ const ShopContent: FC<IShopContent> = ({
                                         />
                                     </Link>
                                     <div className={styles.productName}>
-                                        <Link to={EPath.main}>{book.name}</Link>
+                                        <Link to={`${EPath.book}/${book.id}`}>{book.name}</Link>
                                     </div>
                                     <div className={styles.productAuthor}>
                                         {book.author}

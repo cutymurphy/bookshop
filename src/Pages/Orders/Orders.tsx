@@ -14,6 +14,8 @@ import Modal from "../../assets/components/Modal/Modal.tsx";
 import { toast } from "sonner";
 import { pluralizeWord } from "../Admin/Statistics/utils.ts";
 import { IBook } from "../Main/ShopPanel/ShopContent/types.ts";
+import { Link } from "react-router-dom";
+import { EPath } from "../../AppPathes.ts";
 
 const Orders: FC<IOrders> = ({
     allOrders,
@@ -120,14 +122,18 @@ const Orders: FC<IOrders> = ({
 
                                         return (
                                             <div className={styles.bookRow} key={id}>
-                                                <img
-                                                    className={styles.productImage}
-                                                    src={imgLink}
-                                                    alt={name}
-                                                />
+                                                <Link to={`${EPath.book}/${id}`}>
+                                                    <img
+                                                        className={styles.productImage}
+                                                        src={imgLink}
+                                                        alt={name}
+                                                    />
+                                                </Link>
                                                 <div className={styles.bookInfo}>
                                                     <div className={styles.bookTitle}>
-                                                        <span className={styles.bookInfoName}>{name}</span>
+                                                        <Link to={`${EPath.book}/${id}`}>
+                                                            <span className={styles.bookInfoName}>{name}</span>
+                                                        </Link>
                                                         {!!author && <span>{author}</span>}
                                                     </div>
                                                     <span className={styles.bookInfoCount}>Количество: {count}</span>

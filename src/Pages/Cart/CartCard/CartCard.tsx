@@ -31,7 +31,7 @@ const CartCard: FC<ICartCard> = ({
                 />
             }
             <Link
-                to={EPath.main}
+                to={`${EPath.book}/${id}`}
                 className={clsx(
                     styles.imgWrapper,
                     !isAvailable && styles["imgWrapper-margin"],
@@ -50,7 +50,7 @@ const CartCard: FC<ICartCard> = ({
                 styles.productName,
                 !isAvailable && styles["productName-unavailable"],
             )}>
-                <Link to={EPath.main}>{name}</Link>
+                <Link to={`${EPath.book}/${id}`}>{name}</Link>
             </div>
             <div className={styles.wrapperCountPrice}>
                 <div className={clsx(
