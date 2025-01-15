@@ -87,7 +87,10 @@ const Book: FC<IBookPage> = ({
                     <div className={styles.bookInfo}>
                         <div className={styles.imgWrapper}>
                             <img
-                                className={styles.image}
+                                className={clsx(
+                                    styles.image,
+                                    count === 0 && styles.translucent,
+                                )}
                                 src={imgLink}
                                 alt={name}
                             />
@@ -116,15 +119,17 @@ const Book: FC<IBookPage> = ({
                         </div>
                         <div className={styles.cart}>
                             <span className={styles.price}>{price} ₽</span>
-                            <button
-                                className={clsx(
-                                    styles.addToCartBtn,
-                                    isBookInCart && styles["addToCartBtn-pressed"],
-                                )}
-                                onClick={() => isBookInCart ? navigate(EPath.cart) : handleAddBookToCart(book)}
-                            >
-                                {isBookInCart ? "Оформить" : "Купить"}
-                            </button>
+                            {count > 0 &&
+                                <button
+                                    className={clsx(
+                                        styles.addToCartBtn,
+                                        isBookInCart && styles["addToCartBtn-pressed"],
+                                    )}
+                                    onClick={() => isBookInCart ? navigate(EPath.cart) : handleAddBookToCart(book)}
+                                >
+                                    {isBookInCart ? "Оформить" : "Купить"}
+                                </button>
+                            }
                             <div className={styles.access}>
                                 <div className={styles.availability}>
                                     {count === 0 ?
@@ -143,10 +148,13 @@ const Book: FC<IBookPage> = ({
                                         }
                                     </span>
                                 </div>
-                                <span className={styles.count}>({count} {pluralizeWord(count)} на складе)</span>
+                                {count > 0 &&
+                                    <span className={styles.count}>({count} {pluralizeWord(count)} на складе)</span>
+                                }
                             </div>
                         </div>
                     </div>
+                    <div className={styles.bottomLine}></div>
                 </div>
             </div>
         )

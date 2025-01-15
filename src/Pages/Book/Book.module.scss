@@ -61,6 +61,10 @@
             object-fit: cover;
             object-position: center;
         }
+
+        .translucent {
+            opacity: 30%;
+        }
     }
 
     .info {
@@ -183,4 +187,12 @@
             }
         }
     }
+}
+
+.bottomLine {
+    width: 20%;
+    display: flex;
+    align-self: center;
+    height: 1.5px;
+    background-color: var(--gray)
 }
