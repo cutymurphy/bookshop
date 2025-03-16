@@ -28,8 +28,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(req -> {
-            req.requestMatchers("/auth/**").permitAll();
-            req.requestMatchers("/**").authenticated();
+            req.requestMatchers("/api/auth/**").permitAll();
+            req.requestMatchers("/api/**").authenticated();
         });
         http.sessionManagement(sessionAuthenticationStrategy ->
                 sessionAuthenticationStrategy.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
