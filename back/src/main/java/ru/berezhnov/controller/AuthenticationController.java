@@ -1,5 +1,6 @@
 package ru.berezhnov.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +15,12 @@ import ru.berezhnov.models.UserWithCart;
 import ru.berezhnov.services.AuthenticationService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    public AuthenticationController(AuthenticationService authenticationService, ModelMapper modelMapper) {
-        this.authenticationService = authenticationService;
-        this.modelMapper = modelMapper;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {

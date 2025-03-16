@@ -1,8 +1,9 @@
 package ru.berezhnov.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
@@ -12,8 +13,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "book")
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book implements Serializable {
 
     @Id

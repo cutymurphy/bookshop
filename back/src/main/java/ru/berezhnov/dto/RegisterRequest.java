@@ -1,10 +1,8 @@
 package ru.berezhnov.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 public class RegisterRequest {
     private String name;
     private String surname;
