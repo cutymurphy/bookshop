@@ -9,22 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class AppExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<ExceptionResponse> handleAppException(AppException e) {
-        return new ResponseEntity<>(new ExceptionResponse(e), HttpStatus.BAD_REQUEST);
-    }
-
-    public static class ExceptionResponse {
-        private String message;
-        public ExceptionResponse(AppException e) {
-            this.message = e.getMessage();
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
+    public ResponseEntity<AppException> handleAppException(AppException e) {
+        return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
     }
 }
