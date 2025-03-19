@@ -1,16 +1,12 @@
 package ru.berezhnov.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity
 @Table(name = "cart_state")
-@Setter
-@Getter
 public class CartState implements Serializable {
 
     @Id
@@ -40,5 +36,29 @@ public class CartState implements Serializable {
         if (this.order.getCartStates() == null)
             this.order.setCartStates(new ArrayList<>());
         this.order.getCartStates().add(this);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public Integer getBookCount() {
+        return bookCount;
+    }
+
+    public void setBookCount(Integer bookCount) {
+        this.bookCount = bookCount;
+    }
+
+    public Order getOrder() {
+        return order;
     }
 }

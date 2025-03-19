@@ -1,6 +1,5 @@
 package ru.berezhnov.services;
 
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +16,18 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
+
+    @Autowired
+    public AuthorService(AuthorRepository authorRepository, ModelMapper modelMapper, UserRepository userRepository) {
+        this.authorRepository = authorRepository;
+        this.modelMapper = modelMapper;
+        this.userRepository = userRepository;
+    }
 
     public List<AuthorDTO> getAll() {
         return authorRepository.findAll().stream().map(this::getAuthorDTO)
@@ -43,20 +48,20 @@ public class AuthorService {
     public void addAuthor(AuthorDTO authorDTO) {
         Author author = modelMapper.map(authorDTO, Author.class);
         UserWithCart admin = userRepository.findById(authorDTO.getIdAdmin())
-                .orElseThrow(() -> new AppException("Admin not found"));
+                .orElseThrow(() -> new AppException("Администратор не найден"));
         author.setAdmin(admin);
         authorRepository.save(author);
     }
 
     @Transactional
     public void updateAuthor(AuthorDTO authorDTO) {
-        authorRepository.findById(authorDTO.getId()).orElseThrow(() -> new AppException("Author not found"));
+        authorRepository.findById(authorDTO.getId()).orElseThrow(() -> new AppException("Автор не найден"));
         this.addAuthor(authorDTO);
     }
 
     @Transactional
     public void deleteById(String id) {
-        Author authorToDelete = authorRepository.findById(id).orElseThrow(() -> new AppException("Author not found"));
+        Author authorToDelete = authorRepository.findById(id).orElseThrow(() -> new AppException("Автор не найден"));
         authorRepository.delete(authorToDelete);
     }
 }

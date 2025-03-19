@@ -1,8 +1,6 @@
 package ru.berezhnov.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.ArrayList;
@@ -10,8 +8,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "user_book")
-@Setter
-@Getter
 public class UserBook {
 
     @EmbeddedId
@@ -19,12 +15,12 @@ public class UserBook {
 
     @ManyToOne
     @MapsId("userId")
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "user_id")
     private UserWithCart user;
 
     @ManyToOne
     @MapsId("bookId")
-    @JoinColumn(name = "id_book")
+    @JoinColumn(name = "book_id")
     private Book book;
 
     @Column(name = "book_count")
@@ -47,5 +43,37 @@ public class UserBook {
         if (this.book.getUserBooks() == null)
             this.book.setUserBooks(new ArrayList<>());
         this.book.getUserBooks().add(this);
+    }
+
+    public UserBookKey getId() {
+        return id;
+    }
+
+    public void setId(UserBookKey id) {
+        this.id = id;
+    }
+
+    public UserWithCart getUser() {
+        return user;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public Integer getBookCount() {
+        return bookCount;
+    }
+
+    public void setBookCount(Integer bookCount) {
+        this.bookCount = bookCount;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

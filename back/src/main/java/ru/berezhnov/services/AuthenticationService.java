@@ -30,7 +30,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(UserWithCart user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setIsAdmin(false);
+        user.setAdmin(false);
         userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();

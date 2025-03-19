@@ -1,8 +1,13 @@
 package ru.berezhnov.dto;
 
-import lombok.Data;
-
-@Data
 public class BookCountRequest {
     private Integer bookCount;
+
+    public Integer getBookCount() {
+        return bookCount;
+    }
+
+    public void setBookCount(Integer bookCount) {
+        this.bookCount = bookCount;
+    }
 }

@@ -1,8 +1,6 @@
 package ru.berezhnov.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
@@ -12,8 +10,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "_order")
-@Getter
-@Setter
 public class Order implements Serializable {
     @Id
     @Column(name = "id")
@@ -69,5 +65,93 @@ public class Order implements Serializable {
         if (this.admin.getOrders() == null)
             this.admin.setOrders(new ArrayList<>());
         this.admin.getOrders().add(this);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public UserWithCart getUser() {
+        return user;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Double getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(Double totalCost) {
+        this.totalCost = totalCost;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public UserWithCart getAdmin() {
+        return admin;
+    }
+
+    public List<CartState> getCartStates() {
+        return cartStates;
+    }
+
+    public void setCartStates(List<CartState> cartStates) {
+        this.cartStates = cartStates;
     }
 }

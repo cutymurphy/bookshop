@@ -1,15 +1,10 @@
 package ru.berezhnov.models;
 
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-@Setter
-@Getter
 public class UserBookKey implements Serializable {
 
     private String userId;
@@ -32,5 +27,21 @@ public class UserBookKey implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(userId, bookId);
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
     }
 }

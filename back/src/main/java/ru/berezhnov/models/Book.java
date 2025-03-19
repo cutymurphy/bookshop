@@ -1,9 +1,6 @@
 package ru.berezhnov.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
@@ -13,9 +10,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "book")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Book implements Serializable {
 
     @Id
@@ -81,5 +75,117 @@ public class Book implements Serializable {
         if (this.admin.getBooks() == null)
             this.admin.setBooks(new ArrayList<>());
         this.admin.getBooks().add(this);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public UserWithCart getAdmin() {
+        return admin;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
+    }
+
+    public Date getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(Date dateModified) {
+        this.dateModified = dateModified;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public Integer getPagesCount() {
+        return pagesCount;
+    }
+
+    public void setPagesCount(Integer pagesCount) {
+        this.pagesCount = pagesCount;
+    }
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
+    public List<UserBook> getUserBooks() {
+        return userBooks;
+    }
+
+    public void setUserBooks(List<UserBook> userBooks) {
+        this.userBooks = userBooks;
+    }
+
+    public List<CartState> getCartStates() {
+        return cartStates;
+    }
+
+    public void setCartStates(List<CartState> cartStates) {
+        this.cartStates = cartStates;
+    }
+
+    public String getImgLink() {
+        return imgLink;
+    }
+
+    public void setImgLink(String imgLink) {
+        this.imgLink = imgLink;
+    }
+
+    public String getCoverType() {
+        return coverType;
+    }
+
+    public void setCoverType(String coverType) {
+        this.coverType = coverType;
     }
 }
