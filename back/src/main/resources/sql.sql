@@ -32,11 +32,11 @@ create table book (
     cover_type varchar(45) default null
 );
 create table user_book (
-    id_user uuid not null,
-    id_book uuid not null,
+    user_id uuid references user_with_cart(id) not null,
+    book_id uuid references book(id) not null,
     book_count int not null default 1,
     date timestamp not null,
-    primary key (id_user, id_book)
+    primary key (user_id, book_id)
 );
 create table _order (
     id uuid default gen_random_uuid() primary key ,
