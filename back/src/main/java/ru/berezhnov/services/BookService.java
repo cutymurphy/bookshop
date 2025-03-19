@@ -1,7 +1,7 @@
 package ru.berezhnov.services;
 
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.berezhnov.dto.BookDTO;
@@ -14,10 +14,8 @@ import ru.berezhnov.repositories.UserRepository;
 import ru.berezhnov.util.AppException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BookService {
 
@@ -26,16 +24,17 @@ public class BookService {
     private final UserRepository userRepository;
     private final AuthorRepository authorRepository;
 
-    public List<BookDTO> getAll() {
-        return bookRepository.findAll().stream().map(this::getBookDTO)
-                .collect(Collectors.toList());
+    @Autowired
+    public BookService(BookRepository bookRepository, ModelMapper modelMapper, UserRepository userRepository,
+                       AuthorRepository authorRepository) {
+        this.bookRepository = bookRepository;
+        this.modelMapper = modelMapper;
+        this.userRepository = userRepository;
+        this.authorRepository = authorRepository;
     }
 
-    private BookDTO getBookDTO(Book book) {
-        BookDTO bookDTO = modelMapper.map(book, BookDTO.class);
-        bookDTO.setIdAdmin(book.getAdmin().getId());
-        bookDTO.setIdAuthor(book.getAuthor().getId());
-        return bookDTO;
+    public List<Book> findAll() {
+        return bookRepository.findAll();
     }
 
     private Book getBook(BookDTO bookDTO) {
@@ -46,10 +45,10 @@ public class BookService {
     public void addBook(BookDTO bookDTO) {
         Book book = getBook(bookDTO);
         UserWithCart admin = userRepository.findById(bookDTO.getIdAdmin())
-                        .orElseThrow(() -> new AppException("Admin not found"));
+                        .orElseThrow(() -> new AppException("Администратор не найден"));
         book.setAdmin(admin);
         Author author = authorRepository.findById(bookDTO.getIdAuthor())
-                        .orElseThrow(() -> new AppException("Author not found"));
+                        .orElseThrow(() -> new AppException("Автор не найден"));
         book.setAuthor(author);
         bookRepository.save(book);
     }
@@ -57,19 +56,19 @@ public class BookService {
     @Transactional
     public void updateBook(BookDTO bookDTO) {
         bookRepository.findById(bookDTO.getId())
-                .orElseThrow(() -> new AppException("Book not found"));
+                .orElseThrow(() -> new AppException("Книга не найдена"));
         this.addBook(bookDTO);
     }
 
     @Transactional
     public void updateBookCount(String idBook, Integer bookCount) {
-        Book book = bookRepository.findById(idBook).orElseThrow(() -> new AppException("Book not found"));
+        Book book = bookRepository.findById(idBook).orElseThrow(() -> new AppException("Книга не найдена"));
         book.setCount(bookCount);
     }
 
     @Transactional
     public void deleteById(String id) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new AppException("Book not found"));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new AppException("Книга не найдена"));
         bookRepository.delete(book);
     }
 }

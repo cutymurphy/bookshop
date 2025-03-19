@@ -1,26 +1,41 @@
 package ru.berezhnov.controller;
 
-import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.berezhnov.dto.BookAndAuthorResponse;
 import ru.berezhnov.dto.BookCountRequest;
 import ru.berezhnov.dto.BookDTO;
+import ru.berezhnov.models.Book;
 import ru.berezhnov.services.BookService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/book")
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class BookController {
 
     private final BookService bookService;
+    private final ModelMapper modelMapper;
+
+    @Autowired
+    public BookController(BookService bookService, ModelMapper modelMapper) {
+        this.bookService = bookService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping
-    public ResponseEntity<List<BookDTO>> fetchBooks() {
-       return ResponseEntity.ok(bookService.getAll());
+    public ResponseEntity<List<BookAndAuthorResponse>> loadBooksAndAuthors() {
+       return ResponseEntity.ok(bookService.findAll().stream().map(this::getBookAndAuthorResponse).toList());
+    }
+
+    private BookAndAuthorResponse getBookAndAuthorResponse(Book book) {
+        BookAndAuthorResponse bookAndAuthorResponse = modelMapper.map(book, BookAndAuthorResponse.class);
+        bookAndAuthorResponse.setAuthor(new BookAndAuthorResponse.AuthorResponse());
+        bookAndAuthorResponse.getAuthor().setName(book.getAuthor().getName());
+        return bookAndAuthorResponse;
     }
 
     @PostMapping
@@ -49,4 +64,6 @@ public class BookController {
         bookService.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
+
 }
