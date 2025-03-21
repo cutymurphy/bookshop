@@ -1,21 +1,22 @@
 package ru.berezhnov.dto;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class AuthorDTO {
-    private String id;
+    private UUID id;
     private String name;
     private String surname;
     private String email;
     private String phone;
-    private String idAdmin;
+    private UUID idAdmin;
     private Date dateModified;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -51,11 +52,11 @@ public class AuthorDTO {
         this.phone = phone;
     }
 
-    public String getIdAdmin() {
+    public UUID getIdAdmin() {
         return idAdmin;
     }
 
-    public void setIdAdmin(String idAdmin) {
+    public void setIdAdmin(UUID idAdmin) {
         this.idAdmin = idAdmin;
     }
 

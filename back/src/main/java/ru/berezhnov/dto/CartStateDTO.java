@@ -1,14 +1,16 @@
 package ru.berezhnov.dto;
 
+import java.util.UUID;
+
 public class CartStateDTO {
-    private String bookInfo;
+    private UUID bookInfo;
     private Integer count;
 
-    public String getBookInfo() {
+    public UUID getBookInfo() {
         return bookInfo;
     }
 
-    public void setBookInfo(String bookInfo) {
+    public void setBookInfo(UUID bookInfo) {
         this.bookInfo = bookInfo;
     }
 

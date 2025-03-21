@@ -3,16 +3,17 @@ package ru.berezhnov.models;
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 @Embeddable
 public class UserBookKey implements Serializable {
 
-    private String userId;
-    private String bookId;
+    private UUID userId;
+    private UUID bookId;
 
     public UserBookKey() {}
 
-    public UserBookKey(String userId, String bookId) {
+    public UserBookKey(UUID userId, UUID bookId) {
         this.userId = userId;
         this.bookId = bookId;
     }
@@ -29,19 +30,19 @@ public class UserBookKey implements Serializable {
         return Objects.hash(userId, bookId);
     }
 
-    public String getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
-    public String getBookId() {
+    public UUID getBookId() {
         return bookId;
     }
 
-    public void setBookId(String bookId) {
+    public void setBookId(UUID bookId) {
         this.bookId = bookId;
     }
 }

@@ -1,11 +1,12 @@
 package ru.berezhnov.dto;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class BookDTO {
-    private String id;
-    private String idAuthor;
-    private String idAdmin;
+    private UUID id;
+    private UUID idAuthor;
+    private UUID idAdmin;
     private Integer count;
     private Date dateModified;
     private String name;
@@ -17,27 +18,27 @@ public class BookDTO {
     private String imgLink;
     private String coverType;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public String getIdAuthor() {
+    public UUID getIdAuthor() {
         return idAuthor;
     }
 
-    public void setIdAuthor(String idAuthor) {
+    public void setIdAuthor(UUID idAuthor) {
         this.idAuthor = idAuthor;
     }
 
-    public String getIdAdmin() {
+    public UUID getIdAdmin() {
         return idAdmin;
     }
 
-    public void setIdAdmin(String idAdmin) {
+    public void setIdAdmin(UUID idAdmin) {
         this.idAdmin = idAdmin;
     }
 

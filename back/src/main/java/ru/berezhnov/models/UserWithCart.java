@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user_with_cart")
@@ -16,7 +17,7 @@ public class UserWithCart implements Serializable, UserDetails {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private UUID id;
 
     @Column(name = "is_admin")
     private Boolean isAdmin;
@@ -58,11 +59,11 @@ public class UserWithCart implements Serializable, UserDetails {
         return email;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -145,5 +146,11 @@ public class UserWithCart implements Serializable, UserDetails {
 
     public void setUserBooks(List<UserBook> userBooks) {
         this.userBooks = userBooks;
+    }
+
+    public UserWithCart() {}
+
+    public UserWithCart(UUID id) {
+        this.id = id;
     }
 }

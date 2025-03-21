@@ -2,15 +2,16 @@ package ru.berezhnov.dto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
-public class OrderInfo {
+public class OrderInfoResponse {
     private OrderImportant orderImportant;
     private UserImportant userImportant;
     private AdminImportant adminImportant;
     private List<CartStateDTO> orderBooks;
 
     public static class OrderImportant {
-        private String id;
+        private UUID id;
         private Integer number;
         private Date date;
         private String address;
@@ -20,11 +21,11 @@ public class OrderInfo {
         private Date dateModified;
         private String message;
 
-        public String getId() {
+        public UUID getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(UUID id) {
             this.id = id;
         }
 
@@ -176,13 +177,13 @@ public class OrderInfo {
         this.orderBooks = orderBooks;
     }
 
-    public OrderInfo(OrderImportant orderImportant, UserImportant userImportant, AdminImportant adminImportant, List<CartStateDTO> orderBooks) {
+    public OrderInfoResponse(OrderImportant orderImportant, UserImportant userImportant, AdminImportant adminImportant, List<CartStateDTO> orderBooks) {
         this.orderImportant = orderImportant;
         this.userImportant = userImportant;
         this.adminImportant = adminImportant;
         this.orderBooks = orderBooks;
     }
 
-    public OrderInfo() {
+    public OrderInfoResponse() {
     }
 }

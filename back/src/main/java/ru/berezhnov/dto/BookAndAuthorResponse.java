@@ -1,9 +1,10 @@
 package ru.berezhnov.dto;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class BookAndAuthorResponse {
-    private String id;
+    private UUID id;
     private AuthorResponse author;
     private Integer count;
     private Date dateModified;
@@ -28,11 +29,11 @@ public class BookAndAuthorResponse {
         }
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
