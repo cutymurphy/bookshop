@@ -1,27 +1,20 @@
 package ru.berezhnov.dto;
 
+import java.util.UUID;
+
 public class UserDTO {
-    private String id;
-    private Boolean isAdmin;
+    private UUID id;
     private String name;
     private String surname;
     private String email;
     private String password;
     private String phone;
 
-    public Boolean getAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
-    }
-
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
