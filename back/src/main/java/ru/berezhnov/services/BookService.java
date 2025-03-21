@@ -1,10 +1,8 @@
 package ru.berezhnov.services;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.berezhnov.dto.BookDTO;
 import ru.berezhnov.models.Author;
 import ru.berezhnov.models.Book;
 import ru.berezhnov.models.UserWithCart;
@@ -14,21 +12,20 @@ import ru.berezhnov.repositories.UserRepository;
 import ru.berezhnov.util.AppException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final AuthorRepository authorRepository;
 
     @Autowired
-    public BookService(BookRepository bookRepository, ModelMapper modelMapper, UserRepository userRepository,
+    public BookService(BookRepository bookRepository, UserRepository userRepository,
                        AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
-        this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.authorRepository = authorRepository;
     }
@@ -37,37 +34,32 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    private Book getBook(BookDTO bookDTO) {
-        return modelMapper.map(bookDTO, Book.class);
-    }
-
     @Transactional
-    public void addBook(BookDTO bookDTO) {
-        Book book = getBook(bookDTO);
-        UserWithCart admin = userRepository.findById(bookDTO.getIdAdmin())
+    public void addBook(Book book) {
+        UserWithCart admin = userRepository.findById(book.getAdmin().getId())
                         .orElseThrow(() -> new AppException("Администратор не найден"));
         book.setAdmin(admin);
-        Author author = authorRepository.findById(bookDTO.getIdAuthor())
+        Author author = authorRepository.findById(book.getAuthor().getId())
                         .orElseThrow(() -> new AppException("Автор не найден"));
         book.setAuthor(author);
         bookRepository.save(book);
     }
 
     @Transactional
-    public void updateBook(BookDTO bookDTO) {
-        bookRepository.findById(bookDTO.getId())
+    public void updateBook(Book book) {
+        bookRepository.findById(book.getId())
                 .orElseThrow(() -> new AppException("Книга не найдена"));
-        this.addBook(bookDTO);
+        this.addBook(book);
     }
 
     @Transactional
-    public void updateBookCount(String idBook, Integer bookCount) {
+    public void updateBookCount(UUID idBook, Integer bookCount) {
         Book book = bookRepository.findById(idBook).orElseThrow(() -> new AppException("Книга не найдена"));
         book.setCount(bookCount);
     }
 
     @Transactional
-    public void deleteById(String id) {
+    public void deleteById(UUID id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new AppException("Книга не найдена"));
         bookRepository.delete(book);
     }
