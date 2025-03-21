@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.berezhnov.dto.CartStateDTO;
-import ru.berezhnov.dto.OrderInfo;
+import ru.berezhnov.dto.OrderDTO;
+import ru.berezhnov.dto.OrderInfoResponse;
 import ru.berezhnov.models.Order;
 import ru.berezhnov.services.OrderService;
 import ru.berezhnov.util.EmailExtractor;
@@ -28,29 +29,36 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Order>> fetchOrders(@RequestParam(name = "deleted",
+    public ResponseEntity<List<OrderDTO>> fetchOrders(@RequestParam(name = "deleted",
             required = false, defaultValue = "false") boolean deleted) {
-        return ResponseEntity.ok(orderService.findAll(deleted));
+        return ResponseEntity.ok(orderService.findAll(deleted).stream().map(this::convertToOrderDTO).toList());
     }
 
     @GetMapping("/load")
-    public ResponseEntity<List<OrderInfo>> loadOrders(@RequestHeader(name = "Authorization") String authHeader) {
+    public ResponseEntity<List<OrderInfoResponse>> loadOrders(@RequestHeader(name = "Authorization") String authHeader) {
         return ResponseEntity.ok(orderService.loadOrders(emailExtractor.getUserFromHeader(authHeader))
-                .stream().map(this::getOrderInfo).toList());
+                .stream().map(this::convertToOrderInfoResponse).toList());
     }
 
-    private OrderInfo getOrderInfo(Order order) {
-        OrderInfo.OrderImportant orderImportant = modelMapper.map(order, OrderInfo.OrderImportant.class);
-        OrderInfo.UserImportant userImportant = modelMapper.map(order.getUser(), OrderInfo.UserImportant.class);
-        OrderInfo.AdminImportant adminImportant = null;
+    private OrderInfoResponse convertToOrderInfoResponse(Order order) {
+        OrderInfoResponse.OrderImportant orderImportant = modelMapper.map(order, OrderInfoResponse.OrderImportant.class);
+        OrderInfoResponse.UserImportant userImportant = modelMapper.map(order.getUser(), OrderInfoResponse.UserImportant.class);
+        OrderInfoResponse.AdminImportant adminImportant = null;
         if (order.getAdmin() != null) {
-            adminImportant = modelMapper.map(order.getAdmin(), OrderInfo.AdminImportant.class);
+            adminImportant = modelMapper.map(order.getAdmin(), OrderInfoResponse.AdminImportant.class);
         }
         List<CartStateDTO> cartStateDTOS = order.getCartStates().stream().map(cs -> {
             CartStateDTO cartStateDTO = modelMapper.map(cs, CartStateDTO.class);
             cartStateDTO.setBookInfo(cs.getBook().getId());
             return cartStateDTO;
         }).toList();
-        return new OrderInfo(orderImportant, userImportant, adminImportant, cartStateDTOS);
+        return new OrderInfoResponse(orderImportant, userImportant, adminImportant, cartStateDTOS);
+    }
+
+    private OrderDTO convertToOrderDTO(Order order) {
+        OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+        orderDTO.setIdAdmin(order.getAdmin().getId());
+        orderDTO.setIdUser(order.getUser().getId());
+        return orderDTO;
     }
 }
