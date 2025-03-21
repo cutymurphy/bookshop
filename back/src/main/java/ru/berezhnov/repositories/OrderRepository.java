@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 import ru.berezhnov.models.Order;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, String> {
+public interface OrderRepository extends JpaRepository<Order, UUID> {
     @Query("from Order where status like 'deleted'")
     List<Order> findAllDeleted();
 
