@@ -4,14 +4,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.berezhnov.dto.CartStateDTO;
 import ru.berezhnov.dto.OrderDTO;
 import ru.berezhnov.dto.OrderInfoResponse;
 import ru.berezhnov.models.Order;
+import ru.berezhnov.models.UserWithCart;
 import ru.berezhnov.services.OrderService;
 import ru.berezhnov.util.EmailExtractor;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/order")
@@ -47,12 +48,12 @@ public class OrderController {
         if (order.getAdmin() != null) {
             adminImportant = modelMapper.map(order.getAdmin(), OrderInfoResponse.AdminImportant.class);
         }
-        List<CartStateDTO> cartStateDTOS = order.getCartStates().stream().map(cs -> {
-            CartStateDTO cartStateDTO = modelMapper.map(cs, CartStateDTO.class);
-            cartStateDTO.setBookInfo(cs.getBook().getId());
-            return cartStateDTO;
+        List<OrderInfoResponse.CartStateInfo> cartStateInfos = order.getCartStates().stream().map(cs -> {
+            OrderInfoResponse.CartStateInfo cartStateInfo = modelMapper.map(cs, OrderInfoResponse.CartStateInfo.class);
+            cartStateInfo.setBookInfo(cs.getBook().getId());
+            return cartStateInfo;
         }).toList();
-        return new OrderInfoResponse(orderImportant, userImportant, adminImportant, cartStateDTOS);
+        return new OrderInfoResponse(orderImportant, userImportant, adminImportant, cartStateInfos);
     }
 
     private OrderDTO convertToOrderDTO(Order order) {
@@ -60,5 +61,23 @@ public class OrderController {
         orderDTO.setIdAdmin(order.getAdmin().getId());
         orderDTO.setIdUser(order.getUser().getId());
         return orderDTO;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editOrder(@RequestBody OrderDTO orderDTO) {//+
+        orderService.editOrder(convertToOrder(orderDTO));
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOrder(@PathVariable UUID id) {//+
+        orderService.deleteOrder(id);
+        return ResponseEntity.ok().build();
+    }
+
+    private Order convertToOrder(OrderDTO orderDTO) {
+        Order order = modelMapper.map(orderDTO, Order.class);
+        order.setAdmin(new UserWithCart(orderDTO.getIdAdmin()));
+        return order;
     }
 }
