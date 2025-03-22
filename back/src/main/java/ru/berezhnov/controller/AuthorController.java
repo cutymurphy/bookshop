@@ -31,21 +31,21 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addAuthor(@RequestBody AuthorDTO authorDTO) {
+    public ResponseEntity<?> addAuthor(@RequestBody AuthorDTO authorDTO) {// +
         authorDTO.setId(null);
         authorService.addAuthor(convertToAuthor(authorDTO));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editAuthor(@PathVariable UUID id, @RequestBody AuthorDTO authorDTO) {
+    public ResponseEntity<?> editAuthor(@PathVariable UUID id, @RequestBody AuthorDTO authorDTO) {// +
         authorDTO.setId(id);
         authorService.updateAuthor(convertToAuthor(authorDTO));
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAuthor(@PathVariable UUID id) {
+    public ResponseEntity<?> deleteAuthor(@PathVariable UUID id) {// +
         authorService.deleteById(id);
         return ResponseEntity.ok().build();
     }

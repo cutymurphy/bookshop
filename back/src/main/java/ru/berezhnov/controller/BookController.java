@@ -35,14 +35,14 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO) {
+    public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO) {//+
         bookDTO.setId(null);
         bookService.addBook(convertToBook(bookDTO));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editBook(@PathVariable UUID id, @RequestBody BookDTO bookDTO) {
+    public ResponseEntity<?> editBook(@PathVariable UUID id, @RequestBody BookDTO bookDTO) {//+
         bookDTO.setId(id);
         bookService.updateBook(convertToBook(bookDTO));
         return ResponseEntity.ok().build();
@@ -56,7 +56,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable UUID id) {
+    public ResponseEntity<?> deleteBook(@PathVariable UUID id) {//+
         bookService.deleteById(id);
         return ResponseEntity.ok().build();
     }

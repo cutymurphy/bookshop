@@ -25,15 +25,16 @@ public class UserController {
     private final EmailExtractor emailExtractor;
 
     @Autowired
-    public UserController(AuthenticationService authenticationService, ModelMapper modelMapper, UserService userService, EmailExtractor emailExtractor, EmailExtractor emailExtractor1) {
+    public UserController(AuthenticationService authenticationService, ModelMapper modelMapper,
+                          UserService userService, EmailExtractor emailExtractor) {
         this.authenticationService = authenticationService;
         this.modelMapper = modelMapper;
         this.userService = userService;
-        this.emailExtractor = emailExtractor1;
+        this.emailExtractor = emailExtractor;
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {//+ addUser()
         return ResponseEntity.ok(authenticationService.register(modelMapper.map(request, UserWithCart.class)));
     }
 
@@ -61,13 +62,13 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<UserDTO> getUser(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<UserDTO> getUser(@RequestHeader("Authorization") String authHeader) {//+ getUserByEmail()
         return ResponseEntity.ok(convertToUserDTO(userService.findByEmail(emailExtractor.getUserFromHeader(authHeader)
                 .getEmail()).orElseThrow(() -> new AppException("Пользователь не найден"))));
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {//+
         userService.delete(id);
         return ResponseEntity.ok().build();
     }
