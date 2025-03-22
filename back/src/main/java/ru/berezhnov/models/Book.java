@@ -189,4 +189,10 @@ public class Book implements Serializable {
     public void setCoverType(String coverType) {
         this.coverType = coverType;
     }
+
+    public Book() {}
+
+    public Book(UUID id) {
+        this.id = id;
+    }
 }
