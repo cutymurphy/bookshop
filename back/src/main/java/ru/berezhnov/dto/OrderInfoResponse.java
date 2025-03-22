@@ -8,7 +8,7 @@ public class OrderInfoResponse {
     private OrderImportant orderImportant;
     private UserImportant userImportant;
     private AdminImportant adminImportant;
-    private List<CartStateDTO> orderBooks;
+    private List<CartStateInfo> orderBooks;
 
     public static class OrderImportant {
         private UUID id;
@@ -145,6 +145,27 @@ public class OrderInfoResponse {
         }
     }
 
+    public static class CartStateInfo {
+        private UUID bookInfo;
+        private Integer count;
+
+        public UUID getBookInfo() {
+            return bookInfo;
+        }
+
+        public void setBookInfo(UUID bookInfo) {
+            this.bookInfo = bookInfo;
+        }
+
+        public Integer getCount() {
+            return count;
+        }
+
+        public void setCount(Integer count) {
+            this.count = count;
+        }
+    }
+
     public OrderImportant getOrderImportant() {
         return orderImportant;
     }
@@ -169,15 +190,16 @@ public class OrderInfoResponse {
         this.adminImportant = adminImportant;
     }
 
-    public List<CartStateDTO> getOrderBooks() {
+    public List<CartStateInfo> getOrderBooks() {
         return orderBooks;
     }
 
-    public void setOrderBooks(List<CartStateDTO> orderBooks) {
+    public void setOrderBooks(List<CartStateInfo> orderBooks) {
         this.orderBooks = orderBooks;
     }
 
-    public OrderInfoResponse(OrderImportant orderImportant, UserImportant userImportant, AdminImportant adminImportant, List<CartStateDTO> orderBooks) {
+    public OrderInfoResponse(OrderImportant orderImportant, UserImportant userImportant,
+                             AdminImportant adminImportant, List<CartStateInfo> orderBooks) {
         this.orderImportant = orderImportant;
         this.userImportant = userImportant;
         this.adminImportant = adminImportant;
