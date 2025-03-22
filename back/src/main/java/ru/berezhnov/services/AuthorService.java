@@ -9,6 +9,7 @@ import ru.berezhnov.repositories.AuthorRepository;
 import ru.berezhnov.repositories.UserRepository;
 import ru.berezhnov.util.AppException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +35,7 @@ public class AuthorService {
         UserWithCart admin = userRepository.findById(author.getAdmin().getId())
                 .orElseThrow(() -> new AppException("Администратор не найден"));
         author.setAdmin(admin);
+        author.setDateModified(new Date());
         authorRepository.save(author);
     }
 
