@@ -3,12 +3,13 @@ package ru.berezhnov.models;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
 @Table(name = "user_book")
-public class UserBook {
+public class UserBook implements Serializable {
 
     @EmbeddedId
     private UserBookKey id;
