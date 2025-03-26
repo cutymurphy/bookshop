@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.berezhnov.dto.BookCountRequest;
+import ru.berezhnov.dto.BookDTO;
 import ru.berezhnov.dto.UserBookDTO;
 import ru.berezhnov.models.Book;
 import ru.berezhnov.models.UserBook;
 import ru.berezhnov.services.UserBookService;
+import ru.berezhnov.services.UserService;
+import ru.berezhnov.util.AppException;
 import ru.berezhnov.util.EmailExtractor;
 
 import java.util.List;
@@ -21,12 +24,15 @@ public class UserBookController {
     private final UserBookService userBookService;
     private final ModelMapper modelMapper;
     private final EmailExtractor emailExtractor;
+    private final UserService userService;
 
     @Autowired
-    public UserBookController(UserBookService userBookService, ModelMapper modelMapper, EmailExtractor emailExtractor) {
+    public UserBookController(UserBookService userBookService, ModelMapper modelMapper, EmailExtractor emailExtractor,
+                              UserService userService) {
         this.userBookService = userBookService;
         this.modelMapper = modelMapper;
         this.emailExtractor = emailExtractor;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -66,5 +72,39 @@ public class UserBookController {
         UserBook userBook = modelMapper.map(userBookDTO, UserBook.class);
         userBook.setBook(new Book(userBookDTO.getBook()));
         return userBook;
+    }
+
+    @GetMapping("/{idUser}")
+    public ResponseEntity<List<BookDTO>> getCartBooksById(@PathVariable UUID idUser) {//+
+        return ResponseEntity.ok(userBookService.getUserBooksByUserId(idUser).stream().map(this::convertToBookDTO)
+                .toList());
+    }
+
+    @GetMapping("/jwt")
+    public ResponseEntity<List<BookDTO>> getCartBooksByUserJwt(@RequestHeader("Authorization") String authHeader) {//+
+        return ResponseEntity.ok(userService.findByEmail(emailExtractor.getUserFromHeader(authHeader).getEmail())
+                .orElseThrow(() -> new AppException("Неверный Jwt")).getUserBooks().stream().map(UserBook::getBook)
+                .map(this::convertToBookDTO).toList());
+    }
+
+    private BookDTO convertToBookDTO(Book book) {
+        BookDTO bookDTO = modelMapper.map(book, BookDTO.class);
+        bookDTO.setIdAdmin(book.getAdmin().getId());
+        bookDTO.setIdAuthor(book.getAuthor().getId());
+        return bookDTO;
+    }
+
+    @DeleteMapping("/{idUser}/{idBook}")
+    public ResponseEntity<?> deleteBookFromCart(@PathVariable UUID idUser, @PathVariable UUID idBook) {//+
+        userBookService.deleteBookFromCart(idUser, idBook);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{idBook}/jwt")
+    public ResponseEntity<?> deleteBookFromCart(@PathVariable UUID idBook,
+                                                @RequestHeader("Authorization") String authHeader) {//+
+        userBookService.deleteBookFromCart(userService.findByEmail(emailExtractor.getUserFromHeader(authHeader)
+                .getEmail()).orElseThrow(() -> new AppException("Неверный Jwt")).getId(), idBook);
+        return ResponseEntity.ok().build();
     }
 }

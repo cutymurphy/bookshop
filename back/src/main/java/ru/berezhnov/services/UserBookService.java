@@ -60,4 +60,15 @@ public class UserBookService {
         }
         userBookRepository.save(userBook);
     }
+
+    public List<Book> getUserBooksByUserId(UUID idUser) {
+        return userBookRepository.findAllByUserId(idUser).stream().map(UserBook::getBook).toList();
+    }
+
+    @Transactional
+    public void deleteBookFromCart(UUID idUser, UUID idBook) {
+        UserBook userBook = userBookRepository.findByUserIdAndBookId(idUser, idBook).orElseThrow(() -> new AppException(
+                "В корзине пользователя нет этой книги"));
+        userBookRepository.delete(userBook);
+    }
 }
