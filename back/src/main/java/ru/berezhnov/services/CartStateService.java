@@ -3,8 +3,13 @@ package ru.berezhnov.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.berezhnov.models.Book;
 import ru.berezhnov.models.CartState;
+import ru.berezhnov.models.Order;
+import ru.berezhnov.repositories.BookRepository;
 import ru.berezhnov.repositories.CartStateRepository;
+import ru.berezhnov.repositories.OrderRepository;
+import ru.berezhnov.util.AppException;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,10 +19,14 @@ import java.util.UUID;
 public class CartStateService {
 
     private final CartStateRepository cartStateRepository;
+    private final BookRepository bookRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public CartStateService(CartStateRepository cartStateRepository) {
+    public CartStateService(CartStateRepository cartStateRepository, BookRepository bookRepository, OrderRepository orderRepository) {
         this.cartStateRepository = cartStateRepository;
+        this.bookRepository = bookRepository;
+        this.orderRepository = orderRepository;
     }
 
     public List<CartState> findAll() {
@@ -27,7 +36,18 @@ public class CartStateService {
     @Transactional
     public void deleteOrder(UUID id) {
         CartState cartState = cartStateRepository.findById(id).orElseThrow(()
-                -> new RuntimeException("Состояние корзины не найдено"));
+                -> new AppException("Состояние корзины не найдено"));
         cartStateRepository.delete(cartState);
+    }
+
+    @Transactional
+    public void addCartState(CartState cartState) {
+        Book book = bookRepository.findById(cartState.getBook().getId()).orElseThrow(() -> new AppException(
+                "Книга не найдена"));
+        cartState.setBook(book);
+        Order order = orderRepository.findById(cartState.getOrder().getId()).orElseThrow(() -> new AppException(
+                "Заказ не найден"));
+        cartState.setOrder(order);
+        cartStateRepository.save(cartState);
     }
 }
