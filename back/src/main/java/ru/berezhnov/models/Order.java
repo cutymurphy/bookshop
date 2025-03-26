@@ -54,6 +54,12 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "order")
     private List<CartState> cartStates;
 
+    public Order(UUID id) {
+        this.id = id;
+    }
+
+    public Order() {}
+
     public void setUser(UserWithCart user) {
         this.user = user;
         if (this.user.getOrders() == null)
