@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.berezhnov.dto.UserEmail;
+import ru.berezhnov.models.Book;
+import ru.berezhnov.models.CartState;
 import ru.berezhnov.models.Order;
 import ru.berezhnov.models.UserWithCart;
 import ru.berezhnov.repositories.OrderRepository;
@@ -53,5 +55,19 @@ public class OrderService {
         Order order = orderRepository.findById(id).orElseThrow(()
                 -> new AppException("Заказ не найден"));
         orderRepository.delete(order);
+    }
+
+    @Transactional
+    public void addOrder(String userEmail, Order order) {
+        UserWithCart user = userRepository.findByEmail(userEmail).orElseThrow(() -> new AppException(
+                "Пользователь не найден"));
+        order.setId(null);
+        order.setUser(user);
+        orderRepository.save(order);
+    }
+
+    public List<Book> getCartStateBooksById(UUID idOrder) {
+        Order order = orderRepository.findById(idOrder).orElseThrow(() -> new AppException("Заказ не найден"));
+        return order.getCartStates().stream().map(CartState::getBook).toList();
     }
 }
