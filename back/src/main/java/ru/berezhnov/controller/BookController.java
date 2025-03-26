@@ -50,7 +50,7 @@ public class BookController {
 
     @PutMapping("/bookCount/{idBook}")
     public ResponseEntity<?> updateBookCount(@PathVariable UUID idBook,
-                                             @RequestBody BookCountRequest bookCountRequest) {
+                                             @RequestBody BookCountRequest bookCountRequest) {//+
         bookService.updateBookCount(idBook, bookCountRequest.getBookCount());
         return ResponseEntity.ok().build();
     }
