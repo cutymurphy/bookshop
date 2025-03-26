@@ -4,7 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.berezhnov.dto.CartStateDTO;
+import ru.berezhnov.models.Book;
 import ru.berezhnov.models.CartState;
+import ru.berezhnov.models.Order;
 import ru.berezhnov.services.CartStateService;
 
 import java.util.List;
@@ -40,4 +42,17 @@ public class CartStateController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping
+    public ResponseEntity<?> addCartState(@RequestBody CartStateDTO cartStateDTO) {//+
+        cartStateDTO.setId(null);
+        cartStateService.addCartState(convertToCartState(cartStateDTO));
+        return ResponseEntity.ok().build();
+    }
+
+    private CartState convertToCartState(CartStateDTO cartStateDTO) {
+        CartState cartState = modelMapper.map(cartStateDTO, CartState.class);
+        cartState.setBook(new Book(cartStateDTO.getBookId()));
+        cartState.setOrder(new Order(cartStateDTO.getOrderId()));
+        return cartState;
+    }
 }
