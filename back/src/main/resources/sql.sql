@@ -52,7 +52,8 @@ create table _order (
     message varchar(255) default null
 );
 create table cart_state (
-    book_id uuid references book(id) primary key,
+    id uuid default gen_random_uuid() primary key,
+    book_id uuid references book(id) not null,
     book_count int default null,
     order_id uuid references _order(id) not null
 );
