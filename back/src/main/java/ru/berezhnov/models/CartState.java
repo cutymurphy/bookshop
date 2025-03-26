@@ -11,6 +11,7 @@ import java.util.UUID;
 public class CartState implements Serializable {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
