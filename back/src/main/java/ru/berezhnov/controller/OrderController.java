@@ -4,8 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.berezhnov.dto.BookDTO;
 import ru.berezhnov.dto.OrderDTO;
 import ru.berezhnov.dto.OrderInfoResponse;
+import ru.berezhnov.models.Book;
 import ru.berezhnov.models.Order;
 import ru.berezhnov.models.UserWithCart;
 import ru.berezhnov.services.OrderService;
@@ -36,14 +38,17 @@ public class OrderController {
     }
 
     @GetMapping("/load")
-    public ResponseEntity<List<OrderInfoResponse>> loadOrders(@RequestHeader(name = "Authorization") String authHeader) {
+    public ResponseEntity<List<OrderInfoResponse>> loadOrders(@RequestHeader(name = "Authorization")
+                                                                  String authHeader) {
         return ResponseEntity.ok(orderService.loadOrders(emailExtractor.getUserFromHeader(authHeader))
                 .stream().map(this::convertToOrderInfoResponse).toList());
     }
 
     private OrderInfoResponse convertToOrderInfoResponse(Order order) {
-        OrderInfoResponse.OrderImportant orderImportant = modelMapper.map(order, OrderInfoResponse.OrderImportant.class);
-        OrderInfoResponse.UserImportant userImportant = modelMapper.map(order.getUser(), OrderInfoResponse.UserImportant.class);
+        OrderInfoResponse.OrderImportant orderImportant = modelMapper.map(order,
+                OrderInfoResponse.OrderImportant.class);
+        OrderInfoResponse.UserImportant userImportant = modelMapper.map(order.getUser(),
+                OrderInfoResponse.UserImportant.class);
         OrderInfoResponse.AdminImportant adminImportant = null;
         if (order.getAdmin() != null) {
             adminImportant = modelMapper.map(order.getAdmin(), OrderInfoResponse.AdminImportant.class);
@@ -79,5 +84,25 @@ public class OrderController {
         Order order = modelMapper.map(orderDTO, Order.class);
         order.setAdmin(new UserWithCart(orderDTO.getIdAdmin()));
         return order;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addOrder(@RequestBody OrderDTO orderDTO,
+                                      @RequestHeader(name = "Authorization") String authHeader) {//+
+        orderService.addOrder(emailExtractor.getUserFromHeader(authHeader).getEmail(), convertToOrder(orderDTO));
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{idOrder}")
+    public ResponseEntity<List<BookDTO>> getCartStateBooksById(@PathVariable UUID idOrder) {//+
+        return ResponseEntity.ok(orderService.getCartStateBooksById(idOrder).stream().map(this::convertToBookDTO)
+                .toList());
+    }
+
+    private BookDTO convertToBookDTO(Book book) {
+        BookDTO bookDTO = modelMapper.map(book, BookDTO.class);
+        bookDTO.setIdAuthor(book.getAuthor().getId());
+        bookDTO.setIdAdmin(book.getAdmin().getId());
+        return bookDTO;
     }
 }
