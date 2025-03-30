@@ -78,6 +78,16 @@
 			<artifactId>modelmapper</artifactId>
 			<version>3.2.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams</artifactId>
+			<version>3.8.1</version> <!-- Проверь эту версию -->
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>3.8.1</version> <!-- Должна совпадать с kafka-streams -->
+		</dependency>
 	</dependencies>
 
 	<build>
