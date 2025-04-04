@@ -9,7 +9,6 @@ import ru.berezhnov.models.UserBook;
 import ru.berezhnov.models.UserWithCart;
 import ru.berezhnov.services.AuthenticationService;
 import ru.berezhnov.services.UserService;
-import ru.berezhnov.util.AppException;
 import ru.berezhnov.util.EmailExtractor;
 
 import java.util.List;
@@ -58,13 +57,13 @@ public class UserController {
     @GetMapping("/user/load")
     public ResponseEntity<UserCartResponse> loadUserAndCart(@RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.ok(convertToUserCartResponse(userService.findByEmail(emailExtractor.getUserFromHeader(authHeader)
-                        .getEmail()).orElseThrow(() -> new AppException("Пользователь не найден"))));
+                        .getEmail()).orElseThrow(() -> new RuntimeException("Пользователь не найден"))));
     }
 
     @GetMapping("/user")
     public ResponseEntity<UserDTO> getUser(@RequestHeader("Authorization") String authHeader) {//+ getUserByEmail()
         return ResponseEntity.ok(convertToUserDTO(userService.findByEmail(emailExtractor.getUserFromHeader(authHeader)
-                .getEmail()).orElseThrow(() -> new AppException("Пользователь не найден"))));
+                .getEmail()).orElseThrow(() -> new RuntimeException("Пользователь не найден"))));
     }
 
     @DeleteMapping("/user/{id}")

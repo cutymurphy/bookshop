@@ -9,7 +9,6 @@ import ru.berezhnov.models.Order;
 import ru.berezhnov.repositories.BookRepository;
 import ru.berezhnov.repositories.CartStateRepository;
 import ru.berezhnov.repositories.OrderRepository;
-import ru.berezhnov.util.AppException;
 
 import java.util.List;
 import java.util.UUID;
@@ -36,16 +35,16 @@ public class CartStateService {
     @Transactional
     public void deleteOrder(UUID id) {
         CartState cartState = cartStateRepository.findById(id).orElseThrow(()
-                -> new AppException("Состояние корзины не найдено"));
+                -> new RuntimeException("Состояние корзины не найдено"));
         cartStateRepository.delete(cartState);
     }
 
     @Transactional
     public void addCartState(CartState cartState) {
-        Book book = bookRepository.findById(cartState.getBook().getId()).orElseThrow(() -> new AppException(
+        Book book = bookRepository.findById(cartState.getBook().getId()).orElseThrow(() -> new RuntimeException(
                 "Книга не найдена"));
         cartState.setBook(book);
-        Order order = orderRepository.findById(cartState.getOrder().getId()).orElseThrow(() -> new AppException(
+        Order order = orderRepository.findById(cartState.getOrder().getId()).orElseThrow(() -> new RuntimeException(
                 "Заказ не найден"));
         cartState.setOrder(order);
         cartStateRepository.save(cartState);

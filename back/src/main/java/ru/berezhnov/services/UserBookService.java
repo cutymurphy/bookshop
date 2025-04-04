@@ -9,7 +9,6 @@ import ru.berezhnov.models.UserWithCart;
 import ru.berezhnov.repositories.BookRepository;
 import ru.berezhnov.repositories.UserBookRepository;
 import ru.berezhnov.repositories.UserRepository;
-import ru.berezhnov.util.AppException;
 
 import java.util.List;
 import java.util.UUID;
@@ -36,7 +35,7 @@ public class UserBookService {
     @Transactional
     public void updateBookCount(UUID idUser, UUID idBook, Integer bookCount) {
         UserBook userBook = userBookRepository.findByUserIdAndBookId(idUser, idBook).orElseThrow(()
-                -> new AppException("Пользователь или книга не найден(а)"));
+                -> new RuntimeException("Пользователь или книга не найден(а)"));
         userBook.setBookCount(bookCount);
     }
 
@@ -44,7 +43,7 @@ public class UserBookService {
     public void deleteByUserId(UUID id) {
         List<UserBook> userBooks = userBookRepository.findAllByUserId(id);
         if (userBooks.isEmpty()) {
-            throw new AppException("У пользователя нет книг в корзине");
+            throw new RuntimeException("У пользователя нет книг в корзине");
         }
         userBookRepository.deleteByUserId(id);
     }
@@ -52,11 +51,11 @@ public class UserBookService {
     @Transactional
     public void addBookToCart(String email, UserBook userBook) {
         UserWithCart user = userRepository.findByEmail(email).orElseThrow(()
-            -> new AppException("Пользователь не найден"));
+            -> new RuntimeException("Пользователь не найден"));
         Book book = bookRepository.findById(userBook.getBook().getId()).orElseThrow(()
-                -> new AppException("Книга не найдена"));
+                -> new RuntimeException("Книга не найдена"));
         if (userBookRepository.findByUserIdAndBookId(user.getId(), book.getId()).isPresent()) {
-            throw new AppException("Книга уже в корзине у пользователя");
+            throw new RuntimeException("Книга уже в корзине у пользователя");
         }
         userBookRepository.save(userBook);
     }
@@ -67,7 +66,7 @@ public class UserBookService {
 
     @Transactional
     public void deleteBookFromCart(UUID idUser, UUID idBook) {
-        UserBook userBook = userBookRepository.findByUserIdAndBookId(idUser, idBook).orElseThrow(() -> new AppException(
+        UserBook userBook = userBookRepository.findByUserIdAndBookId(idUser, idBook).orElseThrow(() -> new RuntimeException(
                 "В корзине пользователя нет этой книги"));
         userBookRepository.delete(userBook);
     }

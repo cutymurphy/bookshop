@@ -10,7 +10,6 @@ import ru.berezhnov.models.Order;
 import ru.berezhnov.models.UserWithCart;
 import ru.berezhnov.repositories.OrderRepository;
 import ru.berezhnov.repositories.UserRepository;
-import ru.berezhnov.util.AppException;
 
 import java.util.Date;
 import java.util.List;
@@ -41,9 +40,9 @@ public class OrderService {
     @Transactional
     public void editOrder(Order order) {
         Order persistedOrder = orderRepository.findById(order.getId()).orElseThrow(()
-                -> new AppException("Заказ не найден"));
+                -> new RuntimeException("Заказ не найден"));
         UserWithCart admin = userRepository.findById(order.getAdmin().getId()).orElseThrow(()
-                -> new AppException("Администратор не найден"));
+                -> new RuntimeException("Администратор не найден"));
         persistedOrder.setAdmin(admin);
         persistedOrder.setDateModified(new Date());
         persistedOrder.setStatus(order.getStatus());
@@ -53,13 +52,13 @@ public class OrderService {
     @Transactional
     public void deleteOrder(UUID id) {
         Order order = orderRepository.findById(id).orElseThrow(()
-                -> new AppException("Заказ не найден"));
+                -> new RuntimeException("Заказ не найден"));
         orderRepository.delete(order);
     }
 
     @Transactional
     public void addOrder(String userEmail, Order order) {
-        UserWithCart user = userRepository.findByEmail(userEmail).orElseThrow(() -> new AppException(
+        UserWithCart user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException(
                 "Пользователь не найден"));
         order.setId(null);
         order.setUser(user);
@@ -67,7 +66,7 @@ public class OrderService {
     }
 
     public List<Book> getCartStateBooksById(UUID idOrder) {
-        Order order = orderRepository.findById(idOrder).orElseThrow(() -> new AppException("Заказ не найден"));
+        Order order = orderRepository.findById(idOrder).orElseThrow(() -> new RuntimeException("Заказ не найден"));
         return order.getCartStates().stream().map(CartState::getBook).toList();
     }
 }

@@ -24,7 +24,7 @@ public class EmailExtractor {
     public UserEmail getUserFromHeader(String authHeader) {
         return modelMapper.map(userService.findByEmail(jwtService
                                 .extractUsername(authHeader.substring("Bearer ".length())))
-                        .orElseThrow(() -> new AppException("Could not found user from header")),
+                        .orElseThrow(() -> new RuntimeException("Не удалось найти пользователя из хэдера")),
                 UserEmail.class);
     }
 }

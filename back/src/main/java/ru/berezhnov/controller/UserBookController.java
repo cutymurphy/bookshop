@@ -11,7 +11,6 @@ import ru.berezhnov.models.Book;
 import ru.berezhnov.models.UserBook;
 import ru.berezhnov.services.UserBookService;
 import ru.berezhnov.services.UserService;
-import ru.berezhnov.util.AppException;
 import ru.berezhnov.util.EmailExtractor;
 
 import java.util.List;
@@ -83,7 +82,7 @@ public class UserBookController {
     @GetMapping("/jwt")
     public ResponseEntity<List<BookDTO>> getCartBooksByUserJwt(@RequestHeader("Authorization") String authHeader) {//+
         return ResponseEntity.ok(userService.findByEmail(emailExtractor.getUserFromHeader(authHeader).getEmail())
-                .orElseThrow(() -> new AppException("Неверный Jwt")).getUserBooks().stream().map(UserBook::getBook)
+                .orElseThrow(() -> new RuntimeException("Неверный Jwt")).getUserBooks().stream().map(UserBook::getBook)
                 .map(this::convertToBookDTO).toList());
     }
 
@@ -104,7 +103,7 @@ public class UserBookController {
     public ResponseEntity<?> deleteBookFromCart(@PathVariable UUID idBook,
                                                 @RequestHeader("Authorization") String authHeader) {//+
         userBookService.deleteBookFromCart(userService.findByEmail(emailExtractor.getUserFromHeader(authHeader)
-                .getEmail()).orElseThrow(() -> new AppException("Неверный Jwt")).getId(), idBook);
+                .getEmail()).orElseThrow(() -> new RuntimeException("Неверный Jwt")).getId(), idBook);
         return ResponseEntity.ok().build();
     }
 }

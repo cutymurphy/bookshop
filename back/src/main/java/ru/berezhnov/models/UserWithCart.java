@@ -67,7 +67,7 @@ public class UserWithCart implements Serializable, UserDetails {
         this.id = id;
     }
 
-    public Boolean getAdmin() {
+    public Boolean isAdmin() {
         return isAdmin;
     }
 

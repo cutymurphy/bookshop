@@ -3,10 +3,8 @@ package ru.berezhnov.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestHeader;
 import ru.berezhnov.models.UserWithCart;
 import ru.berezhnov.repositories.UserRepository;
-import ru.berezhnov.util.AppException;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,13 +31,13 @@ public class UserService {
 
     @Transactional
     public void update(UserWithCart userWithCart) {
-        userRepository.findById(userWithCart.getId()).orElseThrow(() -> new AppException("User not found"));
+        userRepository.findById(userWithCart.getId()).orElseThrow(() -> new RuntimeException("User not found"));
         userRepository.save(userWithCart);
     }
 
     @Transactional
     public void delete(UUID id) {
-        userRepository.findById(id).orElseThrow(() -> new AppException("User not found"));
+        userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         userRepository.deleteById(id);
     }
 }
