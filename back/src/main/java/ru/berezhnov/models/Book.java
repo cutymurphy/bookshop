@@ -66,6 +66,7 @@ public class Book implements Serializable {
 
     public void setAuthor(Author author) {
         this.author = author;
+        if (author == null) return;
         if (this.author.getBooks() == null)
             this.author.setBooks(new ArrayList<>());
         this.author.getBooks().add(this);
@@ -73,6 +74,7 @@ public class Book implements Serializable {
 
     public void setAdmin(UserWithCart admin) {
         this.admin = admin;
+        if (admin == null) return;
         if (this.admin.getBooks() == null)
             this.admin.setBooks(new ArrayList<>());
         this.admin.getBooks().add(this);

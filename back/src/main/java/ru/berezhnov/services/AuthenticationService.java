@@ -29,6 +29,12 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse register(UserWithCart user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Пользователь с такой почтой уже зарегистрирован");
+        }
+        if (user.getEmail() == null || user.getEmail().isEmpty()) {
+            throw new RuntimeException("Почта отсутствует");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAdmin(false);
         userRepository.save(user);
@@ -47,7 +53,7 @@ public class AuthenticationService {
         );
 
         UserWithCart user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         String jwtToken = jwtService.generateToken(user);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         authenticationResponse.setToken(jwtToken);

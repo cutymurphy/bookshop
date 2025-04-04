@@ -7,7 +7,6 @@ import ru.berezhnov.models.Author;
 import ru.berezhnov.models.UserWithCart;
 import ru.berezhnov.repositories.AuthorRepository;
 import ru.berezhnov.repositories.UserRepository;
-import ru.berezhnov.util.AppException;
 
 import java.util.Date;
 import java.util.List;
@@ -32,8 +31,11 @@ public class AuthorService {
 
     @Transactional
     public void addAuthor(Author author) {
+        if (author.getAdmin() == null || author.getAdmin().getId() == null) {
+            throw new IllegalArgumentException("У автора должен быть указан админ с ID");
+        }
         UserWithCart admin = userRepository.findById(author.getAdmin().getId())
-                .orElseThrow(() -> new AppException("Администратор не найден"));
+                .orElseThrow(() -> new RuntimeException("Администратор не найден"));
         author.setAdmin(admin);
         author.setDateModified(new Date());
         authorRepository.save(author);
@@ -41,13 +43,13 @@ public class AuthorService {
 
     @Transactional
     public void updateAuthor(Author author) {
-        authorRepository.findById(author.getId()).orElseThrow(() -> new AppException("Автор не найден"));
+        authorRepository.findById(author.getId()).orElseThrow(() -> new RuntimeException("Автор не найден"));
         this.addAuthor(author);
     }
 
     @Transactional
     public void deleteById(UUID id) {
-        Author authorToDelete = authorRepository.findById(id).orElseThrow(() -> new AppException("Автор не найден"));
+        Author authorToDelete = authorRepository.findById(id).orElseThrow(() -> new RuntimeException("Автор не найден"));
         authorRepository.delete(authorToDelete);
     }
 }

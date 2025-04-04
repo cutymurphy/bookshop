@@ -46,6 +46,9 @@ public class Author implements Serializable {
 
     public void setAdmin(UserWithCart admin) {
         this.admin = admin;
+        if (admin == null) {
+            return;
+        }
         if (this.admin.getAuthors() == null)
             this.admin.setAuthors(new ArrayList<>());
         this.admin.getAuthors().add(this);

@@ -9,7 +9,6 @@ import ru.berezhnov.models.UserWithCart;
 import ru.berezhnov.repositories.AuthorRepository;
 import ru.berezhnov.repositories.BookRepository;
 import ru.berezhnov.repositories.UserRepository;
-import ru.berezhnov.util.AppException;
 
 import java.util.List;
 import java.util.UUID;
@@ -36,11 +35,15 @@ public class BookService {
 
     @Transactional
     public void addBook(Book book) {
+        if (book.getAdmin() == null || book.getAdmin().getId() == null)
+            throw new RuntimeException("Администратор не может быть пустым");
         UserWithCart admin = userRepository.findById(book.getAdmin().getId())
-                        .orElseThrow(() -> new AppException("Администратор не найден"));
-        book.setAdmin(admin);
+                        .orElseThrow(() -> new RuntimeException("Администратор не найден"));
+        if (book.getAuthor() == null || book.getAuthor().getId() == null)
+            throw new RuntimeException("Автор не может быть пустым");
         Author author = authorRepository.findById(book.getAuthor().getId())
-                        .orElseThrow(() -> new AppException("Автор не найден"));
+                        .orElseThrow(() -> new RuntimeException("Автор не найден"));
+        book.setAdmin(admin);
         book.setAuthor(author);
         bookRepository.save(book);
     }
@@ -48,19 +51,19 @@ public class BookService {
     @Transactional
     public void updateBook(Book book) {
         bookRepository.findById(book.getId())
-                .orElseThrow(() -> new AppException("Книга не найдена"));
+                .orElseThrow(() -> new RuntimeException("Книга не найдена"));
         this.addBook(book);
     }
 
     @Transactional
     public void updateBookCount(UUID idBook, Integer bookCount) {
-        Book book = bookRepository.findById(idBook).orElseThrow(() -> new AppException("Книга не найдена"));
+        Book book = bookRepository.findById(idBook).orElseThrow(() -> new RuntimeException("Книга не найдена"));
         book.setCount(bookCount);
     }
 
     @Transactional
     public void deleteById(UUID id) {
-        Book book = bookRepository.findById(id).orElseThrow(() -> new AppException("Книга не найдена"));
+        Book book = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Книга не найдена"));
         bookRepository.delete(book);
     }
 }
